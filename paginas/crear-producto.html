@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia - Crear producto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=23">
+    <link rel="stylesheet" href="../assets/css/terminal-theme.css">
+    <link rel="stylesheet" href="../assets/css/app-shell.css">
+    <link rel="stylesheet" href="../assets/css/app.css?v=23">
+    <link rel="stylesheet" href="../assets/css/crear-producto.css?v=23">
+    <link rel="icon" href="../assets/img/costia-icon.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+</head>
+<body class="costia-app">
+
+<!-- Enlace accesible de salto al contenido principal (WCAG AAA) -->
+<a href="#contenido-principal" class="costia-skip-link">Saltar al contenido principal</a>
+
+<!-- BARRA SUPERIOR PARA PANTALLAS MÓVILES (< 900px) -->
+<header class="costia-mobile-bar" role="banner">
+    <a href="productos.html" class="costia-mobile-brand">
+        <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="costia-mobile-brand-logo">
+        <span class="costia-mobile-brand-title">Costia</span>
+    </a>
+    <button type="button" class="costia-mobile-toggle" id="btn-mobile-sidebar-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="terminal-sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+</header>
+<div class="costia-drawer-backdrop" id="costia-drawer-backdrop" aria-hidden="true"></div>
+
+<div class="terminal-shell-container">
+
+    <!-- ===== SIDEBAR LATERAL PROFESIONAL (COSTIA PRO VERTICAL) ===== -->
+    <aside class="terminal-sidebar" id="terminal-sidebar" aria-label="Navegación principal de Costia">
+        <div class="sidebar-inner">
+            <div class="sidebar-brand-box">
+                <a href="dashboard.html" class="sidebar-brand-link">
+                    <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="sidebar-brand-logo">
+                    <span class="sidebar-brand-title">Costia</span>
+                </a>
+                <button type="button" class="sidebar-close-btn" id="btn-sidebar-close" aria-label="Cerrar menú lateral">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-nav-list" role="navigation">
+                <li>
+                    <a href="dashboard.html" class="sidebar-item-link">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                            <span>Dashboard</span>
+                        </span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item-group abierto">
+                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="true">
+                        <span class="sidebar-icon-label">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                            <span>Insumos</span>
+                        </span>
+                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sidebar-subnav">
+                        <a href="insumos.html" class="sidebar-sublink">Inventario Activo</a>
+                        <a href="insumos.html#alzas" class="sidebar-sublink">Historial de Alzas</a>
+                    </div>
+                </li>
+
+                <li class="sidebar-item-group abierto">
+                    <button type="button" class="sidebar-item-link activo" data-sidebar-toggle="true" aria-expanded="true">
+                        <span class="sidebar-icon-label">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Productos &amp; Recetas</span>
+                        </span>
+                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sidebar-subnav">
+                        <a href="productos.html" class="sidebar-sublink">Catálogo Completo</a>
+                        <a href="crear-producto.html" class="sidebar-sublink activo" aria-current="page">+ Crear Receta</a>
+                        <a href="ficha-tecnica.html" class="sidebar-sublink">Fichas de Impresión</a>
+                    </div>
+                </li>
+
+
+                <li>
+                    <a href="#modal-asesor-costia" class="sidebar-item-link" id="link-sidebar-asesor">
+                        <span class="sidebar-icon-label">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span>Asesor IA</span>
+                        </span>
+                        <span class="sidebar-status-dot" title="Online"></span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item-group">
+                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="false" id="sidebar-config-toggle">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Configuración</span>
+                        </span>
+                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sidebar-subnav" id="subnav-configuracion">
+                        <a href="configuracion.html" class="sidebar-sublink" id="link-sidebar-config-page">Configuración y Gastos Fijos</a>
+                        <button type="button" class="sidebar-sublink sidebar-sublink--danger" id="link-sidebar-restaurar-demo">Restaurar Datos Demo</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer-box">
+            <a href="login.html" class="sidebar-item-link sidebar-logout-link">
+                <span class="sidebar-icon-label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>Cerrar Sesión</span>
+                </span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ===== CONTENEDOR VIEWPORT DE TRABAJO ===== -->
+    <div class="terminal-content-viewport">
+        <div class="app">
+
+            <!-- ===== BARRA SUPERIOR EJECUTIVA (TOPBAR UNIFICADA) ===== -->
+            <header class="topbar-status-bar" role="region" aria-label="Barra ejecutiva de resumen">
+                <div class="topbar-context-box">
+                    <span class="topbar-beacon-dot" aria-hidden="true"></span>
+                    <span class="topbar-context-title">Costeo &amp; Liquidación de Recetas</span>
+                </div>
+                <div class="topbar-status-actions">
+                    <div class="app-header__acciones">
+                        <span class="app-header__negocio" title="Ir a Configuración del Negocio">Panadería El Roble</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ===== CONTENIDO ===== -->
+            <main class="contenido">
+
+                <div class="contenido__encabezado">
+                    <div>
+                        <h1 class="contenido__titulo">Nuevo producto</h1>
+                        <p class="contenido__subtitulo">Terminal de costeo de receta y liquidación financiera</p>
+                    </div>
+                    <a href="productos.html" class="btn-secundario">
+                        <svg class="svg-inline-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                        <span>Volver</span>
+                    </a>
+                </div>
+
+                <div class="crear-layout">
+
+                    <!-- ===== COLUMNA IZQUIERDA: Formulario ===== -->
+                    <div class="crear-form">
+
+                        <!-- Sección 1: Nombre -->
+                        <section class="form-seccion">
+                            <h2 class="form-seccion__titulo">Información del producto</h2>
+                            <p class="form-seccion__subtitulo">Dale un nombre claro para identificarlo fácilmente</p>
+                            <div class="campo">
+                                <label for="producto-nombre">Nombre del producto</label>
+                                <input
+                                    type="text"
+                                    id="producto-nombre"
+                                    name="nombre"
+                                    placeholder="Ej: Pan artesanal con semillas"
+                                    required
+                                >
+                            </div>
+                        </section>
+
+                        <!-- Sección 2: Receta -->
+                        <section class="form-seccion">
+                            <div class="form-seccion__header-flex">
+                                <div>
+                                    <h2 class="form-seccion__titulo">Receta &amp; Composición</h2>
+                                    <p class="form-seccion__subtitulo">
+                                        Agrega los insumos que componen la receta y sus cantidades operativas
+                                    </p>
+                                </div>
+                                <span class="bn-badge-order-book">ORDER BOOK</span>
+                            </div>
+
+                            <div class="receta-tabla-wrap">
+                            <table class="receta-tabla">
+                                <thead>
+                                    <tr>
+                                        <th class="th-insumo">Insumo</th>
+                                        <th class="th-cantidad">Cantidad</th>
+                                        <th class="th-unidad">Unidad (receta)</th>
+                                        <th class="th-subtotal">Subtotal</th>
+                                        <th class="th-acciones">Acción</th>
+                                    </tr>
+                                </thead>
+                                <!-- Las filas se insertan dinámicamente por JavaScript -->
+                                <tbody id="receta-cuerpo">
+                                </tbody>
+                            </table>
+                            </div>
+
+                            <button type="button" class="btn-agregar-fila" id="btn-agregar">
+                                <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                <span>Agregar insumo</span>
+                            </button>
+
+                            <!-- Footer: unidades producidas y costo calculado -->
+                            <div class="receta-footer">
+                                <div class="receta-footer__campo">
+                                    <label for="unidades-producidas">Unidades que produce esta receta</label>
+                                    <input
+                                        type="number"
+                                        id="unidades-producidas"
+                                        value="1"
+                                        min="1"
+                                        step="1"
+                                    >
+                                </div>
+                                <div class="costo-unidad-display">
+                                    <span class="costo-unidad-display__etiqueta">Costo base por unidad</span>
+                                    <span class="costo-unidad-display__valor" id="costo-unidad">$0</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Sección: Costos adicionales y rendimiento -->
+                        <section class="form-seccion">
+                            <div class="asesor-card-trigger">
+                                <div class="asesor-card-trigger__icono">
+                                    <img src="../assets/img/costia-icon-green.png" alt="Costia IA">
+                                </div>
+                                <div class="asesor-card-trigger__texto">
+                                    <strong>Asistente Financiero &amp; Calculadora de Costos</strong>
+                                    <span>Calcula mano de obra y costos fijos de forma autónoma con la herramienta manual abajo, o usa el Asesor IA si prefieres dictarlo por voz.</span>
+                                </div>
+                                <button type="button" class="btn-primario asesor-card-trigger__btn" id="btn-abrir-asesor">
+                                    Abrir chat asesor
+                                </button>
+                            </div>
+
+                            <h2 class="form-seccion__titulo">Costos adicionales y rendimiento</h2>
+                            <p class="form-seccion__subtitulo">
+                                Contempla pérdidas en cocción (merma), empaques y gastos operativos (recibos, local y mano de obra) para un costo real.
+                            </p>
+
+                            <div class="costos-adicionales-grid">
+                                <div class="campo">
+                                    <label for="porcentaje-merma">Merma / Desperdicio (%)</label>
+                                    <input
+                                        type="number"
+                                        id="porcentaje-merma"
+                                        name="porcentaje_merma"
+                                        value="0"
+                                        min="0"
+                                        max="100"
+                                        step="0.5"
+                                        placeholder="Ej: 5 (5% pérdida en cocción)"
+                                    >
+                                    <div class="costos-presets-row" aria-label="Presets rápidos de merma">
+                                        <button type="button" class="costos-preset-btn" data-campo="porcentaje-merma" data-valor="0">0% Sin merma</button>
+                                        <button type="button" class="costos-preset-btn" data-campo="porcentaje-merma" data-valor="3">3% Panadería</button>
+                                        <button type="button" class="costos-preset-btn" data-campo="porcentaje-merma" data-valor="5">5% Estándar horno</button>
+                                        <button type="button" class="costos-preset-btn" data-campo="porcentaje-merma" data-valor="10">10% Fritura</button>
+                                    </div>
+                                </div>
+                                <div class="campo">
+                                    <label for="costo-empaque">Empaque por unidad ($)</label>
+                                    <input
+                                        type="number"
+                                        id="costo-empaque"
+                                        name="costo_empaque"
+                                        value="0"
+                                        min="0"
+                                        step="any"
+                                        placeholder="Ej: 250 (caja, bolsa, etiqueta)"
+                                    >
+                                    <div class="costos-presets-row" aria-label="Presets rápidos de empaque">
+                                        <button type="button" class="costos-preset-btn" data-campo="costo-empaque" data-valor="0">$0 Sin empaque</button>
+                                        <button type="button" class="costos-preset-btn" data-campo="costo-empaque" data-valor="250">$250 Bolsa kraft</button>
+                                        <button type="button" class="costos-preset-btn" data-campo="costo-empaque" data-valor="800">$800 Caja estándar</button>
+                                        <button type="button" class="costos-preset-btn" data-campo="costo-empaque" data-valor="1500">$1.500 Caja / Domo</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="campo campo--espaciado">
+                                <label for="costo-mano-obra">Mano de obra y gastos ocultos por lote ($) <small class="campo__ayuda">(Recibos, local, empleados y desgaste)</small></label>
+                                <input
+                                    type="number"
+                                    id="costo-mano-obra"
+                                    name="costo_mano_obra"
+                                    value="0"
+                                    min="0"
+                                    step="any"
+                                    placeholder="Ej: 15000 (o usa los botones y calculadora rápida abajo)"
+                                >
+                                <div id="desglose-gastos-ocultos-badge" class="asesor-desglose-aplicado"></div>
+
+                                <!-- Herramientas Manuales Autónomas para Mano de Obra y Costos Ocultos -->
+                                <div class="mano-obra-herramientas">
+                                    <div class="costos-presets-row" aria-label="Presets rápidos de mano de obra">
+                                        <button type="button" class="costos-preset-btn" data-campo="costo-mano-obra" data-valor="6500">1h preparación ($6.500)</button>
+                                        <button type="button" class="costos-preset-btn" data-campo="costo-mano-obra" data-valor="13000">2h preparación ($13.000)</button>
+                                        <button type="button" class="costos-preset-btn costos-preset-btn--highlight" id="btn-cargar-gastos-fijos-form" title="Calcula la cuota automática de lote con los gastos fijos guardados de tu negocio">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                            Calcular con mis Gastos Fijos
+                                        </button>
+                                        <button type="button" class="costos-preset-btn" id="btn-cargar-cuota-porcion" title="Carga la cuota prorrateada por porción individual (10 porciones/lote)">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                            Porción individual (<span id="txt-preset-porcion">$2.804</span>)
+                                        </button>
+                                        <button type="button" class="costos-preset-btn" id="btn-toggle-calc-mano-obra">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+                                            Calculadora manual detallada
+                                        </button>
+                                    </div>
+
+                                    <!-- Panel Desplegable de la Calculadora Manual -->
+                                    <div class="calc-mano-obra-box" id="calc-mano-obra-box" style="display: none;">
+                                        <div class="calc-mano-obra-header">
+                                            <h4>Calculadora Manual de Mano de Obra y Costos Ocultos</h4>
+                                            <span class="calc-mano-obra-ayuda">Estima con precisión tiempo invertido, recibos de gas/luz y local sin depender de la IA.</span>
+                                        </div>
+                                        <div class="calc-mano-obra-grid">
+                                            <div class="calc-col">
+                                                <label for="calc-horas-lote">Tiempo de preparación del lote (horas)</label>
+                                                <div class="calc-input-stepper">
+                                                    <input type="number" id="calc-horas-lote" value="1" min="0.1" max="24" step="0.5">
+                                                    <span class="calc-unidad">horas</span>
+                                                </div>
+                                                <div class="calc-quick-pills">
+                                                    <button type="button" class="calc-pill" data-horas="0.5">30 min</button>
+                                                    <button type="button" class="calc-pill calc-pill--active" data-horas="1">1 hora</button>
+                                                    <button type="button" class="calc-pill" data-horas="2">2 horas</button>
+                                                    <button type="button" class="calc-pill" data-horas="3">3 horas</button>
+                                                </div>
+                                            </div>
+                                            <div class="calc-col">
+                                                <label for="calc-tarifa-hora">Valor de tu hora de trabajo ($)</label>
+                                                <input type="number" id="calc-tarifa-hora" value="6500" min="0" step="500">
+                                                <small class="calc-hint">Base: $6.500 COP (salario estándar con prestaciones)</small>
+                                            </div>
+                                            <div class="calc-col">
+                                                <label for="calc-servicio-energia">Servicios / Energía (Gas, Luz, Horno)</label>
+                                                <select id="calc-servicio-energia" class="campo__select-metodo">
+                                                    <option value="0">$0 — Sin cocción / Refrigerado simple</option>
+                                                    <option value="1500">$1.500 — Estufa estándar / Batidora</option>
+                                                    <option value="3500" selected>$3.500 — Horno a gas o eléctrico estándar</option>
+                                                    <option value="6000">$6.000 — Horneado prolongado / Alta potencia</option>
+                                                </select>
+                                            </div>
+                                            <div class="calc-col">
+                                                <label for="calc-arriendo-lote">Cuota estimada de local / arriendo</label>
+                                                <select id="calc-arriendo-lote" class="campo__select-metodo">
+                                                    <option value="0" selected>$0 — Cocina propia / Sin arriendo</option>
+                                                    <option value="2500">$2.500 — Cuota básica taller / local compartido</option>
+                                                    <option value="5000">$5.000 — Local comercial céntrico</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="calc-mano-obra-footer">
+                                            <div class="calc-total-preview">
+                                                <span>Total Ocultos Calculados:</span>
+                                                <strong id="calc-total-preview-val">$10.000</strong>
+                                            </div>
+                                            <button type="button" class="btn-primario" id="btn-aplicar-calc-mano-obra">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" style="margin-right:6px;vertical-align:-1px;"><polyline points="20 6 9 17 4 12"/></svg>Aplicar este valor al lote
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Sección 3: Precio de venta -->
+                        <section class="form-seccion">
+                            <h2 class="form-seccion__titulo">Calculadora de Precio de Venta</h2>
+                            <p class="form-seccion__subtitulo">
+                                Configura el motor de fijación de precios y liquida el margen en tiempo real.
+                            </p>
+
+                            <!-- Tabs: Margen % / Multiplicador -->
+                            <div class="modo-tabs" role="tablist">
+                                <button
+                                    class="modo-tab activo"
+                                    id="tab-margen"
+                                    role="tab"
+                                    aria-selected="true"
+                                >
+                                    Margen %
+                                </button>
+                                <button
+                                    class="modo-tab"
+                                    id="tab-multiplicador"
+                                    role="tab"
+                                    aria-selected="false"
+                                >
+                                    Multiplicador ×
+                                </button>
+                            </div>
+
+                            <!-- PANEL: Margen % -->
+                            <div class="panel-modo visible" id="panel-margen">
+
+                                <div class="sugerencia">
+                                    <img src="../assets/img/lightbulb.svg" alt="" class="sugerencia__icono"> Sugerido para tu categoría:
+                                    <strong id="margen-sugerido-texto">30%</strong>
+                                    <button type="button" class="sugerencia__aplicar">
+                                        Aplicar
+                                    </button>
+                                </div>
+
+                                <div class="campo campo--metodo">
+                                    <label for="tipo-margen" class="campo__label-metodo">
+                                        Método de cálculo del margen:
+                                    </label>
+                                    <select id="tipo-margen" class="campo__select-metodo">
+                                        <option value="costo" selected>Margen sobre Costo (Mark-up: Costo + %)</option>
+                                        <option value="venta">Margen sobre Venta (Margen Bruto Comercial: % del Precio final)</option>
+                                    </select>
+                                    <small id="tipo-margen-info" class="campo__info-metodo">
+                                        Mark-up: Si el costo es $1.000 y el margen es 30%, el precio es $1.300.
+                                    </small>
+                                </div>
+
+                                <div class="slider-grupo">
+                                    <input
+                                        type="range"
+                                        id="slider-margen"
+                                        min="0"
+                                        max="200"
+                                        value="30"
+                                    >
+                                    <div class="slider-valor">
+                                        <input
+                                            type="number"
+                                            id="input-margen"
+                                            value="30"
+                                            min="0"
+                                            max="999"
+                                        >
+                                        <span>%</span>
+                                    </div>
+                                </div>
+
+                                <div class="margen-presets-box">
+                                    <span class="margen-presets-label">Márgenes estándar recomendados:</span>
+                                    <div class="costos-presets-row">
+                                        <button type="button" class="costos-preset-btn" data-margen="30">30% Margen Mínimo</button>
+                                        <button type="button" class="costos-preset-btn" data-margen="40">40% Panadería</button>
+                                        <button type="button" class="costos-preset-btn" data-margen="50">50% Estándar Gastronómico</button>
+                                        <button type="button" class="costos-preset-btn" data-margen="60">60% Pastelería / Repostería</button>
+                                        <button type="button" class="costos-preset-btn" data-margen="70">70% Cafetería / Gourmet</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- PANEL: Multiplicador -->
+                            <div class="panel-modo" id="panel-multiplicador">
+
+                                <div class="multiplicador-presets-box" style="margin-top:0; margin-bottom:14px; border-top:none;">
+                                    <span class="margen-presets-label">Multiplicadores comerciales directos:</span>
+                                    <div class="costos-presets-row">
+                                        <button type="button" class="costos-preset-btn" data-multiplicador="2.0">×2.0 (Costo × 2 · Margen 50%)</button>
+                                        <button type="button" class="costos-preset-btn" data-multiplicador="2.5">×2.5 (Estándar · Margen 60%)</button>
+                                        <button type="button" class="costos-preset-btn" data-multiplicador="3.0">×3.0 (Restaurante · Margen 67%)</button>
+                                        <button type="button" class="costos-preset-btn" data-multiplicador="3.5">×3.5 (Alta Cocina / Gourmet)</button>
+                                        <button type="button" class="costos-preset-btn" data-multiplicador="4.0">×4.0 (Eventos / Catering)</button>
+                                    </div>
+                                </div>
+
+                                <!-- Multiplicador resultante (editable) -->
+                                <div class="multiplicador-resultado">
+                                    <div>
+                                        <span class="multiplicador-resultado__etiqueta">Multiplicador aplicado</span>
+                                        <br>
+                                        <span class="multiplicador-resultado__sub">Puedes escribir cualquier número o tocar los botones rápidos</span>
+                                    </div>
+                                    <div class="multiplicador-resultado__valor">
+                                        <span>×</span>
+                                        <input
+                                            type="number"
+                                            id="input-multiplicador"
+                                            value="2.0"
+                                            min="1"
+                                            max="10"
+                                            step="0.1"
+                                            aria-label="Factor multiplicador"
+                                        >
+                                    </div>
+                                </div>
+
+                                <div class="multiplicador-info-card">
+                                    <div class="multiplicador-info-card__texto">
+                                        <strong>Fórmula:</strong> Precio de Venta = Costo Unitario × Multiplicador.
+                                        <span>Los gastos fijos y el perfil general de tu negocio se administran en Configuración para no tener que responder preguntas repetitivas en cada receta.</span>
+                                    </div>
+                                    <button type="button" class="btn-secundario btn-link-gastos-fijos" id="btn-abrir-cfg-desde-receta">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                        Configuración del Negocio
+                                    </button>
+                                </div>
+
+                            </div>
+                            <!-- fin panel-multiplicador -->
+
+                        </section>
+                        <!-- fin sección precio -->
+
+                    </div>
+                    <!-- fin columna izquierda -->
+
+                    <!-- ===== COLUMNA DERECHA: Resumen sticky ===== -->
+                    <aside class="resumen-card" id="resumen-producto">
+                        <div class="resumen-card__header">
+                            <h3 class="resumen-card__titulo">Liquidación de Orden</h3>
+                            <span class="resumen-card__live-badge">SETTLEMENT</span>
+                        </div>
+
+                        <div class="resumen-item">
+                            <span class="resumen-item__etiqueta">Insumos brutos</span>
+                            <span class="resumen-item__valor" id="res-costo-ingredientes">$0</span>
+                        </div>
+                        <div class="resumen-item" id="res-fila-merma">
+                            <span class="resumen-item__etiqueta">Merma (<span id="res-pct-merma">0%</span>)</span>
+                            <span class="resumen-item__valor" id="res-costo-merma">+$0</span>
+                        </div>
+                        <div class="resumen-item" id="res-fila-empaque">
+                            <span class="resumen-item__etiqueta">Empaque total</span>
+                            <span class="resumen-item__valor" id="res-costo-empaque">+$0</span>
+                        </div>
+                        <div class="resumen-item" id="res-fila-mano-obra">
+                            <span class="resumen-item__etiqueta">Mano de obra</span>
+                            <span class="resumen-item__valor" id="res-costo-mano-obra">+$0</span>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-item__etiqueta">Costo total lote</span>
+                            <span class="resumen-item__valor" id="res-costo-total">$0</span>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-item__etiqueta">Unidades producidas</span>
+                            <span class="resumen-item__valor" id="res-unidades">1</span>
+                        </div>
+                        <div class="resumen-item resumen-item--destacado">
+                            <span class="resumen-item__etiqueta">Costo por unidad</span>
+                            <span class="resumen-item__valor" id="res-costo-unidad">$0</span>
+                        </div>
+
+                        <div class="resumen-divisor"></div>
+
+                        <div class="resumen-item">
+                            <span class="resumen-item__etiqueta">Modo de precio</span>
+                            <span class="resumen-item__valor" id="res-modo">Margen 30%</span>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-item__etiqueta">Ganancia neta/ud</span>
+                            <span class="resumen-item__valor res-ganancia-highlight" id="res-ganancia-unidad">+$0</span>
+                        </div>
+
+                        <div class="resumen-precio">
+                            <div class="resumen-precio__cabecera">
+                                <span class="resumen-precio__etiqueta">Precio Mostrador (Salón)</span>
+                                <span class="resumen-precio__badge-impuesto" id="res-badge-impoconsumo">
+                                    Con Impoconsumo (8%): <strong id="res-precio-impoconsumo">$0</strong>
+                                </span>
+                            </div>
+                            <p class="resumen-precio__valor" id="res-precio-venta">$0</p>
+
+                            <!-- Bloque comercial requerido por tests y liquidación comercial -->
+                            <div class="resumen-delivery-box" id="desglose-comercial-bloque">
+                                <div class="resumen-delivery-box__fila">
+                                    <span class="resumen-delivery-box__etiqueta">
+                                        <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg>
+                                        <span>Sugerido en Apps Delivery <small>(Rappi/DiDi 25% com.):</small></span>
+                                    </span>
+                                    <strong class="resumen-delivery-box__valor" id="res-precio-delivery">$0</strong>
+                                    <span class="resumen-delivery-alt" id="res-sugerido-delivery">$0</span>
+                                </div>
+                                <div class="resumen-impoconsumo-extra">
+                                    <span class="resumen-impoconsumo-label">Impoconsumo liquidado:</span>
+                                    <strong class="resumen-impoconsumo-valor" id="res-impoconsumo-monto">$0</strong>
+                                </div>
+                                <small class="resumen-delivery-box__tip" title="Conserva tu margen real al vender por plataformas">
+                                    Conserva tu margen real al vender por plataformas
+                                </small>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-asesor-resumen" id="btn-abrir-asesor-precio">
+                            <span>Hablar con el Asesor IA de precios</span>
+                            <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </button>
+
+                        <button type="button" class="btn-guardar">
+                            Guardar producto
+                        </button>
+                    </aside>
+
+                </div>
+                <!-- fin crear-layout -->
+
+            </main>
+
+            <!-- ===== BOTÓN FLOTANTE: CHATEAR CON EL AGENTE IA ===== -->
+            <div class="asesor-fab-container" id="contenedor-fab-asesor">
+                <div class="asesor-fab-tooltip" id="tooltip-fab-asesor">
+                    <span class="asesor-fab-tooltip__badge">Costia IA</span>
+                    <span class="asesor-fab-tooltip__texto">¿Quieres crear o cambiar algo? ¡Chatea conmigo!</span>
+                    <button type="button" class="asesor-fab-tooltip__cerrar" id="btn-cerrar-tooltip-fab" aria-label="Cerrar sugerencia">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+                <button type="button" class="asesor-fab-btn" id="btn-fab-asesor" aria-label="Abrir Asesor Inteligente con IA" title="Chatear con el Agente IA para crear o modificar tu producto">
+                    <span class="asesor-fab-btn__pulso"></span>
+                    <div class="asesor-fab-btn__icono-wrap">
+                        <img src="../assets/img/costia-icon-green.png" alt="IA" class="asesor-fab-btn__icono">
+                        <span class="asesor-fab-btn__status"></span>
+                    </div>
+                    <div class="asesor-fab-btn__contenido">
+                        <div class="asesor-fab-btn__titulo">
+                            <span>Asesor IA</span>
+                            <span class="asesor-fab-btn__chip">Online</span>
+                        </div>
+                        <small class="asesor-fab-btn__sub">Crear o cambiar receta</small>
+                    </div>
+                </button>
+            </div>
+
+            <!-- ===== DRAWER LATERAL: CHAT AGENTE ASESOR IA ===== -->
+            <div class="asesor-modal-backdrop" id="modal-asesor-costia" role="dialog" aria-modal="true" aria-labelledby="asesor-modal-titulo">
+                <div class="asesor-drawer">
+                    <header class="asesor-drawer__header">
+                        <div class="asesor-drawer__identidad">
+                            <img src="../assets/img/costia-icon-green.png" alt="Costia IA" class="asesor-drawer__logo">
+                            <div>
+                                <h3 id="asesor-modal-titulo">Agente Costia IA</h3>
+                                <span class="asesor-drawer__sub" id="asesor-modo-badge">Agente Entrenado Activo</span>
+                            </div>
+                        </div>
+                        <div class="asesor-drawer__acciones">
+                            <button type="button" class="asesor-btn-header" id="btn-config-gastos-asesor" title="Ver y editar gastos fijos guardados (arriendo y servicios)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="svg-icono-inline"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                <span>Gastos fijos</span>
+                            </button>
+                            <button type="button" class="asesor-btn-header" id="btn-config-ia-asesor" title="Ver estado de IA Local (Ollama)">IA Local</button>
+                            <button type="button" class="asesor-btn-header" id="btn-reiniciar-asesor" title="Nueva conversación">Reiniciar</button>
+                            <button type="button" class="asesor-btn-cerrar" id="btn-cerrar-asesor" aria-label="Cerrar chat">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </button>
+                        </div>
+                    </header>
+
+                    <!-- Barra de datos que el agente va armando a medida que conversan -->
+                    <div class="asesor-progreso-bar" id="asesor-progreso-chips"></div>
+
+                    <!-- Conversación libre -->
+                    <div class="asesor-drawer__cuerpo" id="asesor-mensajes"></div>
+
+                    <!-- Entrada libre de chat + Micrófono por voz -->
+                    <footer class="asesor-drawer__footer">
+                        <div class="asesor-voz-estado" id="asesor-voz-estado">
+                            <span class="asesor-voz-onda"></span>
+                            <span id="asesor-voz-texto">Escuchando... habla con naturalidad</span>
+                        </div>
+                        <form class="asesor-chat-form" id="form-chat-asesor">
+                            <button
+                                type="button"
+                                class="asesor-btn-voz"
+                                id="btn-voz-asesor"
+                                title="Hablar por micrófono (enviar audio/voz)"
+                                aria-label="Dictar por voz"
+                            >
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                    <line x1="12" x2="12" y1="19" y2="22"/>
+                                </svg>
+                            </button>
+                            <input
+                                type="text"
+                                id="input-chat-asesor"
+                                placeholder="Escribe o pulsa el micrófono para hablar..."
+                                autocomplete="off"
+                            >
+                            <button type="submit" class="asesor-chat-enviar" aria-label="Enviar mensaje">
+                                <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                <span>Enviar</span>
+                            </button>
+                        </form>
+                    </footer>
+                </div>
+            </div>
+        </div>
+        <!-- fin .app -->
+    </div>
+    <!-- fin .terminal-content-viewport -->
+
+</div>
+<!-- fin .terminal-shell-container -->
+
+<!-- Modelos POO, almacenamiento, shell, controlador y Agente Asesor -->
+<script src="../assets/js/models.js?v=23"></script>
+<script src="../assets/js/store.js?v=23"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/app-shell.js"></script>
+<script src="../assets/js/asesor/asesor-parser.js?v=23"></script>
+<script src="../assets/js/asesor/asesor-finanzas.js?v=23"></script>
+<script src="../assets/js/asesor/asesor-ui.js?v=23"></script>
+<script src="../assets/js/asesor/asesor-comandos.js?v=25"></script>
+<script src="../assets/js/asesor/asesor-flujo.js?v=25"></script>
+<script src="../assets/js/asesor-agente.js?v=23"></script>
+<script src="../assets/js/crear-producto.js?v=23"></script>
+</body>
+</html>

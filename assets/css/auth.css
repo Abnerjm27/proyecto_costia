@@ -1,0 +1,312 @@
+/* ============================================================
+   AUTH.CSS — Páginas de login y registro
+   Usa las variables y fuentes definidas en base.css
+   Estilo editorial "Atelier Gastronómico", limpio y sin slop.
+   ============================================================ */
+
+/* --- Layout de página completa centrada --- */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--fondo-claro);
+    background-image:
+        radial-gradient(circle at 12% 18%, rgba(7, 31, 23, 0.04) 0%, transparent 45%),
+        radial-gradient(circle at 88% 82%, rgba(7, 31, 23, 0.04) 0%, transparent 45%),
+        radial-gradient(circle, rgba(7, 31, 23, 0.04) 1.5px, transparent 1.5px);
+    background-size: 100% 100%, 100% 100%, 28px 28px;
+    padding: 24px;
+}
+
+/* --- Tarjeta del formulario --- */
+.auth-card {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid var(--linea);
+    border-radius: 16px;
+    box-shadow: 0 12px 32px -8px rgba(7, 31, 23, 0.08);
+    padding: 36px;
+    width: 100%;
+    max-width: 420px;
+    transition: transform var(--transicion);
+}
+
+/* --- Enlace de volver al inicio --- */
+.auth-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--texto-secundario);
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 500;
+    margin-bottom: 14px;
+    transition: color var(--transicion);
+}
+
+.auth-volver:hover {
+    color: var(--verde-pino);
+}
+
+/* --- Logo / encabezado --- */
+.auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: transform var(--transicion);
+}
+
+.auth-logo:hover {
+    transform: translateY(-1px);
+}
+
+.auth-logo img {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px var(--linea), 0 2px 6px rgba(7, 31, 23, 0.08);
+}
+
+.auth-logo span {
+    font-family: var(--font-titulos);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--verde-pino);
+    letter-spacing: -0.35px;
+}
+
+/* --- Títulos del formulario --- */
+.auth-titulo {
+    font-family: var(--font-titulos);
+    font-size: 23px;
+    font-weight: 600;
+    color: var(--verde-pino);
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: -0.4px;
+}
+
+.auth-subtitulo {
+    font-size: 13.5px;
+    color: var(--texto-secundario);
+    text-align: center;
+    margin-bottom: 22px;
+    line-height: 1.45;
+}
+
+/* --- Separador visual entre logo y formulario --- */
+.auth-divisor {
+    height: 1px;
+    background: var(--linea);
+    margin-bottom: 20px;
+}
+
+/* --- Grupos de campo (label + input) --- */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.campo label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--verde-pino);
+}
+
+.campo input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--linea-fuerte);
+    border-radius: 10px;
+    font-family: var(--font-texto);
+    font-size: 14.5px;
+    color: var(--tinta);
+    background: #FAFCFA;
+    transition: border-color var(--transicion), box-shadow var(--transicion), background var(--transicion);
+    outline: none;
+}
+
+.campo input::placeholder {
+    color: #4D6159;
+}
+
+.campo input:hover {
+    border-color: var(--verde-esmeralda);
+}
+
+.campo input:focus {
+    border-color: var(--verde-esmeralda);
+    box-shadow: 0 0 0 3px rgba(10, 104, 71, 0.15);
+    background: var(--superficie);
+}
+
+/* Contenedor con botón para ver/ocultar contraseña */
+.campo-password-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.campo-password-wrap input {
+    padding-right: 42px;
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--texto-secundario);
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: color var(--transicion);
+}
+
+.btn-toggle-password:hover {
+    color: var(--verde-pino);
+}
+
+/* --- Botón de envío --- */
+.auth-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    background: #0A6847;
+    color: #ffffff;
+    border: 1px solid #071F17;
+    border-radius: 10px;
+    font-family: var(--font-texto);
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(7, 31, 23, 0.12);
+    transition: transform var(--transicion), box-shadow var(--transicion), background-color var(--transicion);
+}
+
+.auth-btn:hover {
+    background: #071F17;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(7, 31, 23, 0.18);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+}
+
+/* --- Enlace de cambio de modo (login ↔ registro) --- */
+.auth-cambiar {
+    text-align: center;
+    font-size: 13px;
+    color: var(--texto-secundario);
+    margin-top: 18px;
+}
+
+.auth-cambiar a {
+    color: var(--verde-esmeralda);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.auth-cambiar a:hover {
+    text-decoration: underline;
+}
+
+/* --- Acceso rápido a la Demo --- */
+.auth-demo {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--linea);
+    text-align: center;
+}
+
+.auth-demo a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--verde-pino);
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--papel-elevado);
+    border: 1px solid var(--linea);
+    transition: background var(--transicion), transform var(--transicion);
+}
+
+.auth-demo a:hover {
+    background: #D7E7E0;
+    transform: translateY(-1px);
+}
+
+/* --- Badge de seguridad --- */
+.auth-seguridad {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--texto-secundario);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+/* --- Checkbox de Términos y Privacidad --- */
+.campo-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 12px;
+    margin-bottom: 16px;
+    font-size: 12.5px;
+    color: var(--texto-secundario);
+    line-height: 1.45;
+    text-align: left;
+}
+
+.campo-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--verde-esmeralda);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.campo-checkbox label {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: var(--texto-secundario);
+    cursor: pointer;
+}
+
+.campo-checkbox a {
+    color: var(--verde-esmeralda);
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color var(--transicion);
+}
+
+.campo-checkbox a:hover {
+    color: var(--verde-pino);
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+    body {
+        padding: 16px;
+    }
+    .auth-card {
+        padding: 26px 20px 22px;
+    }
+}

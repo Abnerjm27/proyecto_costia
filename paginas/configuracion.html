@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia — Configuración del Negocio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=26">
+    <link rel="stylesheet" href="../assets/css/terminal-theme.css">
+    <link rel="stylesheet" href="../assets/css/app-shell.css?v=26">
+    <link rel="stylesheet" href="../assets/css/app.css?v=26">
+    <link rel="stylesheet" href="../assets/css/configuracion.css?v=26">
+    <link rel="icon" href="../assets/img/costia-icon-green.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+</head>
+<body class="costia-app">
+
+<a href="#contenido-principal" class="costia-skip-link">Saltar al contenido principal</a>
+
+<!-- BARRA SUPERIOR PARA PANTALLAS MÓVILES (< 900px) -->
+<header class="costia-mobile-bar" role="banner">
+    <a href="productos.html" class="costia-mobile-brand">
+        <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="costia-mobile-brand-logo">
+        <span class="costia-mobile-brand-title">Costia</span>
+    </a>
+    <button type="button" class="costia-mobile-toggle" id="btn-mobile-sidebar-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="terminal-sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+</header>
+<div class="costia-drawer-backdrop" id="costia-drawer-backdrop" aria-hidden="true"></div>
+
+<div class="terminal-shell-container">
+
+    <!-- ===== SIDEBAR LATERAL PROFESIONAL ===== -->
+    <aside class="terminal-sidebar" id="terminal-sidebar" aria-label="Navegación principal de Costia">
+        <div class="sidebar-inner">
+            <div class="sidebar-brand-box">
+                <a href="dashboard.html" class="sidebar-brand-link">
+                    <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="sidebar-brand-logo">
+                    <span class="sidebar-brand-title">Costia</span>
+                </a>
+                <button type="button" class="sidebar-close-btn" id="btn-sidebar-close" aria-label="Cerrar menú lateral">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-nav-list" role="navigation">
+                <li>
+                    <a href="dashboard.html" class="sidebar-item-link">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                            <span>Dashboard</span>
+                        </span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item-group">
+                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="false">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                            <span>Insumos</span>
+                        </span>
+                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sidebar-subnav">
+                        <a href="insumos.html" class="sidebar-sublink">Inventario Activo</a>
+                        <a href="insumos.html#alzas" class="sidebar-sublink">Historial de Alzas</a>
+                    </div>
+                </li>
+
+                <li class="sidebar-item-group">
+                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="false">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Productos &amp; Recetas</span>
+                        </span>
+                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sidebar-subnav">
+                        <a href="productos.html" class="sidebar-sublink">Catálogo Completo</a>
+                        <a href="crear-producto.html" class="sidebar-sublink">+ Crear Receta</a>
+                        <a href="ficha-tecnica.html" class="sidebar-sublink">Fichas de Impresión</a>
+                    </div>
+                </li>
+
+
+                <li>
+                    <a href="#modal-asesor-costia" class="sidebar-item-link" id="link-sidebar-asesor">
+                        <span class="sidebar-icon-label">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span>Asesor IA</span>
+                        </span>
+                        <span class="sidebar-status-dot" title="Online"></span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item-group">
+                    <a href="configuracion.html" class="sidebar-item-link sidebar-item-link--activo" id="link-sidebar-config-page">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Configuración</span>
+                        </span>
+                    </a>
+                    <div class="sidebar-subnav" id="subnav-configuracion" style="display:block;">
+                        <a href="#seccion-identidad" class="sidebar-sublink sidebar-sublink--activo" id="link-sidebar-config-page">Configuración y Gastos Fijos</a>
+                        <button type="button" class="sidebar-sublink sidebar-sublink--danger" id="link-sidebar-restaurar-demo">Restaurar Datos Demo</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer-box">
+            <a href="login.html" class="sidebar-item-link sidebar-logout-link" id="btn-sidebar-cerrar-sesion-directo">
+                <span class="sidebar-icon-label">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>Cerrar Sesión</span>
+                </span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ===== CONTENEDOR VIEWPORT DE TRABAJO ===== -->
+    <div class="terminal-content-viewport">
+        <div class="app">
+
+            <!-- ===== BARRA SUPERIOR EJECUTIVA ===== -->
+            <header class="topbar-status-bar" role="region" aria-label="Barra ejecutiva de configuración">
+                <div class="topbar-context-box">
+                    <span class="topbar-beacon-dot" aria-hidden="true"></span>
+                    <span class="topbar-context-title">Centro de Control &amp; Configuración</span>
+                </div>
+                <div class="topbar-status-actions">
+                    <div class="app-header__acciones">
+                        <span class="app-header__negocio" id="cfg-topbar-negocio" title="Identidad del Negocio">Mi Negocio</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ===== CONTENIDO PRINCIPAL ===== -->
+            <main class="contenido" id="contenido-principal">
+
+                <div class="contenido__encabezado">
+                    <div>
+                        <h1 class="contenido__titulo">Configuración del Negocio</h1>
+                        <p class="contenido__subtitulo">Espacio integral para administrar identidad, gastos fijos, nómina de empleados y capacidad operativa.</p>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <button type="button" class="btn-secundario" id="btn-cfg-descargar-json">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <span>Descargar Respaldo</span>
+                        </button>
+                        <button type="button" class="btn-primario" id="btn-guardar-todo-config">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            <span>Guardar todos los cambios</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="config-workspace-grid">
+
+                    <!-- TARJETA 1: IDENTIDAD DEL NEGOCIO -->
+                    <section class="config-card" aria-label="Identidad comercial">
+                        <div class="config-card__header">
+                            <div class="config-card__icon-wrap">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            </div>
+                            <div class="config-card__title-box">
+                                <h2>Identidad del Negocio</h2>
+                                <p>Información visible en tus fichas técnicas, catálogo y reportes</p>
+                            </div>
+                        </div>
+
+                        <div class="config-fields-group">
+                            <div class="config-field">
+                                <label for="cfg-negocio-nombre">Nombre comercial de tu negocio</label>
+                                <input type="text" id="cfg-negocio-nombre" class="config-input" maxlength="45" placeholder="Ej: Panadería El Roble">
+                                <span class="config-field-hint">Aparece en el membrete de impresión y en el encabezado general.</span>
+                            </div>
+
+                            <div class="config-field">
+                                <label for="cfg-select-categoria">Giro o categoría principal</label>
+                                <select id="cfg-select-categoria" class="config-input">
+                                    <option value="panaderia">Panadería y Amasijo Tradicional</option>
+                                    <option value="reposteria">Pastelería y Repostería Fina</option>
+                                    <option value="cafeteria">Cafetería &amp; Coffee Shop</option>
+                                    <option value="restaurante">Restaurante / Gastronomía</option>
+                                    <option value="pizzeria">Pizzería &amp; Comida Rápida</option>
+                                    <option value="catering">Catering &amp; Eventos Especiales</option>
+                                </select>
+                            </div>
+
+                            <div class="config-field">
+                                <label>Moneda y formato regional</label>
+                                <input type="text" class="config-input" value="COP — Peso Colombiano ($)" disabled style="background:#F4F7F5; opacity:0.8;">
+                                <span class="config-field-hint">Región predeterminada para el cálculo de costos e impuestos de ley.</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- TARJETA 2: GASTOS FIJOS Y ESPACIO -->
+                    <section class="config-card" id="seccion-gastos-fijos" aria-label="Gastos fijos de espacio y servicios">
+                        <div class="config-card__header">
+                            <div class="config-card__icon-wrap">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            </div>
+                            <div class="config-card__title-box">
+                                <h2>Gastos Fijos (Espacio &amp; Servicios)</h2>
+                                <p>Costos mensuales del local o taller de producción</p>
+                            </div>
+                        </div>
+
+                        <div class="config-fields-group">
+                            <div class="config-field">
+                                <label>Modalidad de espacio de producción</label>
+                                <div class="config-radio-row">
+                                    <label class="config-radio-card" id="card-radio-casa">
+                                        <input type="radio" name="cfg-radio-espacio" id="cfg-radio-casa" value="casa">
+                                        <div class="config-radio-card__text">
+                                            <strong>Desde casa / Propio</strong>
+                                            <small>$0 arriendo comercial</small>
+                                        </div>
+                                    </label>
+                                    <label class="config-radio-card" id="card-radio-local">
+                                        <input type="radio" name="cfg-radio-espacio" id="cfg-radio-local" value="local">
+                                        <div class="config-radio-card__text">
+                                            <strong>Local en arriendo</strong>
+                                            <small>Punto comercial o taller</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="config-field" id="wrap-cfg-arriendo-field">
+                                <label for="cfg-input-arriendo">Canon de arriendo mensual ($ COP)</label>
+                                <div class="config-input-wrap">
+                                    <span class="config-input-prefix">$</span>
+                                    <input type="number" id="cfg-input-arriendo" class="config-input config-input--with-prefix" min="0" step="50000" placeholder="1200000">
+                                </div>
+                                <span class="config-field-hint">Si produces en local arrendado, escribe el canon mensual completo.</span>
+                            </div>
+
+                            <div class="config-field">
+                                <label for="cfg-input-recibos">Recibos de servicios públicos mensuales ($ COP)</label>
+                                <div class="config-input-wrap">
+                                    <span class="config-input-prefix">$</span>
+                                    <input type="number" id="cfg-input-recibos" class="config-input config-input--with-prefix" min="0" step="10000" placeholder="180000">
+                                </div>
+                                <span class="config-field-hint">Suma estimada de energía eléctrica, gas comercial, agua e internet.</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- TARJETA 3: NÓMINA Y TRABAJADORES -->
+                    <section class="config-card" aria-label="Nómina y equipo de trabajo">
+                        <div class="config-card__header">
+                            <div class="config-card__icon-wrap">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <div class="config-card__title-box">
+                                <h2>Nómina &amp; Equipo de Trabajo</h2>
+                                <p>Personal de cocina, panadería y ayudantes de producción</p>
+                            </div>
+                        </div>
+
+                        <div class="config-fields-group">
+                            <div class="config-field">
+                                <label for="cfg-input-trabajadores">Número de trabajadores u operarios</label>
+                                <input type="number" id="cfg-input-trabajadores" class="config-input" min="0" max="50" step="1" value="1">
+                                <span class="config-field-hint">Incluye a tus ayudantes o a ti mismo si te asignas un salario operativo mensual.</span>
+                            </div>
+
+                            <div class="config-field">
+                                <label for="cfg-input-salario">Salario mensual promedio por trabajador ($ COP)</label>
+                                <div class="config-input-wrap">
+                                    <span class="config-input-prefix">$</span>
+                                    <input type="number" id="cfg-input-salario" class="config-input config-input--with-prefix" min="0" step="50000" placeholder="1423500">
+                                </div>
+                                <span class="config-field-hint">Sugerencia base: $1.423.500 COP (Salario Mínimo Legal vigente).</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- TARJETA 4: CAPACIDAD Y PRORRATEO EN VIVO -->
+                    <section class="config-card" aria-label="Capacidad y prorrateo por lote">
+                        <div class="config-card__header">
+                            <div class="config-card__icon-wrap">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            </div>
+                            <div class="config-card__title-box">
+                                <h2>Capacidad &amp; Prorrateo por Lote</h2>
+                                <p>Distribución matemática exacta de tus gastos entre tu volumen mensual</p>
+                            </div>
+                        </div>
+
+                        <div class="config-fields-group">
+                            <div class="config-field">
+                                <label for="cfg-input-lotes-mes">Lotes totales estimados de producción al mes</label>
+                                <input type="number" id="cfg-input-lotes-mes" class="config-input" min="1" max="10000" step="5" value="100">
+                                <span class="config-field-hint">¿Cuántas horneadas o tandas produces al mes? (Ej: 100 tandas = ~4 al día).</span>
+                            </div>
+
+                            <!-- CAJA DE IMPACTO EN VIVO -->
+                            <div class="config-prorrateo-box">
+                                <div class="config-prorrateo-box__header">
+                                    <span>Liquidación de cuotas en vivo</span>
+                                    <small id="kpi-cfg-fijos-mes" style="color:#A3D9C9; font-weight:700;">$0 / mes</small>
+                                </div>
+                                <div class="config-prorrateo-kpi-grid">
+                                    <div class="config-prorrateo-kpi">
+                                        <label>Nómina total mensual</label>
+                                        <strong id="kpi-cfg-nomina-total">$0</strong>
+                                        <small>Personal contratado</small>
+                                    </div>
+                                    <div class="config-prorrateo-kpi">
+                                        <label>Mano de obra / lote</label>
+                                        <strong id="kpi-cfg-cuota-mano">$0 / lote</strong>
+                                        <small>Nómina ÷ lotes</small>
+                                    </div>
+                                    <div class="config-prorrateo-kpi">
+                                        <label>Cuota fija total / lote</label>
+                                        <strong id="kpi-cfg-cuota-total">$0 / lote</strong>
+                                        <small>Arriendo + Servicios + Nómina</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- TARJETA 5: POLÍTICAS DE PRICING PREDETERMINADAS -->
+                    <section class="config-card" aria-label="Políticas de precios">
+                        <div class="config-card__header">
+                            <div class="config-card__icon-wrap">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+                            </div>
+                            <div class="config-card__title-box">
+                                <h2>Políticas de Precios Predeterminadas</h2>
+                                <p>Valores sugeridos al crear recetas nuevas para ahorrar tiempo</p>
+                            </div>
+                        </div>
+
+                        <div class="config-fields-group">
+                            <div class="config-field">
+                                <label for="cfg-select-margen-default">Margen comercial sugerido inicial (%)</label>
+                                <select id="cfg-select-margen-default" class="config-input">
+                                    <option value="30">30% — Margen comercial mínimo</option>
+                                    <option value="40" selected>40% — Panadería y amasijo estándar</option>
+                                    <option value="50">50% — Estándar gastronómico / Cafetería</option>
+                                    <option value="60">60% — Pastelería fina y repostería</option>
+                                    <option value="70">70% — Gourmet y productos de autor</option>
+                                </select>
+                                <span class="config-field-hint">Es el margen que se preseleccionará al registrar nuevos productos.</span>
+                            </div>
+
+                            <div class="config-field">
+                                <label for="cfg-select-multi-default">Multiplicador comercial por defecto (×)</label>
+                                <select id="cfg-select-multi-default" class="config-input">
+                                    <option value="2.0">×2.0 (Costo × 2 · Margen 50%)</option>
+                                    <option value="2.5" selected>×2.5 (Estándar panadería · Margen 60%)</option>
+                                    <option value="3.0">×3.0 (Restaurante o cafetería · Margen 67%)</option>
+                                    <option value="3.5">×3.5 (Pastelería fina o eventos)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- TARJETA 6: MANTENIMIENTO, DATOS Y COPIAS DE SEGURIDAD -->
+                    <section class="config-card" aria-label="Mantenimiento y datos">
+                        <div class="config-card__header">
+                            <div class="config-card__icon-wrap">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg>
+                            </div>
+                            <div class="config-card__title-box">
+                                <h2>Mantenimiento &amp; Respaldo de Datos</h2>
+                                <p>Descarga tus catálogos o reinicia datos de demostración con seguridad</p>
+                            </div>
+                        </div>
+
+                        <div class="config-fields-group">
+                            <p class="config-field-hint" style="font-size:0.86rem; color:#3D4F47; line-height:1.5;">
+                                Tus datos están seguros en tu navegador y servidor local. Puedes descargar copias de respaldo en formato PDF o JSON cuando lo requieras, o reiniciar la base de demostración.
+                            </p>
+
+                            <div class="config-mantenimiento-row">
+                                <a href="ficha-tecnica.html?catalogo=pdf&print=1" class="btn-mantenimiento btn-mantenimiento--secundario" title="Exporta el catálogo completo listo para imprimir">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                                    <span>Exportar Catálogo en PDF</span>
+                                </a>
+
+                                <button type="button" class="btn-mantenimiento btn-mantenimiento--alerta" id="btn-cfg-restaurar-demo" title="Reinicia tus recetas con los datos iniciales de ejemplo">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                                    <span>Restaurar Datos de Demostración</span>
+                                </button>
+
+                                <button type="button" class="btn-mantenimiento btn-mantenimiento--peligro" id="btn-cfg-cerrar-sesion" title="Cierra tu sesión en el sistema">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                    <span>Cerrar Sesión</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+</div>
+
+<!-- Scripts de la Aplicación -->
+<script src="../assets/js/models.js?v=26"></script>
+<script src="../assets/js/store.js?v=26"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/app-shell.js?v=26"></script>
+<script src="../assets/js/configuracion.js?v=26"></script>
+<script src="../assets/js/asesor/asesor-parser.js?v=26"></script>
+<script src="../assets/js/asesor/asesor-finanzas.js?v=26"></script>
+<script src="../assets/js/asesor/asesor-ui.js?v=26"></script>
+<script src="../assets/js/asesor/asesor-comandos.js?v=26"></script>
+<script src="../assets/js/asesor/asesor-flujo.js?v=26"></script>
+<script src="../assets/js/asesor-agente.js?v=26"></script>
+</body>
+</html>

@@ -1,0 +1,938 @@
+/* ============================================================
+   FICHA-TECNICA.CSS — Estilos de Catálogo y Ficha Técnica de Costeo
+   Costia · Terminal Pro · Fintech Gastronómica
+   Paleta:
+     Pino: #071F17 | Esmeralda: #0A6847 | Fondo: #F2F7F4 | Blanco: #FFFFFF
+   ============================================================ */
+
+:root {
+    --pino: #071F17;
+    --esmeralda: #0A6847;
+    --esmeralda-suave: #EAF4EE;
+    --ambar: #8C470E;
+    --ambar-suave: #FEF7EE;
+    --tinta: #10211B;
+    --gris-texto: #3D4F47;
+    --gris-borde: rgba(7, 31, 23, 0.12);
+    --gris-fondo: #F2F7F4;
+    --blanco: #FFFFFF;
+}
+
+/* ============================================================
+   1. VISTA DE CATÁLOGO DE FICHAS TÉCNICAS (CON SIDEBAR TERMINAL)
+   ============================================================ */
+.catalogo-fichas-stage {
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.catalogo-fichas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.catalogo-fichas-header__info h1 {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--pino);
+    margin: 0 0 6px 0;
+    letter-spacing: -0.3px;
+}
+
+.catalogo-fichas-header__info p {
+    font-size: 14px;
+    color: var(--gris-texto);
+    margin: 0;
+}
+
+.catalogo-fichas-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Barra de Búsqueda y Filtros */
+.catalogo-fichas-toolbar {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(7, 31, 23, 0.04);
+    flex-wrap: wrap;
+}
+
+.catalogo-search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #F8FAF9;
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 8px 14px;
+    flex: 1;
+    min-width: 260px;
+    transition: border-color 0.15s ease;
+}
+
+.catalogo-search-box:focus-within {
+    border-color: var(--esmeralda);
+    background: #FFFFFF;
+}
+
+.catalogo-search-box svg {
+    color: var(--gris-texto);
+    flex-shrink: 0;
+}
+
+.catalogo-search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--tinta);
+    width: 100%;
+}
+
+.catalogo-stats-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--pino);
+    background: var(--esmeralda-suave);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(10, 104, 71, 0.2);
+}
+
+/* Grid de Tarjetas de Ficha Técnica */
+.fichas-catalogo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.ficha-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(7, 31, 23, 0.05);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    box-sizing: border-box;
+}
+
+.ficha-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(7, 31, 23, 0.1);
+    border-color: var(--esmeralda);
+}
+
+.ficha-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.ficha-card__codigo {
+    font-family: 'Azeret Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--esmeralda);
+    background: var(--esmeralda-suave);
+    border: 1px solid rgba(10, 104, 71, 0.2);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.ficha-card__badge-modo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--pino);
+    background: var(--gris-fondo);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--gris-borde);
+}
+
+.ficha-card__titulo {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--pino);
+    margin: 0 0 6px 0;
+    line-height: 1.25;
+}
+
+.ficha-card__subtitulo {
+    font-size: 12.5px;
+    color: var(--gris-texto);
+    margin: 0 0 16px 0;
+}
+
+.ficha-card__specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: #FAFDFB;
+    border: 1px solid var(--gris-borde);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 18px;
+}
+
+.ficha-card__spec-item small {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--gris-texto);
+    letter-spacing: 0.03em;
+    margin-bottom: 2px;
+}
+
+.ficha-card__spec-item strong {
+    font-family: 'Azeret Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--pino);
+}
+
+.ficha-card__spec-item strong.valor-esmeralda {
+    color: var(--esmeralda);
+}
+
+.ficha-card__spec-item strong.valor-ambar {
+    color: var(--ambar);
+}
+
+.ficha-card__footer {
+    border-top: 1px solid var(--gris-borde);
+    padding-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.ficha-card__delivery-hint {
+    font-size: 11.5px;
+    color: var(--gris-texto);
+}
+
+.ficha-card__delivery-hint strong {
+    color: var(--pino);
+    font-family: 'Azeret Mono', monospace;
+}
+
+.btn-abrir-ficha {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--pino);
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    min-height: 40px;
+}
+
+.btn-abrir-ficha:hover {
+    background: var(--esmeralda);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+/* Estado de lista vacía */
+.catalogo-fichas-vacio {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--blanco);
+    border: 1px dashed var(--gris-borde);
+    border-radius: 14px;
+    color: var(--gris-texto);
+}
+
+.catalogo-fichas-vacio svg {
+    margin-bottom: 14px;
+    color: var(--esmeralda);
+}
+
+/* ============================================================
+   2. BARRA DE PREVIEW Y HOJA FÍSICA DE FICHA TÉCNICA
+   ============================================================ */
+.preview-container-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    box-sizing: border-box;
+}
+
+.barra-preview,
+.barra-preview-catalogo {
+    width: 100%;
+    max-width: 820px;
+    background: #071F17;
+    color: #ffffff;
+    padding: 14px 22px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.barra-preview__info h2 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.barra-preview__info p {
+    font-size: 12px;
+    color: #E4EFEA;
+    margin-top: 2px;
+}
+
+.barra-preview__acciones {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.barra-preview__selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.barra-preview__label {
+    font-size: 12px;
+    color: #A3C9BC;
+    font-weight: 600;
+}
+
+.select-ficha-producto {
+    background: #FAFDFB;
+    color: #071F17;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 38px;
+}
+
+.btn-preview {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    transition: all 0.2s ease;
+    min-height: 38px;
+}
+
+.btn-preview--imprimir {
+    background: #0A6847;
+    color: #ffffff;
+    box-shadow: none;
+}
+
+.btn-preview--imprimir:hover {
+    background: #071F17;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-preview--volver {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-preview--volver:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+/* Hoja Imprimible Oficial */
+.ficha-hoja,
+.catalogo-hoja-pdf {
+    width: 100%;
+    max-width: 820px;
+    background: var(--blanco);
+    border-radius: 12px;
+    border: 1px solid var(--gris-borde);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    padding: 44px 48px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.ficha-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--pino);
+    margin-bottom: 24px;
+}
+
+.ficha-marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ficha-marca img {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+.ficha-marca__titulo {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--pino);
+    line-height: 1.1;
+    margin: 0;
+}
+
+.ficha-marca__negocio {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--esmeralda);
+    margin-top: 2px;
+}
+
+.ficha-meta {
+    text-align: right;
+    font-size: 12px;
+    color: var(--gris-texto);
+    line-height: 1.5;
+}
+
+.ficha-meta strong {
+    color: var(--tinta);
+}
+
+.ficha-badge-codigo {
+    display: inline-block;
+    background: var(--gris-fondo);
+    border: 1px solid var(--gris-borde);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'Azeret Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--pino);
+    margin-bottom: 4px;
+}
+
+.ficha-estado-vigente {
+    color: var(--esmeralda);
+    font-weight: 700;
+}
+
+.ficha-producto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.ficha-producto-titulo {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--pino);
+    line-height: 1.15;
+    letter-spacing: -0.3px;
+    margin: 0;
+}
+
+.ficha-producto-sub {
+    font-size: 13px;
+    color: var(--gris-texto);
+    margin-top: 4px;
+}
+
+.ficha-precios-wrap {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.ficha-kpi-precio-caja {
+    background: var(--gris-fondo);
+    border: 1px solid var(--gris-borde);
+    border-radius: 10px;
+    padding: 10px 16px;
+    text-align: right;
+}
+
+.ficha-kpi-precio-caja small {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--gris-texto);
+}
+
+.ficha-kpi-precio-caja strong {
+    font-family: 'Azeret Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--pino);
+}
+
+.ficha-kpi-precio-caja--delivery strong {
+    color: var(--esmeralda);
+}
+
+.ficha-specs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    background: transparent;
+    border-top: 1px solid var(--gris-borde);
+    border-bottom: 1px solid var(--gris-borde);
+    padding: 14px 0;
+    margin-bottom: 26px;
+}
+
+.spec-item small {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--gris-texto);
+    margin-bottom: 3px;
+}
+
+.spec-item strong {
+    font-family: 'Azeret Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 14px;
+    color: var(--pino);
+}
+
+.seccion-titulo {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--pino);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ficha-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    margin-bottom: 24px;
+}
+
+.ficha-tabla th {
+    background: #071F17;
+    color: #E4EFEA;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 9px 12px;
+    text-align: left;
+}
+
+.ficha-tabla th:last-child,
+.ficha-tabla td:last-child,
+.ficha-tabla th.col-num,
+.ficha-tabla td.col-num {
+    text-align: right;
+    font-family: 'Azeret Mono', monospace;
+    font-variant-numeric: tabular-nums;
+}
+
+.ficha-tabla td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--gris-borde);
+    color: var(--tinta);
+}
+
+.ficha-tabla tbody tr:nth-child(even) {
+    background: #FAFDFB;
+}
+
+.ficha-tabla tfoot td {
+    background: var(--gris-fondo);
+    font-weight: 700;
+    border-top: 2px solid var(--pino);
+    padding: 10px 12px;
+    color: var(--pino);
+}
+
+.ficha-financiera-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.card-financiera {
+    background: var(--gris-fondo);
+    border: 1px solid var(--gris-borde);
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.fila-desglose {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12.5px;
+    padding: 5px 0;
+    color: var(--gris-texto);
+    border-bottom: 1px dashed rgba(7, 31, 23, 0.08);
+}
+
+.fila-desglose:last-child {
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--pino);
+    padding-top: 8px;
+    margin-top: 4px;
+    border-top: 1px solid var(--gris-borde);
+}
+
+.fila-desglose strong {
+    font-family: 'Azeret Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    color: var(--tinta);
+}
+
+.ficha-color-ambar {
+    color: var(--ambar);
+}
+
+.ficha-color-esmeralda {
+    color: var(--esmeralda);
+}
+
+.ficha-color-esmeralda-lg {
+    color: var(--esmeralda);
+    font-size: 16px;
+}
+
+.fila-desglose--delivery {
+    border-top: 1px dashed var(--gris-borde);
+    padding-top: 4px;
+    margin-top: 4px;
+}
+
+.caja-break-even {
+    display: flex;
+    gap: 14px;
+    background: #FAFDFB;
+    border: 1px solid var(--gris-borde);
+    border-left: 4px solid var(--esmeralda);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+}
+
+.caja-break-even__icono svg {
+    color: var(--esmeralda);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.caja-break-even__info h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pino);
+    margin: 0 0 4px 0;
+}
+
+.caja-break-even__info p {
+    font-size: 12.5px;
+    color: var(--gris-texto);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.ficha-notas {
+    background: #FAFDFB;
+    border: 1px dashed var(--gris-borde);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--gris-texto);
+    line-height: 1.45;
+    margin-bottom: 24px;
+}
+
+.ficha-firmas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 36px;
+    margin-bottom: 24px;
+    padding-top: 20px;
+}
+
+.linea-firma {
+    border-top: 1px solid var(--gris-texto);
+    padding-top: 8px;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gris-texto);
+    text-align: center;
+}
+
+.ficha-footer {
+    border-top: 1px solid var(--gris-borde);
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--gris-texto);
+}
+
+/* ============================================================
+   2.5. CATÁLOGO CONSOLIDADO MASTER (EXPORTACIÓN PDF)
+   ============================================================ */
+.ficha-hoja--catalogo-pdf {
+    max-width: 960px;
+    margin: 0 auto 40px auto;
+}
+
+.catalogo-pdf-intro {
+    background: #FAFDFB;
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 22px;
+    font-size: 13px;
+    color: var(--gris-texto);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.catalogo-pdf-tabla-resumen {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    font-size: 13px;
+}
+
+.catalogo-pdf-tabla-resumen th {
+    background: #071F17;
+    color: #FFFFFF;
+    padding: 9px 12px;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border: 1px solid #071F17;
+}
+
+.catalogo-pdf-tabla-resumen td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--gris-borde);
+    font-size: 13px;
+}
+
+.catalogo-pdf-tabla-resumen tbody tr:nth-child(even) {
+    background: #F9FCFA;
+}
+
+.catalogo-pdf-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border: 1px solid var(--gris-borde);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    background: #FFFFFF;
+}
+
+.catalogo-pdf-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--gris-borde);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.catalogo-pdf-card__nombre {
+    font-family: 'Literata', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--pino);
+    margin: 0 0 3px 0;
+}
+
+.catalogo-pdf-card__meta {
+    font-size: 12px;
+    color: var(--gris-texto);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.catalogo-pdf-card__precios {
+    text-align: right;
+}
+
+.catalogo-pdf-card__precio-mostrador {
+    font-family: 'Azeret Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--esmeralda);
+}
+
+.catalogo-pdf-card__precio-delivery {
+    font-size: 11.5px;
+    color: var(--gris-texto);
+    margin-top: 2px;
+}
+
+.catalogo-pdf-kpis-mini {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background: #F4F8F5;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 14px;
+}
+
+.catalogo-pdf-kpi-item small {
+    display: block;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    color: var(--gris-texto);
+    margin-bottom: 2px;
+}
+
+.catalogo-pdf-kpi-item strong {
+    font-family: 'Azeret Mono', monospace;
+    font-size: 13.5px;
+    color: var(--pino);
+}
+
+/* ============================================================
+   3. IMPRESIÓN OFICIAL (@media print)
+   ============================================================ */
+@media print {
+    body {
+        background: #FFFFFF !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .no-imprimir,
+    .barra-preview,
+    .barra-preview-catalogo,
+    .costia-mobile-bar,
+    .terminal-sidebar,
+    .topbar-status-bar,
+    .catalogo-fichas-toolbar,
+    .catalogo-fichas-header,
+    .fichas-catalogo-grid,
+    .costia-skip-link,
+    .costia-drawer-backdrop {
+        display: none !important;
+    }
+
+    .preview-container-wrap,
+    .terminal-content-viewport,
+    .terminal-shell-container {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+    }
+
+    .ficha-hoja,
+    .catalogo-hoja-pdf {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .catalogo-pdf-card {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        border: 1px solid #D0DDD5 !important;
+        margin-bottom: 20px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .ficha-specs {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .ficha-financiera-grid {
+        grid-template-columns: 1fr;
+    }
+    .ficha-hoja,
+    .catalogo-hoja-pdf {
+        padding: 24px 20px;
+    }
+}

@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia — Presentación Primer Avance</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           VARIABLES & TEMA GASTRONÓMICO / FINANCIERO
+           =========================================== */
+        :root {
+            --stage-bg: #040d0a;
+            --slide-bg: #071812;
+            --surface-1: #0d281e;
+            --surface-2: #133a2c;
+            --surface-card: rgba(19, 58, 44, 0.65);
+            --border-glass: rgba(82, 183, 136, 0.18);
+            --border-highlight: rgba(233, 196, 106, 0.4);
+
+            --accent-gold: #e9c46a;
+            --accent-gold-light: #f4d38c;
+            --accent-mint: #52b788;
+            --accent-mint-light: #74c69d;
+            --accent-red: #e76f51;
+
+            --text-primary: #f8f9fa;
+            --text-secondary: #c5d3cd;
+            --text-muted: #839d91;
+
+            --font-display: 'Fraunces', Georgia, serif;
+            --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.55s;
+        }
+
+        /* ===========================================
+           BASE RESET & LOCK VIEWPORT
+           =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--stage-bg);
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .deck-viewport {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            background: var(--stage-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Canvas Fijo 16:9 (1920x1080) */
+        .deck-stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            transform-origin: 0 0;
+            background: var(--slide-bg);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(82, 183, 136, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(233, 196, 106, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(13, 40, 30, 0.4) 0%, transparent 70%);
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.85);
+        }
+
+        /* Diapositivas */
+        .slide {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            padding: 80px 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .slide.active {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 2;
+        }
+
+        /* Efectos de Revelado */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.active .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide.active .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .slide.active .reveal:nth-child(2) { transition-delay: 0.12s; }
+        .slide.active .reveal:nth-child(3) { transition-delay: 0.18s; }
+        .slide.active .reveal:nth-child(4) { transition-delay: 0.24s; }
+        .slide.active .reveal:nth-child(5) { transition-delay: 0.30s; }
+
+        /* Componentes Comunes */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 24px;
+            margin-bottom: 40px;
+        }
+
+        .slide-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 999px;
+            background: rgba(82, 183, 136, 0.12);
+            border: 1px solid rgba(82, 183, 136, 0.3);
+            color: var(--accent-mint-light);
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--text-primary);
+        }
+
+        .slide-title span {
+            color: var(--accent-gold);
+        }
+
+        .slide-subtitle {
+            font-size: 22px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            max-width: 900px;
+            line-height: 1.4;
+        }
+
+        .slide-meta-badge {
+            font-family: var(--font-mono);
+            font-size: 15px;
+            color: var(--accent-gold);
+            background: rgba(233, 196, 106, 0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-highlight);
+        }
+
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(82, 183, 136, 0.12);
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        /* Layouts & Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+            align-items: stretch;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            flex: 1;
+            align-items: stretch;
+        }
+
+        .card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-mint), transparent);
+            opacity: 0.5;
+        }
+
+        .card-gold::before {
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-body {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .card-body ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-body li {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .card-body li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-mint);
+            font-weight: bold;
+        }
+
+        .highlight-box {
+            background: rgba(233, 196, 106, 0.08);
+            border-left: 4px solid var(--accent-gold);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: 17px;
+            color: var(--accent-gold-light);
+            margin-top: 20px;
+        }
+
+        .stat-badge {
+            font-family: var(--font-mono);
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+        }
+
+        /* Código y Snippets */
+        .code-pill {
+            font-family: var(--font-mono);
+            background: rgba(0, 0, 0, 0.45);
+            padding: 3px 8px;
+            border-radius: 6px;
+            color: var(--accent-mint-light);
+            font-size: 15px;
+            border: 1px solid rgba(82, 183, 136, 0.25);
+        }
+
+        .code-block {
+            background: rgba(4, 13, 10, 0.85);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 20px;
+            font-family: var(--font-mono);
+            font-size: 15px;
+            line-height: 1.55;
+            color: #d8e2dc;
+            white-space: pre-wrap;
+        }
+
+        /* ===========================================
+           SLIDE 1: PORTADA ESPECIAL
+           =========================================== */
+        .hero-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-logo-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(19, 58, 44, 0.7);
+            border: 1px solid var(--border-highlight);
+            padding: 12px 32px;
+            border-radius: 999px;
+            margin-bottom: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-logo-box img {
+            width: 38px;
+            height: 38px;
+        }
+
+        .hero-logo-box span {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 88px;
+            font-weight: 700;
+            line-height: 1.08;
+            margin-bottom: 24px;
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-desc {
+            font-size: 26px;
+            color: var(--text-secondary);
+            max-width: 880px;
+            line-height: 1.5;
+            margin-bottom: 48px;
+        }
+
+        .hero-badges-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pill-tag {
+            background: rgba(13, 40, 30, 0.9);
+            border: 1px solid var(--border-glass);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 17px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pill-tag strong {
+            color: var(--accent-mint);
+        }
+
+        /* ===========================================
+           CONTROLES FLOTANTES DE NAVEGACIÓN
+           =========================================== */
+        .deck-controls {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(13, 40, 30, 0.9);
+            border: 1px solid var(--border-glass);
+            padding: 10px 24px;
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .deck-btn {
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .deck-btn:hover {
+            background: var(--accent-mint);
+            color: var(--stage-bg);
+            border-color: var(--accent-mint);
+            transform: scale(1.08);
+        }
+
+        .deck-counter {
+            font-family: var(--font-mono);
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 9999;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-mint), var(--accent-gold));
+            transition: width 0.3s ease;
+        }
+
+        /* Ticket Gastronómico en Slide */
+        .ticket-preview {
+            background: #ffffff;
+            color: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px;
+            font-family: var(--font-body);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 20px;
+            border-bottom: 2px dashed #ddd;
+            padding-bottom: 14px;
+            margin-bottom: 14px;
+        }
+
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .ticket-total {
+            border-top: 2px dashed #ddd;
+            padding-top: 14px;
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 19px;
+            font-weight: 700;
+            color: #0b3d2e;
+        }
+
+        .ticket-suggested {
+            background: #eaf6ed;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 800;
+            color: #20603d;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Progreso Superior -->
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Contenedor Fijo 16:9 -->
+    <div class="deck-viewport">
+        <main class="deck-stage" id="deckStage">
+
+            <!-- ==========================================
+                 SLIDE 1: PORTADA
+                 ========================================== -->
+            <section class="slide hero-slide active">
+                <div class="hero-content">
+                    <div class="hero-logo-box reveal">
+                        <img src="../../assets/img/costia-icon-green.png" alt="Logo">
+                        <span>COSTIA</span>
+                    </div>
+                    <h1 class="hero-title reveal">
+                        Costeo Gastronómico Inteligente y Fijación de Precios
+                    </h1>
+                    <p class="hero-desc reveal">
+                        Defensa y Explicación Técnica del <strong>Primer Avance</strong>: Arquitectura de interfaz, gestión reactiva de recetas y cálculo financiero desacoplado.
+                    </p>
+                    <div class="hero-badges-row reveal">
+                        <div class="pill-tag">📚 <strong>Materia:</strong> Desarrollo de Software (3° Semestre)</div>
+                        <div class="pill-tag">⚡ <strong>Entregable:</strong> Frontend Interactivo + LocalStorage</div>
+                        <div class="pill-tag">🎯 <strong>Nivel:</strong> POO + ES6 Vanilla</div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>Proyecto Costia • 2026</span>
+                    <span>Usa las flechas ➔ o la barra espaciadora para avanzar</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 2: EL PROBLEMA QUE RESUELVE
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">El Problema de Negocio</div>
+                        <h2 class="slide-title">¿Por qué quiebran los <span>emprendimientos de comida</span>?</h2>
+                        <p class="slide-subtitle">El 80% de los negocios gastronómicos fija precios "al ojo" o con tablas manuales con errores contables graves.</p>
+                    </div>
+                    <div class="slide-meta-badge">Diagnóstico</div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card reveal">
+                        <div>
+                            <div class="stat-badge">01</div>
+                            <h3 class="card-title">Errores de Conversión</h3>
+                            <div class="card-body">
+                                Los insumos se compran en <strong>bultos de 25 kg o galones</strong>, pero las recetas usan <strong>250 gramos o mililitros</strong>.
+                                El cálculo manual del costo exacto por gramo genera desvíos de hasta un 35%.
+                            </div>
+                        </div>
+                        <div class="highlight-box">Costia normaliza a unidades canónicas de compra vs. uso.</div>
+                    </div>
+
+                    <div class="card card-gold reveal">
+                        <div>
+                            <div class="stat-badge">02</div>
+                            <h3 class="card-title">Ceguera del Costo Unitario</h3>
+                            <div class="card-body">
+                                Una tanda de galletas rinde 12 unidades, pero el cocinero solo ve el gasto total del mercado. No sabe con certeza cuánto le cuesta <strong>elaborar una sola unidad</strong>.
+                            </div>
+                        </div>
+                        <div class="highlight-box">Fórmula automática: Costo total ÷ Rendimiento de la tanda.</div>
+                    </div>
+
+                    <div class="card reveal">
+                        <div>
+                            <div class="stat-badge">03</div>
+                            <h3 class="card-title">Margen vs. Markup</h3>
+                            <div class="card-body">
+                                Creer que sumarle el 30% al costo es ganar el 30% del precio es el <strong>error contable más común</strong>. Si vendes a $1.300 lo que te costó $1.000, tu margen real es del 23%, perdiendo 7% de rentabilidad.
+                            </div>
+                        </div>
+                        <div class="highlight-box">Costia implementa ambas fórmulas con selector transparente.</div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Costia — Justificación de Proyecto</span>
+                    <span>Diapositiva 2 / 10</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 3: ALCANCE DEL PRIMER AVANCE
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">Estrategia de Software</div>
+                        <h2 class="slide-title">Alcance del <span>Primer Avance</span></h2>
+                        <p class="slide-subtitle">Una arquitectura desacoplada enfocada en validar la experiencia de usuario y el motor matemático antes de persistir en MySQL.</p>
+                    </div>
+                    <div class="slide-meta-badge">Hito 1: Frontend SPA</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card reveal">
+                        <h3 class="card-title">🎯 Objetivos Cumplidos</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li><strong>Interfaz 100% responsiva y semántica:</strong> Vistas construidas en HTML5 y CSS3 con variables de diseño personalizadas.</li>
+                                <li><strong>Cálculo en tiempo real:</strong> Los costos se recalculan instantáneamente ante cada pulsación de tecla (`input`/`change`).</li>
+                                <li><strong>Persistencia en LocalStorage:</strong> La aplicación es completamente funcional y autónoma sin depender de servidores caídos.</li>
+                                <li><strong>Semillero de datos precargados:</strong> 7 insumos gastronómicos reales y 3 recetas modelo para pruebas inmediatas.</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box">
+                            <strong>¿Por qué este enfoque?</strong> Permite probar y validar el flujo operativo completo sin riesgo de fallas de conexión o de base de datos durante la sustentación.
+                        </div>
+                    </div>
+
+                    <div class="card card-gold reveal" style="justify-content: center; align-items: center;">
+                        <div class="ticket-preview" style="width: 100%; max-width: 480px;">
+                            <div class="ticket-header">
+                                <span>Pan Artesanal</span>
+                                <span style="color:#20603d; font-size:14px; background:#eaf6ed; padding:3px 8px; border-radius:12px;">Receta Activa</span>
+                            </div>
+                            <div class="ticket-row"><span>Harina de trigo (500 g)</span><span>$1.600</span></div>
+                            <div class="ticket-row"><span>Levadura seca (10 g)</span><span>$450</span></div>
+                            <div class="ticket-row"><span>Mantequilla (100 g)</span><span>$1.800</span></div>
+                            <div class="ticket-total">
+                                <span>Costo por unidad (10 u)</span>
+                                <span>$385</span>
+                            </div>
+                            <div class="ticket-suggested">
+                                <span>Precio Sugerido (+45%)</span>
+                                <span>$558</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Estructura de Entrega y Alcance</span>
+                    <span>Diapositiva 3 / 10</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 4: PERSISTENCIA Y LOCALSTORAGE (datos.js)
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">Arquitectura de Datos</div>
+                        <h2 class="slide-title">El Motor de Datos: <span>`datos.js`</span></h2>
+                        <p class="slide-subtitle">Cómo se comunican las 5 páginas entre sí sin necesidad de un backend activo en esta primera etapa.</p>
+                    </div>
+                    <div class="slide-meta-badge">JSON & Web Storage</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card reveal">
+                        <h3 class="card-title">⚙️ Mecanismo de Sincronización</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li><strong>Capa de Acceso a Datos Centralizada:</strong> Ninguna página escribe directamente en el DOM ajeno; todas leen y escriben a través de `datos.js`.</li>
+                                <li><strong>Serialización con JSON:</strong> 
+                                    <br><span class="code-pill">JSON.stringify(lista)</span> para guardar en disco.
+                                    <br><span class="code-pill">JSON.parse(texto)</span> para reconstruir los objetos en memoria.
+                                </li>
+                                <li><strong>Semilla Inicial Condicional:</strong> Si `localStorage.getItem("costia_insumos")` es nulo, inyecta la lista predeterminada automáticamente.</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box">
+                            Garantiza persistencia permanente entre cambios de pestaña y recargas de página (F5).
+                        </div>
+                    </div>
+
+                    <div class="card card-gold reveal">
+                        <h3 class="card-title">💻 Código Representativo</h3>
+                        <div class="code-block">// 1. Lectura segura con fallback de datos
+function obtenerInsumos() {
+    let guardados = localStorage.getItem("costia_insumos");
+    if (!guardados) {
+        guardarInsumos(INSUMOS_INICIALES);
+        return INSUMOS_INICIALES;
+    }
+    return JSON.parse(guardados);
+}
+
+// 2. Escritura atómica en cliente
+function guardarInsumos(lista) {
+    localStorage.setItem("costia_insumos", JSON.stringify(lista));
+}</div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Persistencia Local Desacoplada</span>
+                    <span>Diapositiva 4 / 10</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 5: GESTIÓN DE INSUMOS
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">Módulo 1</div>
+                        <h2 class="slide-title">Gestión de Insumos: <span>`insumos.html`</span></h2>
+                        <p class="slide-subtitle">Inventario de materias primas con cálculo de costo unitario y protección de integridad relacional.</p>
+                    </div>
+                    <div class="slide-meta-badge">Materias Primas</div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card reveal">
+                        <h3 class="card-title">📊 KPIs Dinámicos</h3>
+                        <div class="card-body">
+                            Al cargar la vista, el algoritmo recorre la colección de insumos y calcula:
+                            <br><br>
+                            • Total de insumos registrados en inventario.
+                            <br>
+                            • Insumo de mayor valor unitario (para control de costos críticos).
+                        </div>
+                    </div>
+
+                    <div class="card card-gold reveal">
+                        <h3 class="card-title">🔍 Filtrado Reactivo</h3>
+                        <div class="card-body">
+                            Búsqueda instantánea con evento <span class="code-pill">input</span>:
+                            <br><br>
+                            • Coincidencia por subcadena en minúsculas.
+                            <br>
+                            • Segmentación por tipo de medida (Sólidos [g], Líquidos [ml], Conteo [unidad]).
+                        </div>
+                    </div>
+
+                    <div class="card reveal">
+                        <h3 class="card-title">🛡️ Integridad de Recetas</h3>
+                        <div class="card-body">
+                            Antes de eliminar un insumo, el sistema verifica referencias cruzadas con <span class="code-pill">receta.some(...)</span>:
+                            <br><br>
+                            Si el ingrediente forma parte de algún producto activo, muestra un indicador de uso y previene que la receta quede incompleta.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Control y Protección de Materias Primas</span>
+                    <span>Diapositiva 5 / 10</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 6: CALCULADORA DE RECETAS
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">Módulo Central</div>
+                        <h2 class="slide-title">La Calculadora de Recetas: <span>`crear-producto.html`</span></h2>
+                        <p class="slide-subtitle">El motor que transforma una lista de compras en una fórmula de producción con costos unitarios exactos.</p>
+                    </div>
+                    <div class="slide-meta-badge">Core Engine</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card reveal">
+                        <h3 class="card-title">🧮 Funcionamiento Interactivo</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li><strong>Adición Dinámica de Filas:</strong> Mediante <span class="code-pill">document.createElement("tr")</span> se insertan filas vinculadas a los insumos existentes.</li>
+                                <li><strong>Recálculo en Cascada:</strong> Cada cambio en un selector o cantidad dispara la función <span class="code-pill">recalcularTodo()</span>.</li>
+                                <li><strong>Tarjeta Flotante ("Sticky Panel"):</strong> Mientras el usuario añade ingredientes, la columna lateral resume los costos sin perder el foco visual.</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box">
+                            Permite tanto <strong>crear nuevas recetas</strong> como <strong>editar recetas existentes</strong> reutilizando el mismo formulario inteligente.
+                        </div>
+                    </div>
+
+                    <div class="card card-gold reveal">
+                        <h3 class="card-title">⚡ Flujo Operativo en Tiempo Real</h3>
+                        <div class="code-block">// Recorrido dinámico del DOM para sumar la receta
+let costoTotalIngredientes = 0;
+let filas = document.querySelectorAll(".receta-fila");
+
+filas.forEach(fila => {
+    let insumoId = parseInt(fila.querySelector(".fila-insumo").value);
+    let cantidad = parseFloat(fila.querySelector(".fila-cantidad").value) || 0;
+    let insumo = insumos.find(i => i.id === insumoId);
+    
+    if (insumo) {
+        let subtotal = cantidad * insumo.precio;
+        costoTotalIngredientes += subtotal;
+        fila.querySelector(".fila-subtotal").textContent = formatear(subtotal);
+    }
+});</div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Manipulación Avanzada del DOM en Tiempo Real</span>
+                    <span>Diapositiva 6 / 10</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 7: MATEMÁTICAS Y FIJACIÓN DE PRECIOS
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">Rigor Financiero</div>
+                        <h2 class="slide-title">Lógica Matemática de <span>Fijación de Precios</span></h2>
+                        <p class="slide-subtitle">Dos metodologías claras para que el emprendedor elija cómo quiere rentabilizar su negocio.</p>
+                    </div>
+                    <div class="slide-meta-badge">Finanzas Gastronómicas</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card reveal">
+                        <div class="stat-badge">Método A</div>
+                        <h3 class="card-title">Margen Comercial (% sobre Venta)</h3>
+                        <div class="card-body">
+                            Garantiza que del dinero total que paga el cliente, el porcentaje elegido sea ganancia neta. <strong>Es el estándar contable.</strong>
+                            <br><br>
+                            <div class="code-block" style="font-size:16px;">Precio = Costo Unitario / (1 - (Margen % / 100))
+
+Ejemplo:
+Costo = $1.000 | Margen Deseado = 50%
+Precio = 1.000 / (1 - 0.50) = $2.000
+Ganancia = $1.000 (el 50% exacto de la venta)</div>
+                        </div>
+                    </div>
+
+                    <div class="card card-gold reveal">
+                        <div class="stat-badge">Método B</div>
+                        <h3 class="card-title">Multiplicador de Costo (Markup)</h3>
+                        <div class="card-body">
+                            Muy utilizado en restaurantes y banquetes para cubrir gastos indirectos rápidamente (energía, gas, local).
+                            <br><br>
+                            <div class="code-block" style="font-size:16px;">Precio = Costo Unitario × Multiplicador
+
+Ejemplo:
+Costo = $1.000 | Multiplicador = × 2.5
+Precio = 1.000 × 2.5 = $2.500
+Ganancia Bruta = $1.500 sobre el costo</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Precisión Matemática Implementada en Costia</span>
+                    <span>Diapositiva 7 / 10</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 8: CATÁLOGO DE PRODUCTOS (productos.html)
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">Módulo 3</div>
+                        <h2 class="slide-title">Catálogo y Rentabilidad: <span>`productos.html`</span></h2>
+                        <p class="slide-subtitle">Visualización ejecutiva de recetas, indicadores de margen y herramientas de productividad.</p>
+                    </div>
+                    <div class="slide-meta-badge">Gestión de Catálogo</div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card reveal">
+                        <h3 class="card-title">🏷️ Tarjetas de Producto</h3>
+                        <div class="card-body">
+                            Cada receta se presenta como una tarjeta visual que resume:
+                            <br><br>
+                            • Costo unitario vs. Precio de venta sugerido.
+                            <br>
+                            • Ganancia estimada por unidad.
+                            <br>
+                            • Indicador visual del método de fijación de precio.
+                        </div>
+                    </div>
+
+                    <div class="card card-gold reveal">
+                        <h3 class="card-title">📈 Rentabilidad Promedio</h3>
+                        <div class="card-body">
+                            El KPI superior calcula el porcentaje de rendimiento global del catálogo:
+                            <br><br>
+                            Permite al dueño del negocio saber si en promedio está cobrando por encima de sus costos operativos.
+                        </div>
+                    </div>
+
+                    <div class="card reveal">
+                        <h3 class="card-title">📋 Modal y Duplicación</h3>
+                        <div class="card-body">
+                            • <strong>Modal "Ver Receta":</strong> Desglosa los ingredientes y porcentajes sin abandonar la pantalla.
+                            <br><br>
+                            • <strong>Duplicar Receta:</strong> Permite clonar un producto base (ej. "Torta 1 lb" a "Torta 2 lb") ahorrando tiempo de digitación.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Supervisión de Rentabilidad y Operación</span>
+                    <span>Diapositiva 8 / 10</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 9: DEFENSA Y PREGUNTAS CLAVE
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">Preparación de Sustentación</div>
+                        <h2 class="slide-title">Preguntas Clave del <span>Docente</span></h2>
+                        <p class="slide-subtitle">Argumentos técnicos sólidos para defender las decisiones de diseño de este avance.</p>
+                    </div>
+                    <div class="slide-meta-badge">Banco de Respuestas</div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card reveal">
+                        <h3 class="card-title">❓ ¿Por qué LocalStorage?</h3>
+                        <div class="card-body">
+                            <strong>Respuesta:</strong>
+                            <br>
+                            "Aplicamos desarrollo iterativo. Priorizamos validar la experiencia de usuario (UX) y el motor matemático en el cliente antes de acoplarlo con la capa de persistencia en MySQL, asegurando una arquitectura desacoplada y libre de fallas de red."
+                        </div>
+                    </div>
+
+                    <div class="card card-gold reveal">
+                        <h3 class="card-title">❓ ¿Por qué Vanilla JS?</h3>
+                        <div class="card-body">
+                            <strong>Respuesta:</strong>
+                            <br>
+                            "Para demostrar dominio profundo de los fundamentos: manipulación nativa del DOM, captura de eventos asíncronos y programación orientada a objetos en ES6 sin la sobrecarga ni complejidad de compiladores de frameworks."
+                        </div>
+                    </div>
+
+                    <div class="card reveal">
+                        <h3 class="card-title">❓ ¿Cómo evitan errores?</h3>
+                        <div class="card-body">
+                            <strong>Respuesta:</strong>
+                            <br>
+                            "A través de funciones centralizadas de normalización en `datos.js` y validación de relaciones en memoria, impidiendo que el usuario borre insumos que alimentan productos existentes."
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>Estrategia de Sustentación Oral</span>
+                    <span>Diapositiva 9 / 10</span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SLIDE 10: CONCLUSIÓN Y PRÓXIMOS PASOS
+                 ========================================== -->
+            <section class="slide">
+                <div class="slide-header">
+                    <div>
+                        <div class="slide-tag">Hito Alcanzado</div>
+                        <h2 class="slide-title">Conclusión y <span>Siguientes Pasos</span></h2>
+                        <p class="slide-subtitle">De una aplicación web local a una plataforma multiusuario completa en la nube.</p>
+                    </div>
+                    <div class="slide-meta-badge">Roadmap</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card reveal">
+                        <h3 class="card-title">✅ Lo que se logró en este 1er Avance</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li>Estructura de interfaz moderna, accesible y totalmente responsive.</li>
+                                <li>Algoritmo matemático de costeo gastronómico probado y validado.</li>
+                                <li>Manejo reactivo del DOM con adición dinámica de ingredientes.</li>
+                                <li>Persistencia local confiable y con datos iniciales de prueba.</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box">
+                            La base del producto ya genera valor real para un negocio de alimentos.
+                        </div>
+                    </div>
+
+                    <div class="card card-gold reveal">
+                        <h3 class="card-title">🚀 Transición hacia el Segundo Avance</h3>
+                        <div class="card-body">
+                            <ul>
+                                <li><strong>Backend REST en PHP 8.2 (POO):</strong> Endpoints modulares para autenticación y recursos.</li>
+                                <li><strong>Persistencia Relacional en MySQL (3FN):</strong> Tablas `usuarios`, `insumos`, `productos` y la intermedia `receta_items`.</li>
+                                <li><strong>Transacciones ACID:</strong> Inserción atómica garantizada con <span class="code-pill">beginTransaction()</span> y <span class="code-pill">rollBack()</span>.</li>
+                                <li><strong>Seguridad Criptográfica:</strong> Hashing de contraseñas con BCRYPT y sentencias preparadas contra Inyección SQL.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <span>¡Muchas gracias! • Sesión de Preguntas</span>
+                    <span>Diapositiva 10 / 10</span>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Controles Flotantes -->
+    <div class="deck-controls">
+        <button class="deck-btn" id="prevBtn" title="Anterior (Flecha Izquierda)">❮</button>
+        <span class="deck-counter" id="slideCounter">1 / 10</span>
+        <button class="deck-btn" id="nextBtn" title="Siguiente (Flecha Derecha o Espacio)">❯</button>
+        <button class="deck-btn" id="fullscreenBtn" title="Pantalla Completa (F)">⛶</button>
+    </div>
+
+    <!-- ==========================================
+         CONTROLADOR JAVASCRIPT DE DIAPOSITIVAS
+         ========================================== -->
+    <script>
+        class DeckController {
+            constructor() {
+                this.stage = document.getElementById('deckStage');
+                this.slides = document.querySelectorAll('.slide');
+                this.counter = document.getElementById('slideCounter');
+                this.progressBar = document.getElementById('progressBar');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.fullscreenBtn = document.getElementById('fullscreenBtn');
+                
+                this.currentIndex = 0;
+                this.totalSlides = this.slides.length;
+
+                this.initScale();
+                this.initEvents();
+                this.updateUI();
+            }
+
+            // Escalado 16:9 Adaptativo Universal (1920x1080)
+            initScale() {
+                const resize = () => {
+                    const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+                    const x = (window.innerWidth - 1920 * factor) / 2;
+                    const y = (window.innerHeight - 1080 * factor) / 2;
+                    this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+                };
+                resize();
+                window.addEventListener('resize', resize);
+            }
+
+            initEvents() {
+                // Teclado
+                window.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                        this.next();
+                    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                        this.prev();
+                    } else if (e.key === 'f' || e.key === 'F') {
+                        this.toggleFullscreen();
+                    }
+                });
+
+                // Botones UI
+                this.nextBtn.addEventListener('click', () => this.next());
+                this.prevBtn.addEventListener('click', () => this.prev());
+                this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+
+                // Soporte táctil básico (Swipe)
+                let startX = 0;
+                window.addEventListener('touchstart', (e) => {
+                    startX = e.changedTouches[0].clientX;
+                });
+                window.addEventListener('touchend', (e) => {
+                    let endX = e.changedTouches[0].clientX;
+                    if (startX - endX > 50) this.next();
+                    if (endX - startX > 50) this.prev();
+                });
+            }
+
+            goTo(index) {
+                if (index < 0 || index >= this.totalSlides) return;
+                this.slides[this.currentIndex].classList.remove('active');
+                this.currentIndex = index;
+                this.slides[this.currentIndex].classList.add('active');
+                this.updateUI();
+            }
+
+            next() {
+                if (this.currentIndex < this.totalSlides - 1) {
+                    this.goTo(this.currentIndex + 1);
+                }
+            }
+
+            prev() {
+                if (this.currentIndex > 0) {
+                    this.goTo(this.currentIndex - 1);
+                }
+            }
+
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                } else {
+                    document.exitFullscreen().catch(() => {});
+                }
+            }
+
+            updateUI() {
+                this.counter.textContent = `${this.currentIndex + 1} / ${this.totalSlides}`;
+                const progressPct = ((this.currentIndex + 1) / this.totalSlides) * 100;
+                this.progressBar.style.width = `${progressPct}%`;
+            }
+        }
+
+        // Iniciar al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            new DeckController();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+# Archivos comprimidos y paquetes pesados
+*.zip
+*.tar.gz
+*.rar
+
+# Entornos y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Sistema operativo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs y temporales
+*.log
+*.tmp
+
+# Dependencias y reportes de pruebas
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
+# Pruebas temporales y capturas de verificación
+scratch/
+verify_*.png
+graphify-out/cache/
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+

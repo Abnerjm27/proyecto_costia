@@ -1,0 +1,328 @@
+/* ============================================================
+   CONFIGURACION.CSS — Estación de Configuración Integral Costia
+   Paleta: Pino (#071F17), Esmeralda (#0A6847), Marfil (#F2F7F4), Blanco (#FFFFFF)
+   Reglas: Cero emojis, WCAG AAA, Responsive.
+   ============================================================ */
+
+.config-workspace-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+@media (min-width: 960px) {
+    .config-workspace-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .config-card--full {
+        grid-column: 1 / -1;
+    }
+}
+
+.config-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(7, 31, 23, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(7, 31, 23, 0.04);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.config-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(7, 31, 23, 0.08);
+    padding-bottom: 14px;
+}
+
+.config-card__icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(10, 104, 71, 0.1);
+    color: #0A6847;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.config-card__title-box h2 {
+    font-family: var(--font-titulos, 'Literata', serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #071F17;
+    margin: 0 0 2px 0;
+}
+
+.config-card__title-box p {
+    font-size: 0.82rem;
+    color: #526059;
+    margin: 0;
+}
+
+.config-fields-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.config-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.config-field label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #071F17;
+}
+
+.config-field-hint {
+    font-size: 0.76rem;
+    color: #526059;
+    line-height: 1.35;
+}
+
+.config-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.config-input-prefix {
+    position: absolute;
+    left: 14px;
+    font-family: var(--font-mono, monospace);
+    font-weight: 600;
+    color: #526059;
+    pointer-events: none;
+}
+
+.config-input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid rgba(7, 31, 23, 0.18);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: #071F17;
+    background: #FFFFFF;
+    transition: all 0.18s ease;
+    box-sizing: border-box;
+}
+
+.config-input--with-prefix,
+.config-input-wrap .config-input {
+    padding-left: 36px !important;
+}
+
+.config-input:focus {
+    border-color: #0A6847;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(10, 104, 71, 0.15);
+}
+
+.config-radio-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.config-radio-card {
+    border: 1px solid rgba(7, 31, 23, 0.16);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: #FAFCFA;
+}
+
+.config-radio-card:hover {
+    border-color: #0A6847;
+    background: #FFFFFF;
+}
+
+.config-radio-card.active {
+    border-color: #0A6847;
+    background: rgba(10, 104, 71, 0.06);
+    box-shadow: 0 0 0 1px #0A6847;
+}
+
+.config-radio-card input {
+    accent-color: #0A6847;
+    width: 18px;
+    height: 18px;
+}
+
+.config-radio-card__text strong {
+    display: block;
+    font-size: 0.88rem;
+    color: #071F17;
+}
+
+.config-radio-card__text small {
+    display: block;
+    font-size: 0.75rem;
+    color: #526059;
+}
+
+/* Tarjeta métrica destacada de Nómina y Prorrateo */
+.config-prorrateo-box {
+    background: #071F17;
+    color: #FFFFFF;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.config-prorrateo-box__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-bottom: 10px;
+}
+
+.config-prorrateo-box__header span {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #A3D9C9;
+    font-weight: 700;
+}
+
+.config-prorrateo-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 640px) {
+    .config-prorrateo-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.config-prorrateo-kpi {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.config-prorrateo-kpi label {
+    display: block;
+    font-size: 0.72rem;
+    color: #CBD5E1;
+    margin-bottom: 4px;
+}
+
+.config-prorrateo-kpi strong {
+    display: block;
+    font-family: var(--font-mono, monospace);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #2ECC71;
+}
+
+.config-prorrateo-kpi small {
+    display: block;
+    font-size: 0.7rem;
+    color: #94A3B8;
+    margin-top: 2px;
+}
+
+/* Zona de mantenimiento */
+.config-mantenimiento-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.btn-mantenimiento {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+    transition: all 0.16s ease;
+    border: 1px solid transparent;
+}
+
+.btn-mantenimiento--secundario {
+    background: #FFFFFF;
+    border-color: rgba(7, 31, 23, 0.18);
+    color: #071F17;
+}
+
+.btn-mantenimiento--secundario:hover {
+    background: #F2F7F4;
+    border-color: #0A6847;
+}
+
+.btn-mantenimiento--alerta {
+    background: #FFFBEB;
+    border-color: rgba(217, 119, 6, 0.3);
+    color: #92400E;
+}
+
+.btn-mantenimiento--alerta:hover {
+    background: #FEF3C7;
+    border-color: #D97706;
+}
+
+.btn-mantenimiento--peligro {
+    background: #FEF2F2;
+    border-color: rgba(220, 38, 38, 0.3);
+    color: #B91C1C;
+}
+
+.btn-mantenimiento--peligro:hover {
+    background: #FEE2E2;
+    border-color: #DC2626;
+}
+
+/* ============================================================
+   RESPONSIVE CONFIGURACIÓN: ENCABEZADO Y BOTONES DE ACCIÓN (< 768px)
+   ============================================================ */
+@media (max-width: 768px) {
+    .contenido__encabezado {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 16px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .contenido__encabezado > div:last-child {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    .contenido__encabezado .btn-primario,
+    .contenido__encabezado .btn-secundario {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+}
+

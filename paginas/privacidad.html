@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia — Política de Privacidad, Cookies y Tratamiento de Datos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=23">
+    <link rel="icon" href="../assets/img/costia-icon.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+    <style>
+        body {
+            background-color: var(--fondo-claro);
+            color: var(--tinta);
+            font-family: var(--font-texto);
+            line-height: 1.6;
+            padding: 30px 16px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .privacidad-container {
+            width: 100%;
+            max-width: 820px;
+        }
+
+        .privacidad-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .privacidad-marca {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--verde-pino);
+            font-family: var(--font-titulos);
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .privacidad-marca img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+
+        .btn-volver-app {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #ffffff;
+            border: 1px solid var(--linea-fuerte);
+            border-radius: 10px;
+            color: var(--verde-pino);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-volver-app:hover {
+            background: var(--verde-pino);
+            color: #ffffff;
+            border-color: var(--verde-pino);
+        }
+
+        .privacidad-hoja {
+            background: #ffffff;
+            border: 1px solid var(--linea);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px -8px rgba(7, 31, 23, 0.08);
+            padding: 44px 48px;
+        }
+
+        @media (max-width: 640px) {
+            .privacidad-hoja {
+                padding: 24px 20px;
+            }
+        }
+
+        .privacidad-badge {
+            display: inline-block;
+            background: rgba(10, 104, 71, 0.1);
+            color: var(--verde-esmeralda);
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+
+        .privacidad-titulo {
+            font-family: var(--font-titulos);
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--verde-pino);
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .privacidad-fecha {
+            font-size: 13px;
+            color: var(--texto-secundario);
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--linea);
+            padding-bottom: 16px;
+        }
+
+        .privacidad-resumen {
+            background: #F2F7F4;
+            border-left: 4px solid var(--verde-esmeralda);
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-size: 14.5px;
+            color: #10211B;
+            margin-bottom: 32px;
+        }
+
+        .privacidad-seccion {
+            margin-bottom: 32px;
+        }
+
+        .privacidad-seccion h2 {
+            font-family: var(--font-titulos);
+            font-size: 20px;
+            color: var(--verde-pino);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .privacidad-seccion p {
+            font-size: 14.5px;
+            color: var(--tinta);
+            margin-bottom: 12px;
+        }
+
+        .privacidad-seccion ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .privacidad-seccion li {
+            margin-bottom: 6px;
+        }
+
+        .privacidad-tabla {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin: 16px 0;
+        }
+
+        .privacidad-tabla th, .privacidad-tabla td {
+            border: 1px solid var(--linea);
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        .privacidad-tabla th {
+            background: #F2F7F4;
+            color: var(--verde-pino);
+            font-weight: 600;
+        }
+
+        .privacidad-destacado {
+            background: #FFFDF0;
+            border: 1px solid rgba(140, 71, 14, 0.2);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 13.5px;
+            color: #5C320A;
+            margin-top: 14px;
+        }
+
+        .privacidad-footer-cta {
+            margin-top: 40px;
+            text-align: center;
+            border-top: 1px solid var(--linea);
+            padding-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="privacidad-container">
+
+    <header class="privacidad-topbar">
+        <a href="../index.html" class="privacidad-marca">
+            <img src="../assets/img/costia-icon-green.png" alt="Logo Costia">
+            <span>Costia</span>
+        </a>
+        <a href="registro.html" class="btn-volver-app">← Volver al registro</a>
+    </header>
+
+    <main class="privacidad-hoja">
+        <span class="privacidad-badge">Marco Legal &amp; Habeas Data</span>
+        <h1 class="privacidad-titulo">Política de Privacidad, Cookies y Tratamiento de Datos Personales</h1>
+        <p class="privacidad-fecha">Última actualización: Noviembre de 2026 · Cumplimiento de la Ley 1581 de 2012 (Colombia) y Directrices Internacionales (GDPR/OWASP)</p>
+
+        <div class="privacidad-resumen">
+            <strong>Resumen Ejecutivo:</strong> En <strong>Costia</strong> creemos que tu información comercial y el secreto de tus recetas te pertenecen exclusivamente a ti. <strong>Nunca vendemos, alquilamos ni compartimos tus datos con terceros o anunciantes.</strong> Usamos cookies técnicas únicamente para mantener tu sesión activa y ciframos tus contraseñas bajo los más altos estándares criptográficos.
+        </div>
+
+        <!-- SECCIÓN 1: RESPONSABLE -->
+        <section class="privacidad-seccion">
+            <h2>1. Responsable del Tratamiento de Datos</h2>
+            <p>
+                La plataforma web <strong>Costia</strong> (en adelante, «la Aplicación» o «Costia»), accesible a través de su entorno web local o servidores autorizados, actúa como responsable del tratamiento de los datos personales suministrados por los titulares de conformidad con la Ley Estatutaria 1581 de 2012 y su Decreto Reglamentario 1377 de 2013 de la República de Colombia, así como los principios del Reglamento General de Protección de Datos (RGPD / GDPR).
+            </p>
+        </section>
+
+        <!-- SECCIÓN 2: DATOS RECOPILADOS -->
+        <section class="privacidad-seccion">
+            <h2>2. Información que Recopilamos</h2>
+            <p>Costia solo recolecta la información mínima estrictamente necesaria para brindar el servicio de cálculo de costos y fijación de precios:</p>
+            <ul>
+                <li><strong>Datos de Identificación de Cuenta:</strong> Nombre o razón social del negocio, dirección de correo electrónico y contraseña de acceso (la cual se almacena irreversiblemente hasheada mediante el algoritmo BCRYPT con factor de coste y sal aleatoria).</li>
+                <li><strong>Datos Operativos y de Fabricación:</strong> Catálogo de materias primas (insumos, precios de compra y unidades de medida), recetas de productos, coeficientes de merma/desperdicio, costos de empaque y gastos fijos declarados (arriendos y servicios públicos).</li>
+                <li><strong>Datos Técnicos de Sesión:</strong> Identificador temporal de sesión y almacenamiento en caché local del navegador para el modo sin conexión.</li>
+            </ul>
+        </section>
+
+        <!-- SECCIÓN 3: FINALIDAD -->
+        <section class="privacidad-seccion">
+            <h2>3. Finalidades del Tratamiento</h2>
+            <p>Los datos suministrados por los usuarios son tratados exclusivamente para:</p>
+            <ul>
+                <li>Permitir el acceso seguro y autenticado a su espacio de trabajo y recetas.</li>
+                <li>Calcular con precisión el costo por unidad, el mark-up, el margen comercial y el punto de equilibrio financiero de los productos.</li>
+                <li>Generar fichas técnicas detalladas e imprimibles para el control de producción.</li>
+                <li>Almacenar localmente el catálogo en el navegador para permitir el funcionamiento transparente cuando no se disponga de conexión a la base de datos.</li>
+            </ul>
+            <div class="privacidad-destacado">
+                <strong>Compromiso Anti-Monetización de Datos:</strong> Costia no realiza perfilamiento publicitario, no comercializa bases de datos, no cede información a centrales de riesgo ni transfiere tus recetas a competidores.
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: POLÍTICA DE COOKIES -->
+        <section class="privacidad-seccion">
+            <h2>4. Política de Cookies y Almacenamiento Local</h2>
+            <p>
+                De acuerdo con la Directiva Europea ePrivacy y las directrices de la Superintendencia de Industria y Comercio (SIC), informamos que Costia utiliza únicamente <strong>tecnologías de almacenamiento técnico estrictamente necesarias</strong>:
+            </p>
+
+            <table class="privacidad-tabla">
+                <thead>
+                    <tr>
+                        <th>Clave / Cookie</th>
+                        <th>Tipo</th>
+                        <th>Caducidad</th>
+                        <th>Propósito Técnico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>PHPSESSID</code></td>
+                        <td>Cookie Técnica (1st party)</td>
+                        <td>7 días o cierre de sesión</td>
+                        <td>Mantiene la autenticación activa del usuario de forma segura con banderas <code>HttpOnly</code> (protección contra XSS) y <code>SameSite=Lax</code> (protección contra CSRF).</td>
+                    </tr>
+                    <tr>
+                        <td><code>costia_insumos</code></td>
+                        <td>localStorage</td>
+                        <td>Persistente local</td>
+                        <td>Copia de seguridad en el navegador para operar sin conexión o en modo demo sin base de datos.</td>
+                    </tr>
+                    <tr>
+                        <td><code>costia_productos</code></td>
+                        <td>localStorage</td>
+                        <td>Persistente local</td>
+                        <td>Almacenamiento de recetas y productos en el dispositivo del usuario.</td>
+                    </tr>
+                    <tr>
+                        <td><code>costia_config_gastos</code></td>
+                        <td>localStorage</td>
+                        <td>Persistente local</td>
+                        <td>Parámetros de gastos fijos mensuales (arriendo y servicios) para cálculo de punto de equilibrio.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                <strong>Ausencia de Cookies de Rastreo Publicitario:</strong> Costia <em>no utiliza</em> Google Analytics, Meta Pixel, cookies de retargeting ni balizas web de terceros. Por este motivo técnico, la aplicación no requiere paneles intrusivos de consentimiento previo para navegación básica.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 5: MEDIDAS DE SEGURIDAD -->
+        <section class="privacidad-seccion">
+            <h2>5. Medidas de Seguridad de la Información (OWASP)</h2>
+            <p>Costia implementa medidas técnicas, humanas y administrativas de acuerdo a las recomendaciones internacionales de OWASP (Open Worldwide Application Security Project):</p>
+            <ul>
+                <li><strong>Cifrado de Contraseñas:</strong> Aplicación de <code>password_hash()</code> con algoritmo BCRYPT, impidiendo la recuperación o lectura en texto claro inclusive ante eventuales brechas de base de datos.</li>
+                <li><strong>Prevención de Inyección SQL:</strong> Uso estricto de Consultas Preparadas mediante PHP Data Objects (PDO Prepared Statements) en todas las operaciones de lectura, escritura y eliminación.</li>
+                <li><strong>Aislamiento Multiusuario:</strong> Cada registro de insumo o receta se encuentra indexado forzosamente al <code>usuario_id</code> verificado en la sesión del servidor, impidiendo el acceso transversal entre cuentas.</li>
+                <li><strong>Cookies de Sesión Blindadas:</strong> Marcadas con <code>HttpOnly=true</code> para que ningún script inyectado pueda extraer la sesión del usuario.</li>
+            </ul>
+        </section>
+
+        <!-- SECCIÓN 6: DERECHOS HABEAS DATA -->
+        <section class="privacidad-seccion">
+            <h2>6. Derechos del Titular (Habeas Data)</h2>
+            <p>Como titular de los datos, la legislación te otorga los siguientes derechos:</p>
+            <ul>
+                <li><strong>Acceso y Consulta:</strong> Conocer en cualquier momento los datos personales y recetas almacenadas en tu cuenta.</li>
+                <li><strong>Actualización y Rectificación:</strong> Modificar precios, nombres o contraseñas desde la propia interfaz de la aplicación.</li>
+                <li><strong>Supresión y Derecho al Olvido:</strong> Solicitar la eliminación total y definitiva de tu cuenta y todos los registros asociados de la base de datos MySQL.</li>
+                <li><strong>Revocación de la Autorización:</strong> Retirar el consentimiento otorgado para el tratamiento de tus datos en cualquier momento.</li>
+            </ul>
+            <p>
+                Para ejercer cualquiera de estos derechos, el titular puede contactar a nuestro canal de soporte en: <strong style="color:var(--verde-esmeralda);">privacidad@costia.com</strong>. Las solicitudes de eliminación se atienden en un plazo máximo de 10 días hábiles.
+            </p>
+        </section>
+
+        <!-- SECCIÓN 7: ACEPTACIÓN -->
+        <!-- SECCIÓN 7: AUTORIZACIÓN EXPRESA -->
+        <section class="privacidad-seccion">
+            <h2>7. Autorización Previa, Expresa e Informada</h2>
+            <p>
+                Al marcar la casilla independiente <em>«Autorizo el tratamiento de mis datos personales según la Política de Privacidad y Cookies (Habeas Data)»</em> durante el proceso de registro, el titular autoriza a Costia para el tratamiento de su información conforme a la Ley 1581 de 2012 y este documento.
+            </p>
+        </section>
+
+        <div class="privacidad-footer-cta">
+            <a href="registro.html" class="btn-volver-app">← Regresar a Registro</a>
+            <a href="terminos.html" class="btn-volver-app">Ver Términos y Condiciones →</a>
+        </div>
+    </main>
+
+</div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>

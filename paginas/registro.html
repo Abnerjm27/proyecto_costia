@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia - Crear cuenta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=19">
+    <link rel="stylesheet" href="../assets/css/auth.css?v=19">
+    <link rel="icon" href="../assets/img/costia-icon.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+</head>
+<body>
+
+    <div class="auth-card">
+
+        <!-- Volver al inicio -->
+        <a href="../index.html" class="auth-volver">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            <span>Volver al inicio</span>
+        </a>
+
+        <!-- Logo -->
+        <a href="../index.html" class="auth-logo" aria-label="Inicio Costia">
+            <img src="../assets/img/costia-icon-green.png" alt="Logo Costia">
+            <span>Costia</span>
+        </a>
+
+        <div class="auth-divisor"></div>
+
+        <h1 class="auth-titulo">Crea tu cuenta gratis</h1>
+        <p class="auth-subtitulo">Comienza a controlar el costo real de tus productos</p>
+
+        <form id="form-registro" action="#" method="post">
+
+            <div class="campo">
+                <label for="negocio">Nombre de tu negocio</label>
+                <input
+                    type="text"
+                    id="negocio"
+                    name="negocio"
+                    placeholder="Ej: Panadería El Roble, Dulce Arte..."
+                    autocomplete="organization"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label for="email">Correo electrónico</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="nombre@correo.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label for="password">Contraseña</label>
+                <div class="campo-password-wrap">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Mínimo 8 caracteres"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                    >
+                    <button type="button" class="btn-toggle-password" id="btn-toggle-pwd" aria-label="Mostrar u ocultar contraseña" title="Mostrar u ocultar">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="campo-checkbox">
+                <input type="checkbox" id="terminos" name="terminos" required>
+                <label for="terminos">
+                    Acepto los <a href="terminos.html" target="_blank" rel="noopener noreferrer">Términos y Condiciones de Uso</a> del servicio.
+                </label>
+            </div>
+
+            <div class="campo-checkbox">
+                <input type="checkbox" id="privacidad" name="privacidad" required>
+                <label for="privacidad">
+                    Autorizo el tratamiento de mis datos según la <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad y Cookies (Habeas Data)</a>.
+                </label>
+            </div>
+
+            <button type="submit" class="auth-btn">Crear cuenta gratis</button>
+
+        </form>
+
+        <p class="auth-cambiar">
+            ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+        </p>
+
+        <div class="auth-demo">
+            <a href="productos.html">
+                <img src="../assets/img/zap.svg" alt="" style="width:13px;height:13px;" aria-hidden="true">
+                <span>Entrar directo al modo Demo →</span>
+            </a>
+        </div>
+
+        <div class="auth-seguridad">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Tus datos y recetas están 100% seguros · <a href="terminos.html" style="color:inherit;text-decoration:underline;">Términos</a> · <a href="privacidad.html" style="color:inherit;text-decoration:underline;">Privacidad &amp; Cookies</a></span>
+        </div>
+
+    </div>
+
+    <script src="../assets/js/models.js"></script>
+    <script src="../assets/js/store.js"></script>
+    <script src="../assets/js/registro.js"></script>
+    <script>
+        document.getElementById('btn-toggle-pwd')?.addEventListener('click', function() {
+            const pwd = document.getElementById('password');
+            if (pwd) pwd.type = pwd.type === 'password' ? 'text' : 'password';
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>

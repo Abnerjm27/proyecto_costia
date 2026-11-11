@@ -1,0 +1,376 @@
+{
+  "communities": {
+    "0": [
+      "assets_js_store",
+      "assets_js_store_storeservice",
+      "assets_js_store_storeservice_aceptarcambioprecioasync",
+      "assets_js_store_storeservice_actualizarbadgeui",
+      "assets_js_store_storeservice_alactualizar",
+      "assets_js_store_storeservice_calcularproducto",
+      "assets_js_store_storeservice_cargarinsumos",
+      "assets_js_store_storeservice_cargarnegocio",
+      "assets_js_store_storeservice_cargarproductos",
+      "assets_js_store_storeservice_cerrarsesion",
+      "assets_js_store_storeservice_constructor",
+      "assets_js_store_storeservice_convertir",
+      "assets_js_store_storeservice_detectarcambio",
+      "assets_js_store_storeservice_eliminarinsumoasync",
+      "assets_js_store_storeservice_eliminarproductoasync",
+      "assets_js_store_storeservice_fmt",
+      "assets_js_store_storeservice_guardarinsumoasync",
+      "assets_js_store_storeservice_guardarinsumos",
+      "assets_js_store_storeservice_guardarinsumoslocal",
+      "assets_js_store_storeservice_guardarnegocio",
+      "assets_js_store_storeservice_guardarproductoasync",
+      "assets_js_store_storeservice_guardarproductos",
+      "assets_js_store_storeservice_guardarproductoslocal",
+      "assets_js_store_storeservice_inicializarmenunegocio",
+      "assets_js_store_storeservice_notificaractualizacion",
+      "assets_js_store_storeservice_restaurardatosdemo",
+      "assets_js_store_storeservice_sellarprecios",
+      "assets_js_store_storeservice_sincronizarconservidor",
+      "assets_js_store_storeservice_toast",
+      "assets_js_store_storeservice_toastdiferido",
+      "assets_js_store_storeservice_verificarsesion"
+    ],
+    "1": [
+      "assets_js_models",
+      "assets_js_models_insumo",
+      "assets_js_models_insumo_constructor",
+      "assets_js_models_insumo_escompatible",
+      "assets_js_models_insumo_tojson",
+      "assets_js_models_itemreceta",
+      "assets_js_models_itemreceta_calcularcosto",
+      "assets_js_models_itemreceta_constructor",
+      "assets_js_models_itemreceta_tojson",
+      "assets_js_models_producto",
+      "assets_js_models_producto_calcularcostoingredientes",
+      "assets_js_models_producto_calcularcostomerma",
+      "assets_js_models_producto_calcularcostototal",
+      "assets_js_models_producto_calcularcostounidad",
+      "assets_js_models_producto_calcularganancianeta",
+      "assets_js_models_producto_calcularmargencomercialreal",
+      "assets_js_models_producto_calcularprecioventa",
+      "assets_js_models_producto_constructor",
+      "assets_js_models_producto_detectarcambioprecio",
+      "assets_js_models_producto_tojson",
+      "assets_js_models_unidadconverter",
+      "assets_js_models_unidadconverter_convertir",
+      "assets_js_models_unidadconverter_formatearcantidad",
+      "assets_js_models_unidadconverter_formatearmoneda"
+    ],
+    "2": [
+      "backend_config_database",
+      "backend_config_database_database",
+      "backend_config_database_database_construct",
+      "backend_config_database_database_getconnection",
+      "backend_config_database_php_pdo",
+      "backend_controllers_authcontroller_authcontroller_construct",
+      "backend_controllers_insumocontroller",
+      "backend_controllers_insumocontroller_closure_1",
+      "backend_controllers_insumocontroller_insumocontroller",
+      "backend_controllers_insumocontroller_insumocontroller_actualizar",
+      "backend_controllers_insumocontroller_insumocontroller_construct",
+      "backend_controllers_insumocontroller_insumocontroller_crear",
+      "backend_controllers_insumocontroller_insumocontroller_eliminar",
+      "backend_controllers_insumocontroller_insumocontroller_listar",
+      "backend_controllers_insumocontroller_php_pdo",
+      "backend_controllers_productocontroller",
+      "backend_controllers_productocontroller_php_pdo",
+      "backend_controllers_productocontroller_productocontroller",
+      "backend_controllers_productocontroller_productocontroller_aceptarcambioprecio",
+      "backend_controllers_productocontroller_productocontroller_construct",
+      "backend_controllers_productocontroller_productocontroller_eliminar",
+      "backend_controllers_productocontroller_productocontroller_guardar",
+      "backend_controllers_productocontroller_productocontroller_listar"
+    ],
+    "3": [
+      "assets_js_crear_producto",
+      "assets_js_crear_producto_controladorcrear",
+      "assets_js_crear_producto_crearproductocontroller",
+      "assets_js_crear_producto_crearproductocontroller_actualizarmultiplicador",
+      "assets_js_crear_producto_crearproductocontroller_actualizaropcionesinsumos",
+      "assets_js_crear_producto_crearproductocontroller_actualizarresumen",
+      "assets_js_crear_producto_crearproductocontroller_agregarfila",
+      "assets_js_crear_producto_crearproductocontroller_alcambiarinsumo",
+      "assets_js_crear_producto_crearproductocontroller_aplicarmargensugerido",
+      "assets_js_crear_producto_crearproductocontroller_cambiarmodo",
+      "assets_js_crear_producto_crearproductocontroller_cargarproductosiesedicion",
+      "assets_js_crear_producto_crearproductocontroller_configurareventosgenerales",
+      "assets_js_crear_producto_crearproductocontroller_constructor",
+      "assets_js_crear_producto_crearproductocontroller_eliminarfila",
+      "assets_js_crear_producto_crearproductocontroller_guardarproducto",
+      "assets_js_crear_producto_crearproductocontroller_iniciar",
+      "assets_js_crear_producto_crearproductocontroller_mostrarpreguntas",
+      "assets_js_crear_producto_crearproductocontroller_obtenerinsumos",
+      "assets_js_crear_producto_crearproductocontroller_obteneritemsrecetaformulario",
+      "assets_js_crear_producto_crearproductocontroller_sincronizarmargen"
+    ],
+    "4": [
+      "backend_controllers_authcontroller",
+      "backend_controllers_authcontroller_authcontroller",
+      "backend_controllers_authcontroller_authcontroller_login",
+      "backend_controllers_authcontroller_authcontroller_registrar",
+      "backend_controllers_authcontroller_authcontroller_sembrardatosiniciales",
+      "backend_controllers_authcontroller_php_pdo",
+      "backend_models_usuario",
+      "backend_models_usuario_usuario",
+      "backend_models_usuario_usuario_construct",
+      "backend_models_usuario_usuario_getemail",
+      "backend_models_usuario_usuario_getid",
+      "backend_models_usuario_usuario_getnegocio",
+      "backend_models_usuario_usuario_getpassword",
+      "backend_models_usuario_usuario_hashearpassword",
+      "backend_models_usuario_usuario_setemail",
+      "backend_models_usuario_usuario_setnegocio",
+      "backend_models_usuario_usuario_setpassword",
+      "backend_models_usuario_usuario_toarray",
+      "backend_models_usuario_usuario_verificarpassword"
+    ],
+    "5": [
+      "backend_models_producto",
+      "backend_models_producto_closure_1",
+      "backend_models_producto_producto",
+      "backend_models_producto_producto_construct",
+      "backend_models_producto_producto_getcostoempaque",
+      "backend_models_producto_producto_getcostomanoobra",
+      "backend_models_producto_producto_getcostosnapshot",
+      "backend_models_producto_producto_getid",
+      "backend_models_producto_producto_getmodo",
+      "backend_models_producto_producto_getnombre",
+      "backend_models_producto_producto_getporcentajemerma",
+      "backend_models_producto_producto_getprecioventaanterior",
+      "backend_models_producto_producto_getreceta",
+      "backend_models_producto_producto_gettipomargen",
+      "backend_models_producto_producto_getunidadesproducidas",
+      "backend_models_producto_producto_getusuarioid",
+      "backend_models_producto_producto_getvalormodo",
+      "backend_models_producto_producto_setreceta",
+      "backend_models_producto_producto_toarray"
+    ],
+    "6": [
+      "assets_js_insumos",
+      "assets_js_insumos_controladorinsumos",
+      "assets_js_insumos_insumoscontroller",
+      "assets_js_insumos_insumoscontroller_abrireditar",
+      "assets_js_insumos_insumoscontroller_actualizarkpis",
+      "assets_js_insumos_insumoscontroller_actualizarpreviewunitario",
+      "assets_js_insumos_insumoscontroller_actualizarvista",
+      "assets_js_insumos_insumoscontroller_configurarfiltrosybusqueda",
+      "assets_js_insumos_insumoscontroller_configurarmodal",
+      "assets_js_insumos_insumoscontroller_constructor",
+      "assets_js_insumos_insumoscontroller_cumplefiltro",
+      "assets_js_insumos_insumoscontroller_eliminarinsumo",
+      "assets_js_insumos_insumoscontroller_guardarinsumo",
+      "assets_js_insumos_insumoscontroller_iniciar",
+      "assets_js_insumos_insumoscontroller_limpiarmodal",
+      "assets_js_insumos_insumoscontroller_renderizartabla"
+    ],
+    "7": [
+      "assets_js_productos",
+      "assets_js_productos_controladorproductos",
+      "assets_js_productos_productoscontroller",
+      "assets_js_productos_productoscontroller_aceptarcambioprecio",
+      "assets_js_productos_productoscontroller_actualizarkpis",
+      "assets_js_productos_productoscontroller_actualizarvista",
+      "assets_js_productos_productoscontroller_configurareventos",
+      "assets_js_productos_productoscontroller_constructor",
+      "assets_js_productos_productoscontroller_construiralerta",
+      "assets_js_productos_productoscontroller_construirreceta",
+      "assets_js_productos_productoscontroller_crearcardhtml",
+      "assets_js_productos_productoscontroller_duplicarproducto",
+      "assets_js_productos_productoscontroller_editarproducto",
+      "assets_js_productos_productoscontroller_eliminarproducto",
+      "assets_js_productos_productoscontroller_iniciar",
+      "assets_js_productos_productoscontroller_renderizarproductos"
+    ],
+    "8": [
+      "backend_models_insumo",
+      "backend_models_insumo_insumo",
+      "backend_models_insumo_insumo_construct",
+      "backend_models_insumo_insumo_getid",
+      "backend_models_insumo_insumo_getnombre",
+      "backend_models_insumo_insumo_getprecio",
+      "backend_models_insumo_insumo_getunidad",
+      "backend_models_insumo_insumo_getusuarioid",
+      "backend_models_insumo_insumo_setnombre",
+      "backend_models_insumo_insumo_setprecio",
+      "backend_models_insumo_insumo_setunidad",
+      "backend_models_insumo_insumo_setusuarioid",
+      "backend_models_insumo_insumo_toarray"
+    ],
+    "9": [
+      "backend_models_recetaitem",
+      "backend_models_recetaitem_recetaitem",
+      "backend_models_recetaitem_recetaitem_construct",
+      "backend_models_recetaitem_recetaitem_getcantidad",
+      "backend_models_recetaitem_recetaitem_getid",
+      "backend_models_recetaitem_recetaitem_getinsumoid",
+      "backend_models_recetaitem_recetaitem_getinsumonombre",
+      "backend_models_recetaitem_recetaitem_getproductoid",
+      "backend_models_recetaitem_recetaitem_getunidadreceta",
+      "backend_models_recetaitem_recetaitem_setproductoid",
+      "backend_models_recetaitem_recetaitem_toarray"
+    ],
+    "10": [
+      "primer_avance_assets_js_datos",
+      "primer_avance_assets_js_datos_calculardatosproducto",
+      "primer_avance_assets_js_datos_formatearmoneda",
+      "primer_avance_assets_js_datos_guardarinsumos",
+      "primer_avance_assets_js_datos_guardarproductos",
+      "primer_avance_assets_js_datos_insumos_iniciales",
+      "primer_avance_assets_js_datos_mostrarnombrenegocio",
+      "primer_avance_assets_js_datos_obtenerinsumos",
+      "primer_avance_assets_js_datos_obtenerproductos",
+      "primer_avance_assets_js_datos_productos_iniciales"
+    ],
+    "11": [
+      "primer_avance_assets_js_insumos",
+      "primer_avance_assets_js_insumos_abrirmodaleditarinsumo",
+      "primer_avance_assets_js_insumos_abrirmodalnuevoinsumo",
+      "primer_avance_assets_js_insumos_borrarinsumo",
+      "primer_avance_assets_js_insumos_calcularpreviewunitario",
+      "primer_avance_assets_js_insumos_filtrarinsumosportipo",
+      "primer_avance_assets_js_insumos_guardarinsumoformulario",
+      "primer_avance_assets_js_insumos_mostrartablainsumos",
+      "primer_avance_assets_js_insumos_verificartipounidad"
+    ],
+    "12": [
+      "primer_avance_assets_js_crear_producto",
+      "primer_avance_assets_js_crear_producto_agregarfilaingrediente",
+      "primer_avance_assets_js_crear_producto_aplicarmargen40",
+      "primer_avance_assets_js_crear_producto_cambiarmodoprecio",
+      "primer_avance_assets_js_crear_producto_eliminarfilaingrediente",
+      "primer_avance_assets_js_crear_producto_guardarproductoencatalogo",
+      "primer_avance_assets_js_crear_producto_recalculartodo",
+      "primer_avance_assets_js_crear_producto_sincronizarslidermargen"
+    ],
+    "13": [
+      "primer_avance_assets_js_productos",
+      "primer_avance_assets_js_productos_borrarproducto",
+      "primer_avance_assets_js_productos_crearhtmltarjeta",
+      "primer_avance_assets_js_productos_filtrarproductospormodo",
+      "primer_avance_assets_js_productos_iraeditarproducto",
+      "primer_avance_assets_js_productos_mostrartarjetasproductos"
+    ],
+    "14": [
+      "primer_avance_assets_js_auth",
+      "primer_avance_assets_js_auth_iniciarsesion",
+      "primer_avance_assets_js_auth_registrarusuario"
+    ],
+    "15": [
+      "assets_js_login"
+    ],
+    "16": [
+      "assets_js_registro"
+    ],
+    "17": [
+      "backend_api_demo"
+    ],
+    "18": [
+      "backend_api_insumos"
+    ],
+    "19": [
+      "backend_api_productos"
+    ],
+    "20": [
+      "backend_auth_login"
+    ],
+    "21": [
+      "backend_auth_logout"
+    ],
+    "22": [
+      "backend_auth_registro"
+    ],
+    "23": [
+      "backend_auth_session"
+    ],
+    "24": [
+      "backend_conexion"
+    ]
+  },
+  "cohesion": {
+    "0": 0.14838709677419354,
+    "1": 0.13405797101449277,
+    "2": 0.09486166007905138,
+    "3": 0.23684210526315788,
+    "4": 0.1695906432748538,
+    "5": 0.1111111111111111,
+    "6": 0.25,
+    "7": 0.225,
+    "8": 0.15384615384615385,
+    "9": 0.18181818181818182,
+    "10": 0.2,
+    "11": 0.3888888888888889,
+    "12": 0.42857142857142855,
+    "13": 0.5333333333333333,
+    "14": 0.6666666666666666,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0
+  },
+  "gods": [
+    {
+      "id": "assets_js_store_storeservice",
+      "label": "StoreService",
+      "degree": 30
+    },
+    {
+      "id": "assets_js_crear_producto_crearproductocontroller",
+      "label": "CrearProductoController",
+      "degree": 18
+    },
+    {
+      "id": "backend_models_producto_producto",
+      "label": "Producto",
+      "degree": 17
+    },
+    {
+      "id": "assets_js_insumos_insumoscontroller",
+      "label": "InsumosController",
+      "degree": 14
+    },
+    {
+      "id": "assets_js_productos_productoscontroller",
+      "label": "ProductosController",
+      "degree": 14
+    },
+    {
+      "id": "backend_models_usuario_usuario",
+      "label": "Usuario",
+      "degree": 14
+    },
+    {
+      "id": "backend_models_insumo_insumo",
+      "label": "Insumo",
+      "degree": 12
+    },
+    {
+      "id": "assets_js_models_producto",
+      "label": "Producto",
+      "degree": 11
+    },
+    {
+      "id": "backend_models_recetaitem_recetaitem",
+      "label": "RecetaItem",
+      "degree": 10
+    },
+    {
+      "id": "backend_controllers_insumocontroller_insumocontroller",
+      "label": "InsumoController",
+      "degree": 7
+    }
+  ],
+  "surprises": [],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}

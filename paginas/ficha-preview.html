@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Previa - Ficha Técnica de Costeo | Costia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=24">
+    <link rel="stylesheet" href="../assets/css/terminal-theme.css">
+    <link rel="stylesheet" href="../assets/css/ficha-tecnica.css?v=25">
+    <link rel="icon" href="../assets/img/costia-icon-green.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+    <style>
+        body {
+            font-family: 'Source Sans 3', -apple-system, sans-serif;
+            background: #E8EFEA;
+            color: var(--tinta, #10211B);
+            line-height: 1.45;
+            padding: 30px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== BARRA DE HERRAMIENTAS (PANTALLA) ===== -->
+    <div class="barra-preview no-imprimir">
+        <div class="barra-preview__info">
+            <h2>Ficha Técnica de Producción y Costeo</h2>
+            <p id="barra-subtitulo">Cargando datos del producto...</p>
+        </div>
+        <div class="barra-preview__acciones">
+            <div class="barra-preview__selector">
+                <label for="select-ficha-producto" class="barra-preview__label">Cambiar:</label>
+                <select id="select-ficha-producto" class="select-ficha-producto" aria-label="Seleccionar ficha técnica de producto">
+                    <!-- Opciones pobladas dinámicamente -->
+                </select>
+            </div>
+            <button class="btn-preview btn-preview--imprimir" id="btn-imprimir-ficha" type="button">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect width="12" height="8" x="6" y="14"></rect></svg>
+                <span>Imprimir / Guardar PDF</span>
+            </button>
+            <a href="ficha-tecnica.html" class="btn-preview btn-preview--volver">
+                ← Volver al Catálogo
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== HOJA DE FICHA TÉCNICA DINÁMICA OFICIAL ===== -->
+    <article class="ficha-hoja" id="ficha-imprimible">
+
+        <!-- 1. Encabezado Institucional -->
+        <header class="ficha-header">
+            <div class="ficha-marca">
+                <img src="../assets/img/costia-icon-green.png" alt="Costia">
+                <div>
+                    <h1 class="ficha-marca__titulo">Ficha Técnica de Costeo</h1>
+                    <div class="ficha-marca__negocio" id="ficha-negocio-nombre">Costia Negocio</div>
+                </div>
+            </div>
+            <div class="ficha-meta">
+                <span class="ficha-badge-codigo" id="ficha-codigo">REC-001</span><br>
+                <span>Fecha: <strong id="ficha-fecha">—</strong></span><br>
+                <span>Versión: <strong>1.0 (Estandarizada)</strong></span><br>
+                <span>Estado: <strong class="ficha-estado-vigente">Vigente</strong></span>
+            </div>
+        </header>
+
+        <!-- 2. Título del Producto y Precios Destacados -->
+        <div class="ficha-producto-header">
+            <div>
+                <h2 class="ficha-producto-titulo" id="ficha-prod-nombre">Cargando...</h2>
+                <p class="ficha-producto-sub" id="ficha-prod-sub">Receta y costeo estandarizado</p>
+            </div>
+            <div class="ficha-precios-wrap">
+                <div class="ficha-kpi-precio-caja">
+                    <small>Precio Mostrador</small>
+                    <strong id="ficha-precio-venta">$ 0</strong>
+                </div>
+                <div class="ficha-kpi-precio-caja ficha-kpi-precio-caja--delivery">
+                    <small>Delivery (Apps 25%)</small>
+                    <strong id="ficha-precio-delivery-header">$ 0</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Especificaciones del Lote de Producción -->
+        <div class="ficha-specs">
+            <div class="spec-item">
+                <small>Rendimiento lote</small>
+                <strong id="ficha-unidades">1 unidad</strong>
+            </div>
+            <div class="spec-item">
+                <small>Merma técnica</small>
+                <strong id="ficha-merma-pct">0%</strong>
+            </div>
+            <div class="spec-item">
+                <small>Costo empaque / ud</small>
+                <strong id="ficha-empaque-costo">$ 0</strong>
+            </div>
+            <div class="spec-item">
+                <small>Modo / Margen</small>
+                <strong class="ficha-color-esmeralda" id="ficha-modo-label">—</strong>
+            </div>
+        </div>
+
+        <!-- 4. Tabla de Materias Primas / Ingredientes del Lote -->
+        <h3 class="seccion-titulo">01. Composición de Ingredientes del Lote</h3>
+        <table class="ficha-tabla">
+            <thead>
+                <tr>
+                    <th style="width: 38%;">Ingrediente</th>
+                    <th class="col-num" style="width: 14%;">Cantidad</th>
+                    <th style="width: 12%;">Unidad</th>
+                    <th class="col-num" style="width: 18%;">Costo Unit. Compra</th>
+                    <th class="col-num" style="width: 18%;">Subtotal Receta</th>
+                </tr>
+            </thead>
+            <tbody id="ficha-tbody-ingredientes">
+                <tr><td colspan="5" style="text-align:center;">Cargando ingredientes...</td></tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" id="ficha-tfoot-label">Subtotal Materias Primas del Lote</td>
+                    <td class="col-num" id="ficha-subtotal-insumos">$ 0</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- 5. Estructura de Costos e Indicadores Financieros -->
+        <h3 class="seccion-titulo">02. Estructura de Costos y Utilidad por Unidad</h3>
+        <div class="ficha-financiera-grid">
+            <div class="card-financiera">
+                <div class="fila-desglose">
+                    <span>Insumos directos / ud:</span>
+                    <strong id="ficha-desg-insumos">$ 0</strong>
+                </div>
+                <div class="fila-desglose">
+                    <span>Merma técnica calculada:</span>
+                    <strong id="ficha-desg-merma">+$ 0</strong>
+                </div>
+                <div class="fila-desglose">
+                    <span>Empaque y embalaje / ud:</span>
+                    <strong id="ficha-desg-empaque">+$ 0</strong>
+                </div>
+                <div class="fila-desglose">
+                    <span>Cuota arriendo y servicios / ud:</span>
+                    <strong id="ficha-desg-fijos">+$ 0</strong>
+                </div>
+                <div class="fila-desglose">
+                    <span>Costo Unitario Total Real:</span>
+                    <strong class="ficha-color-ambar" id="ficha-desg-costo-total">$ 0</strong>
+                </div>
+            </div>
+
+            <div class="card-financiera">
+                <div class="fila-desglose">
+                    <span>Costo unitario real:</span>
+                    <strong id="ficha-desg-costo-base">$ 0</strong>
+                </div>
+                <div class="fila-desglose">
+                    <span>Margen comercial aplicado:</span>
+                    <strong class="ficha-color-esmeralda" id="ficha-desg-margen-pct">—</strong>
+                </div>
+                <div class="fila-desglose">
+                    <span>Ganancia neta por unidad:</span>
+                    <strong class="ficha-color-esmeralda" id="ficha-desg-ganancia-ud">+$ 0</strong>
+                </div>
+                <div class="fila-desglose">
+                    <span>Ganancia estimada del lote:</span>
+                    <strong class="ficha-color-esmeralda" id="ficha-desg-ganancia-lote">$ 0</strong>
+                </div>
+                <div class="fila-desglose">
+                    <span>Precio Mostrador:</span>
+                    <strong class="ficha-color-esmeralda-lg" id="ficha-desg-precio-final">$ 0</strong>
+                </div>
+                <div class="fila-desglose fila-desglose--delivery">
+                    <span>Sugerido Delivery (Rappi/DiDi 25%):</span>
+                    <strong id="ficha-desg-precio-delivery">$ 0</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Caja de Punto de Equilibrio (Break-Even) -->
+        <div class="caja-break-even" id="ficha-caja-break-even">
+            <div class="caja-break-even__icono" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+            </div>
+            <div class="caja-break-even__info">
+                <h4>Punto de Equilibrio Operativo</h4>
+                <p id="ficha-break-even-texto">
+                    Calculando punto de equilibrio según los gastos fijos del negocio...
+                </p>
+            </div>
+        </div>
+
+        <!-- 7. Notas Técnicas y Almacenamiento -->
+        <div class="ficha-notas">
+            <strong>Instrucciones y conservación:</strong> Mantener en condiciones higiénicas óptimas. Esta ficha técnica estandariza los costos y proporciones oficiales para la preparación del lote.
+        </div>
+
+        <!-- 8. Firmas de Aprobación -->
+        <div class="ficha-firmas">
+            <div class="linea-firma">Preparado por / Cocina</div>
+            <div class="linea-firma">Aprobado / Administración</div>
+        </div>
+
+        <!-- 9. Pie de página institucional -->
+        <footer class="ficha-footer">
+            <span>Generado con precisión por <strong>Costia</strong> · Inteligencia Financiera Gastronómica</span>
+            <span>Documento oficial de costeo y estandarización</span>
+        </footer>
+
+    </article>
+
+    <script src="../assets/js/models.js?v=24"></script>
+    <script src="../assets/js/store.js?v=24"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/ficha-tecnica.js?v=24"></script>
+</body>
+</html>

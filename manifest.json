@@ -1,0 +1,25 @@
+{
+  "name": "Costia — Costeo Gastronómico",
+  "short_name": "Costia",
+  "description": "Consola de costeo, fichas técnicas y fijación de precios para obradores y panaderías artesanales.",
+  "start_url": "/paginas/productos.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#071F17",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/img/costia-icon-green.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/img/costia-icon-green.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

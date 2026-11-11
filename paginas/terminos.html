@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia — Términos y Condiciones de Uso del Servicio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=24">
+    <link rel="icon" href="../assets/img/costia-icon.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+    <style>
+        body {
+            background-color: var(--fondo-claro);
+            color: var(--tinta);
+            font-family: var(--font-texto);
+            line-height: 1.6;
+            padding: 30px 16px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .terminos-container {
+            width: 100%;
+            max-width: 840px;
+        }
+
+        .terminos-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .terminos-marca {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--verde-pino);
+            font-family: var(--font-titulos);
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .terminos-marca img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+
+        .btn-volver-app {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #ffffff;
+            border: 1px solid var(--linea-fuerte);
+            border-radius: 10px;
+            color: var(--verde-pino);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-volver-app:hover {
+            background: var(--verde-pino);
+            color: #ffffff;
+            border-color: var(--verde-pino);
+        }
+
+        .terminos-hoja {
+            background: #ffffff;
+            border: 1px solid var(--linea);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px -8px rgba(7, 31, 23, 0.08);
+            padding: 44px 48px;
+        }
+
+        @media (max-width: 640px) {
+            .terminos-hoja {
+                padding: 24px 20px;
+            }
+        }
+
+        .terminos-badge {
+            display: inline-block;
+            background: rgba(10, 104, 71, 0.1);
+            color: var(--verde-esmeralda);
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+
+        .terminos-titulo {
+            font-family: var(--font-titulos);
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--verde-pino);
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .terminos-fecha {
+            font-size: 13px;
+            color: var(--texto-secundario);
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--linea);
+            padding-bottom: 16px;
+        }
+
+        .terminos-resumen {
+            background: #F2F7F4;
+            border-left: 4px solid var(--verde-esmeralda);
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-size: 14.5px;
+            color: #10211B;
+            margin-bottom: 32px;
+        }
+
+        .terminos-seccion {
+            margin-bottom: 32px;
+        }
+
+        .terminos-seccion h2 {
+            font-family: var(--font-titulos);
+            font-size: 20px;
+            color: var(--verde-pino);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminos-seccion p {
+            font-size: 14.5px;
+            color: var(--tinta);
+            margin-bottom: 12px;
+        }
+
+        .terminos-seccion ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .terminos-seccion li {
+            margin-bottom: 6px;
+        }
+
+        .terminos-destacado-legal {
+            background: #FFFDF0;
+            border: 1px solid rgba(140, 71, 14, 0.25);
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #4D2604;
+            margin: 16px 0;
+            line-height: 1.55;
+        }
+
+        .terminos-destacado-verde {
+            background: #F2F7F4;
+            border: 1px solid rgba(10, 104, 71, 0.2);
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-size: 14px;
+            color: var(--verde-pino);
+            margin: 16px 0;
+            line-height: 1.55;
+        }
+
+        .terminos-footer-cta {
+            margin-top: 40px;
+            text-align: center;
+            border-top: 1px solid var(--linea);
+            padding-top: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<div class="terminos-container">
+
+    <header class="terminos-topbar">
+        <a href="../index.html" class="terminos-marca">
+            <img src="../assets/img/costia-icon-green.png" alt="Logo Costia">
+            <span>Costia</span>
+        </a>
+        <a href="registro.html" class="btn-volver-app">← Volver al registro</a>
+    </header>
+
+    <main class="terminos-hoja">
+        <span class="terminos-badge">Contrato de Adhesión &amp; Estatuto del Consumidor</span>
+        <h1 class="terminos-titulo">Términos y Condiciones de Uso del Servicio</h1>
+        <p class="terminos-fecha">Última actualización: Noviembre de 2026 · Cumplimiento de la Ley 1480 de 2011 (Estatuto del Consumidor de Colombia), Ley 527 de 1999 (Comercio Electrónico) y Normativa de la SIC</p>
+
+        <div class="terminos-resumen">
+            <strong>Resumen en palabras claras:</strong> Al usar <strong>Costia</strong>, accedes a una consola tecnológica diseñada para ayudarte a calcular costos y sugerir precios en tu negocio gastronómico. <strong>Tus recetas son 100% tuyas</strong> y nunca las comercializaremos. Si en algún momento adquieres una suscripción de pago, cuentas con el <strong>Derecho legal de Retracto de 5 días hábiles</strong> para recibir el 100% de tu dinero de vuelta, sin preguntas.
+        </div>
+
+        <!-- 1. IDENTIFICACIÓN -->
+        <section class="terminos-seccion">
+            <h2>1. Identificación del Responsable y Contacto</h2>
+            <p>
+                El presente contrato regula el acceso y uso de la plataforma digital <strong>Costia</strong> (en adelante, «Costia» o «la Plataforma»), desarrollada y operada en la República de Colombia.
+            </p>
+            <ul>
+                <li><strong>Canal oficial de atención al usuario y PQRS:</strong> <strong style="color:var(--verde-esmeralda);">soporte@costia.com</strong></li>
+                <li><strong>Canal de asuntos legales y privacidad:</strong> <strong style="color:var(--verde-esmeralda);">privacidad@costia.com</strong></li>
+                <li><strong>Jurisdicción:</strong> República de Colombia.</li>
+            </ul>
+        </section>
+
+        <!-- 2. OBJETO DEL SERVICIO -->
+        <section class="terminos-seccion">
+            <h2>2. Objeto y Alcance del Software</h2>
+            <p>
+                Costia proporciona una suite de software orientada a obradores artesanales, panaderías, pastelerías, tostadores de café y talleres gastronómicos, cuyas funcionalidades comprenden:
+            </p>
+            <ul>
+                <li>Gestión de catálogo de materias primas con conversión automática de unidades de compra a porciones mínimas de receta (gramos, mililitros, unidades).</li>
+                <li>Formulación de recetas de productos con cálculo de costo directo de ingredientes, merma por horneado/cocción y costos unitarios de empaque.</li>
+                <li>Distribución y asignación de costos fijos operativos (arriendo y recibos públicos de energía, gas y agua) por lote y por unidad.</li>
+                <li>Simulación de precios de venta mediante margen comercial sobre venta o multiplicador sobre costo (Mark-up).</li>
+                <li>Generación de Fichas Técnicas de Producción para control de calidad y estandarización de cocina.</li>
+            </ul>
+        </section>
+
+        <!-- 3. DERECHO DE RETRACTO Y POLÍTICA DE REEMBOLSO (EXIGENCIA LEY 1480 ART. 47) -->
+        <section class="terminos-seccion">
+            <h2>3. Derecho de Retracto y Política de Reembolso (Ley 1480 de 2011)</h2>
+            <p>
+                En estricto cumplimiento del <strong>Artículo 47 de la Ley 1480 de 2011 (Estatuto del Consumidor de la República de Colombia)</strong> para ventas efectuadas a través de comercio electrónico y medios a distancia:
+            </p>
+
+            <div class="terminos-destacado-legal">
+                <strong>Término Legal de Retracto (5 Días Hábiles):</strong><br>
+                El usuario que adquiera cualquier plan comercial o suscripción de pago en Costia tiene derecho a retractarse de la compra dentro del término de <strong>cinco (5) días hábiles</strong> contados a partir de la fecha de activación del servicio o pago.<br><br>
+                Para ejercerlo, bastará con enviar una comunicación escrita a <strong>soporte@costia.com</strong> indicando el correo asociado a la cuenta. Costia efectuará la <strong>devolución íntegra del 100% del dinero pagado</strong> sin realizar descuentos, cobros administrativos ni penalidad alguna, en un plazo máximo de quince (15) días calendario siguientes a la radicación de la solicitud.
+            </div>
+
+            <p>
+                Posterior a los cinco (5) días hábiles de ley, el usuario podrá cancelar su suscripción en cualquier momento antes de su siguiente ciclo de renovación sin penalidades de permanencia mínima.
+            </p>
+        </section>
+
+        <!-- 4. PROPIEDAD DE LAS RECETAS Y PROPIEDAD INTELECTUAL -->
+        <section class="terminos-seccion">
+            <h2>4. Propiedad Intelectual y Secreto de Recetas</h2>
+            
+            <div class="terminos-destacado-verde">
+                <strong>Tus Recetas y Secretos de Producción son 100% Tuyos:</strong><br>
+                Costia reconoce y garantiza que toda receta, fórmula maestra, proporción de ingredientes, costo confidencial de insumos y parámetros de mano de obra ingresados en la plataforma pertenecen única y exclusivamente al titular de la cuenta. Costia no reclama ningún derecho de propiedad, licencia comercial ni autorización de uso sobre las fórmulas culinarias de sus usuarios.
+            </div>
+
+            <p>
+                Por su parte, el software, código fuente, interfaz gráfica («Atelier»), algoritmos de cálculo, diseño visual, logotipos y marcas comerciales «Costia» son de propiedad exclusiva de Costia y están protegidos por las leyes de propiedad intelectual y derechos de autor de Colombia e internacionales.
+            </p>
+        </section>
+
+        <!-- 5. DELIMITACIÓN DE RESPONSABILIDAD OPERATIVA -->
+        <section class="terminos-seccion">
+            <h2>5. Alcance de los Cálculos y Exclusión de Responsabilidad Tributaria</h2>
+            <p>
+                Costia es un sistema de apoyo para la gestión operativa y estimación de precios gastronómicos:
+            </p>
+            <ul>
+                <li>Los márgenes sugeridos, puntos de equilibrio y precios proyectados son herramientas matemáticas de apoyo basadas en los datos suministrados por el propio usuario.</li>
+                <li><strong>No constituye asesoría tributaria o contable oficial:</strong> Costia no reemplaza la labor de un contador público titulado ni las obligaciones de facturación electrónica o declaraciones tributarias formales ante la Dirección de Impuestos y Aduanas Nacionales (DIAN) o autoridades municipales de impuestos (ICA).</li>
+                <li>El usuario es el único responsable de verificar la fidelidad de las cantidades ingresadas y de fijar el precio final de venta al público en su establecimiento.</li>
+            </ul>
+        </section>
+
+        <!-- 6. PQR Y TIEMPOS DE RESPUESTA -->
+        <section class="terminos-seccion">
+            <h2>6. Peticiones, Quejas, Reclamos y Sugerencias (PQRS)</h2>
+            <p>
+                Garantizamos canales abiertos y transparentes de atención a nuestros usuarios:
+            </p>
+            <ul>
+                <li><strong>Radicación electrónica:</strong> Cualquier PQR puede ser radicada las 24 horas al correo <strong style="color:var(--verde-esmeralda);">soporte@costia.com</strong> con el asunto «PQR - [Nombre de Negocio]».</li>
+                <li><strong>Tiempo de respuesta:</strong> De conformidad con la Ley 1755 de 2015, todas las peticiones serán resueltas y notificadas en un plazo máximo legal de <strong>quince (15) días hábiles</strong> siguientes a su recepción.</li>
+            </ul>
+        </section>
+
+        <!-- 7. LEY APLICABLE Y RESOLUCIÓN DE CONFLICTOS -->
+        <section class="terminos-seccion">
+            <h2>7. Ley Aplicable y Jurisdicción</h2>
+            <p>
+                Estos Términos y Condiciones se rigen e interpretan bajo la legislación vigente de la República de Colombia. Cualquier controversia que no pueda resolverse amistosamente se someterá a la jurisdicción de los jueces competentes de Colombia y las instancias de protección al consumidor de la <strong>Superintendencia de Industria y Comercio (SIC)</strong>.
+            </p>
+        </section>
+
+        <div class="terminos-footer-cta">
+            <a href="registro.html" class="btn-volver-app">← Ir a Crear Cuenta</a>
+            <a href="privacidad.html" class="btn-volver-app">Ver Política de Privacidad y Cookies →</a>
+        </div>
+    </main>
+
+</div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
+</body>
+</html>

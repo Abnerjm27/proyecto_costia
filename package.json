@@ -1,0 +1,22 @@
+{
+  "name": "proyecto_costia",
+  "version": "1.0.0",
+  "description": "Aplicación web orientada a negocios de manufactura, gastronomía y panadería que elaboran sus propios productos. Permite calcular el costo real de producción por unidad a partir de recetas e insumos, sugiriendo precios de venta mediante márgenes de ganancia en porcentaje o multiplicadores de costo según el tipo de negocio.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}

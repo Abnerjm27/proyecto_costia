@@ -1,0 +1,651 @@
+/**
+ * terminal-theme.css — Sistema de Diseño y Tokens Financieros Costia Pro
+ *
+ * Organización Financiera Pro:
+ * - Fondos oscuros de alta fidelidad: #0B0E11 (canvas), #181A20 (tarjetas/paneles), #202630 (hover/elevado)
+ * - Líneas de rejilla y bordes: #2B313A / #1E2329
+ * - Acento de marca Costia Gold: #F0B90B (Costia Gold) / #FCD535 (Hover Gold)
+ * - Métricas positivas / ganancias: #0ECB81 (Finance Emerald Green) con glow suave
+ * - Métricas negativas / costos altos: #F6465D (Finance Crimson Red)
+ * - Tipografía y números tabulares de alta densidad legibles para finanzas
+ * - Cumplimiento WCAG AAA con objetivos táctiles >= 44px
+ */
+
+:root {
+    /* === PALETA COSTIA ORIGINAL FINANCIERA (POR DEFECTO) === */
+    --cp-bg-dark: #F2F7F4;
+    --cp-surface-dark: #FFFFFF;
+    --cp-surface-elevated: #E4EFEA;
+    --cp-surface-hover: #D9E8E1;
+    --cp-border: rgba(7, 31, 23, 0.12);
+    --cp-border-subtle: rgba(7, 31, 23, 0.08);
+    --cp-border-focus: #0A6847;
+
+    --cp-yellow: #0A6847;
+    --cp-yellow-hover: #0D7A54;
+    --cp-yellow-glow: rgba(10, 104, 71, 0.2);
+
+    --cp-green: #0A6847;
+    --cp-green-bg: rgba(10, 104, 71, 0.12);
+    --cp-green-glow: rgba(10, 104, 71, 0.25);
+
+    --cp-red: #C53030;
+    --cp-red-bg: rgba(197, 48, 48, 0.12);
+    --cp-red-glow: rgba(197, 48, 48, 0.25);
+
+    --cp-text-primary: #10211B;
+    --cp-text-secondary: #3D4F47;
+    --cp-text-muted: #6B7280;
+    --cp-text-inverse: #FFFFFF;
+
+    /* Compatibilidad con selectores de apoyo */
+    --bn-bg-dark: var(--cp-bg-dark);
+    --bn-surface-dark: var(--cp-surface-dark);
+    --bn-surface-elevated: var(--cp-surface-elevated);
+    --bn-surface-hover: var(--cp-surface-hover);
+    --bn-border: var(--cp-border);
+    --bn-border-subtle: var(--cp-border-subtle);
+    --bn-border-focus: var(--cp-border-focus);
+    --bn-yellow: var(--cp-yellow);
+    --bn-yellow-hover: var(--cp-yellow-hover);
+    --bn-yellow-glow: var(--cp-yellow-glow);
+    --bn-green: var(--cp-green);
+    --bn-green-bg: var(--cp-green-bg);
+    --bn-green-glow: var(--cp-green-glow);
+    --bn-red: var(--cp-red);
+    --bn-red-bg: var(--cp-red-bg);
+    --bn-red-glow: var(--cp-red-glow);
+    --bn-text-primary: var(--cp-text-primary);
+    --bn-text-secondary: var(--cp-text-secondary);
+    --bn-text-muted: var(--cp-text-muted);
+    --bn-text-inverse: var(--cp-text-inverse);
+}
+
+/* Modo Oscuro Alternativo (Solo si el usuario lo activa manualmente) */
+[data-theme="dark"] {
+    --cp-bg-dark: #0B0E11;
+    --cp-surface-dark: #181A20;
+    --cp-surface-elevated: #202630;
+    --cp-surface-hover: #2B313A;
+    --cp-border: #2B313A;
+    --cp-border-subtle: #1E2329;
+    --cp-border-focus: #0ECB81;
+
+    --cp-yellow: #0ECB81;
+    --cp-yellow-hover: #12E693;
+    --cp-yellow-glow: rgba(14, 203, 129, 0.25);
+
+    --cp-green: #0ECB81;
+    --cp-green-bg: rgba(14, 203, 129, 0.15);
+    --cp-green-glow: rgba(14, 203, 129, 0.25);
+
+    --cp-red: #F6465D;
+    --cp-red-bg: rgba(246, 70, 93, 0.15);
+    --cp-red-glow: rgba(246, 70, 93, 0.25);
+
+    --cp-text-primary: #EAECEF;
+    --cp-text-secondary: #848E9C;
+    --cp-text-muted: #5E6673;
+    --cp-text-inverse: #0B0E11;
+
+    --fondo-claro: #0B0E11;
+    --superficie: #181A20;
+    --papel-elevado: #202630;
+    --tinta: #EAECEF;
+    --texto-secundario: #848E9C;
+    --linea: #2B313A;
+    --linea-fuerte: #363C45;
+}
+
+/* Modo Claro Explícito */
+[data-theme="light"] {
+    --cp-bg-dark: #F2F7F4;
+    --cp-surface-dark: #FFFFFF;
+    --cp-surface-elevated: #E4EFEA;
+    --cp-surface-hover: #D9E8E1;
+    --cp-border: rgba(7, 31, 23, 0.12);
+    --cp-border-subtle: rgba(7, 31, 23, 0.08);
+    --cp-border-focus: #0A6847;
+
+    --cp-yellow: #0A6847;
+    --cp-yellow-hover: #0D7A54;
+    --cp-yellow-glow: rgba(10, 104, 71, 0.2);
+
+    --cp-green: #0A6847;
+    --cp-green-bg: rgba(10, 104, 71, 0.12);
+    --cp-green-glow: rgba(10, 104, 71, 0.25);
+
+    --cp-red: #C53030;
+    --cp-red-bg: rgba(197, 48, 48, 0.12);
+    --cp-red-glow: rgba(197, 48, 48, 0.25);
+
+    --cp-text-primary: #10211B;
+    --cp-text-secondary: #3D4F47;
+    --cp-text-muted: #6B7280;
+    --cp-text-inverse: #FFFFFF;
+
+    --fondo-claro: #F2F7F4;
+    --superficie: #FFFFFF;
+    --papel-elevado: #E4EFEA;
+    --tinta: #10211B;
+    --texto-secundario: #3D4F47;
+    --linea: rgba(7, 31, 23, 0.12);
+    --linea-fuerte: rgba(7, 31, 23, 0.22);
+    --verde-esmeralda: #0A6847;
+    --verde-esmeralda-claro: #0D7A54;
+    --sombra-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --sombra-md: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Tipografía de apoyo */
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+}
+
+/* Barra de ticker y estado en vivo */
+.terminal-ticker-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: var(--verde-pino, #071F17);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.8rem;
+    color: #F2F7F4;
+    font-family: var(--font-mono);
+    min-height: 44px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 52;
+}
+
+.terminal-ticker-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.terminal-ticker-brand {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--cp-text-primary);
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.terminal-ticker-tools {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terminal-ticker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(14, 203, 129, 0.15);
+    color: var(--cp-green);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.terminal-ticker-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cp-green);
+    box-shadow: 0 0 8px var(--cp-green);
+}
+
+/* Ticker values / tabular figures */
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+}
+
+/* Chips de ganancia / costo Costia Pro */
+.terminal-chip-gain,
+.bn-chip-gain {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--cp-green-bg);
+    color: var(--cp-green);
+    font-weight: 700;
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+}
+
+.terminal-chip-loss,
+.bn-chip-loss {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--cp-red-bg);
+    color: var(--cp-red);
+    font-weight: 700;
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+}
+
+.terminal-chip-neutral,
+.bn-chip-neutral {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--cp-surface-elevated);
+    color: var(--cp-text-secondary);
+    font-weight: 600;
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+}
+
+/* Tarjetas financieras estilo Terminal */
+.terminal-card,
+.bn-card {
+    background: var(--cp-surface-dark);
+    border: 1px solid var(--cp-border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.terminal-card:hover,
+.bn-card:hover {
+    border-color: #3B424D;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Botones con accesibilidad táctil >= 44px */
+.terminal-btn-primary,
+.bn-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: var(--verde-esmeralda, #0A6847);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.terminal-btn-primary:hover,
+.bn-btn-primary:hover {
+    background: var(--verde-esmeralda-claro, #0D7A54);
+    box-shadow: 0 0 14px rgba(10, 104, 71, 0.35);
+}
+
+.terminal-btn-secondary,
+.bn-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: var(--cp-surface-elevated);
+    color: var(--cp-text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid var(--cp-border);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.terminal-btn-secondary:hover,
+.bn-btn-secondary:hover {
+    background: var(--cp-surface-hover);
+    border-color: #474D57;
+}
+
+/* Inputs accesibles para terminal y componentes dedicados */
+.bn-input,
+.terminal-input,
+.terminal-workspace input[type="text"],
+.terminal-workspace input[type="number"],
+.terminal-workspace input[type="password"],
+.terminal-workspace input[type="email"],
+.terminal-workspace select {
+    min-height: 44px;
+    background: var(--cp-surface-dark);
+    border: 1px solid var(--cp-border);
+    color: var(--cp-text-primary);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.terminal-workspace input:focus,
+.terminal-workspace select:focus {
+    border-color: var(--cp-yellow);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--cp-yellow-glow);
+}
+
+/* Switch de Tema en Header */
+.terminal-theme-switch,
+.bn-theme-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: var(--cp-surface-elevated);
+    border: 1px solid var(--cp-border);
+    color: var(--cp-text-secondary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+    min-width: 44px;
+    transition: all 0.18s ease;
+}
+
+.terminal-theme-switch:hover,
+.bn-theme-switch:hover {
+    border-color: var(--cp-yellow);
+    color: var(--cp-yellow);
+    background: var(--cp-surface-hover);
+}
+
+/* ============================================================
+   COSTIA PRO SHELL: NAVEGACIÓN SUPERIOR (APP-HEADER)
+   ============================================================ */
+
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--cp-surface-dark) !important;
+    border-bottom: 1px solid var(--cp-border) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 !important;
+    height: auto !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important;
+    overflow: visible !important;
+}
+
+.app-header__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    height: 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.app-header__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    text-decoration: none;
+    flex-shrink: 0;
+    min-height: 44px;
+    min-width: 44px;
+}
+
+.app-header__logo img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--cp-border);
+    transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.app-header__logo:hover img {
+    border-color: var(--cp-yellow);
+    transform: scale(1.04);
+}
+
+.app-header__logo span {
+    font-family: var(--font-titulos);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--cp-text-primary) !important;
+    letter-spacing: -0.3px;
+}
+
+.app-header__acciones {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.app-header__btn-config {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    background: var(--cp-surface-elevated) !important;
+    border: 1px solid var(--cp-border) !important;
+    color: var(--cp-text-secondary) !important;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-family: var(--font-texto);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.app-header__btn-config:hover {
+    background: var(--cp-surface-hover) !important;
+    border-color: #474D57 !important;
+    color: var(--cp-text-primary) !important;
+}
+
+.app-header__btn-config img {
+    width: 15px;
+    height: 15px;
+    opacity: 0.8;
+}
+
+.app-header__negocio {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: var(--cp-text-primary) !important;
+    font-family: var(--font-texto);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+    padding: 0 4px;
+    transition: color 0.18s ease;
+}
+
+.app-header__negocio:hover {
+    color: var(--cp-yellow) !important;
+}
+
+.app-header__chevron {
+    font-size: 10px;
+    color: var(--cp-text-muted);
+}
+
+/* ============================================================
+   COSTIA PRO SHELL: BARRA INFERIOR MÓVIL (BOTTOM-NAV)
+   ============================================================ */
+
+.bottom-nav {
+    display: none !important;
+}
+
+.bottom-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 48px;
+    min-width: 64px;
+    padding: 6px 12px;
+    color: var(--cp-text-secondary) !important;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-radius: 8px;
+    transition: color 0.18s ease, background 0.18s ease;
+}
+
+.bottom-nav__item:hover {
+    color: var(--cp-text-primary) !important;
+    background: var(--cp-surface-elevated);
+}
+
+.bottom-nav__item img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.75;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    filter: brightness(0.9);
+}
+
+.bottom-nav__item:hover img {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+.bottom-nav__item.activo {
+    color: var(--cp-yellow) !important;
+    background: rgba(240, 185, 11, 0.08);
+    position: relative;
+}
+
+.bottom-nav__item.activo::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--cp-yellow);
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 0 8px var(--cp-yellow);
+}
+
+.bottom-nav__item.activo img {
+    opacity: 1;
+    filter: none;
+}
+
+/* FAB Central Costia Gold */
+.bottom-nav__fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    border-radius: 50%;
+    background: var(--cp-yellow) !important;
+    color: #0B0E11 !important;
+    font-size: 28px;
+    font-weight: 300;
+    text-decoration: none;
+    line-height: 1;
+    margin-top: -24px;
+    box-shadow: 0 4px 16px var(--cp-yellow-glow), 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+    border: 3px solid var(--cp-surface-dark) !important;
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.bottom-nav__fab:hover {
+    background: var(--cp-yellow-hover) !important;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(240, 185, 11, 0.35), 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.bottom-nav__fab:active {
+    transform: translateY(0) scale(0.97);
+}
+
+/* ============================================================
+   RESPONSIVIDAD Y ERGONOMÍA (WCAG AAA)
+   ============================================================ */
+
+@media (max-width: 640px) {
+    .app-header__nav {
+        padding: 0 16px;
+        height: 54px;
+    }
+
+    .app-header__logo span {
+        font-size: 17px;
+    }
+
+    .app-header__btn-config span {
+        display: none;
+    }
+
+    .app-header__btn-config {
+        padding: 8px 10px;
+        min-width: 44px;
+    }
+
+    .terminal-ticker-bar {
+        padding: 0 14px;
+        min-height: 40px;
+    }
+
+    .terminal-ticker-brand {
+        font-size: 0.75rem;
+    }
+
+    .terminal-ticker-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+
+    .terminal-theme-switch,
+    .bn-theme-switch {
+        padding: 4px 10px;
+        font-size: 0.78rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .terminal-ticker-brand {
+        display: none;
+    }
+
+    .terminal-ticker-badge {
+        font-size: 0.7rem;
+    }
+}

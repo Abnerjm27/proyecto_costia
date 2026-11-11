@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia — Ficha Técnica de Costeo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=24">
+    <link rel="stylesheet" href="../assets/css/terminal-theme.css">
+    <link rel="stylesheet" href="../assets/css/app-shell.css?v=25">
+    <link rel="stylesheet" href="../assets/css/app.css?v=25">
+    <link rel="stylesheet" href="../assets/css/ficha-tecnica.css?v=25">
+    <link rel="icon" href="../assets/img/costia-icon-green.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+</head>
+<body class="costia-workstation-body">
+
+<a href="#contenido-principal" class="costia-skip-link">Saltar al contenido principal</a>
+
+<!-- BARRA MÓVIL (< 900px) -->
+<header class="costia-mobile-bar" role="banner">
+    <a href="productos.html" class="costia-mobile-brand">
+        <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="costia-mobile-brand-logo">
+        <span class="costia-mobile-brand-title">Costia</span>
+    </a>
+    <button type="button" class="costia-mobile-toggle" id="btn-mobile-sidebar-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="terminal-sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+</header>
+<div class="costia-drawer-backdrop" id="costia-drawer-backdrop" aria-hidden="true"></div>
+
+<!-- CONTENEDOR SHELL PRINCIPAL -->
+<div class="terminal-shell-container">
+
+    <!-- ===== SIDEBAR LATERAL VERTICAL ===== -->
+    <aside class="terminal-sidebar" id="terminal-sidebar" aria-label="Navegación principal de Costia">
+        <div class="sidebar-inner">
+            <div class="sidebar-brand-box">
+                <a href="productos.html" class="sidebar-brand-link">
+                    <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="sidebar-brand-logo">
+                    <span class="sidebar-brand-title">Costia</span>
+                </a>
+                <button type="button" class="sidebar-close-btn" id="btn-sidebar-close" aria-label="Cerrar menú lateral">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-nav-list" role="navigation">
+                <li>
+                    <a href="dashboard.html" class="sidebar-item-link">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                            <span>Dashboard</span>
+                        </span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item-group">
+                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="false">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                            <span>Insumos</span>
+                        </span>
+                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sidebar-subnav" id="subnav-insumos">
+                        <a href="insumos.html" class="sidebar-sublink">Inventario Activo</a>
+                        <a href="insumos.html#alzas" class="sidebar-sublink">Historial de Alzas</a>
+                    </div>
+                </li>
+
+                <li class="sidebar-item-group abierto">
+                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="true">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Productos &amp; Recetas</span>
+                        </span>
+                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sidebar-subnav" id="subnav-productos">
+                        <a href="productos.html" class="sidebar-sublink">Catálogo Completo</a>
+                        <a href="crear-producto.html" class="sidebar-sublink">+ Crear Receta</a>
+                        <a href="ficha-tecnica.html" class="sidebar-sublink activo" aria-current="page">Fichas de Impresión</a>
+                    </div>
+                </li>
+
+
+                <li>
+                    <a href="#modal-asesor-costia" class="sidebar-item-link" id="link-sidebar-asesor">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span>Asesor IA</span>
+                        </span>
+                        <span class="sidebar-status-online" title="Asesor IA en línea"></span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item-group">
+                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="false" id="sidebar-config-toggle">
+                        <span class="sidebar-icon-label">
+                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Configuración</span>
+                        </span>
+                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sidebar-subnav" id="subnav-configuracion">
+                        <a href="configuracion.html" class="sidebar-sublink" id="link-sidebar-config-page">Configuración y Gastos Fijos</a>
+                        <button type="button" class="sidebar-sublink sidebar-sublink--danger" id="link-sidebar-restaurar-demo">Restaurar Datos Demo</button>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer-box">
+                <a href="login.html" class="sidebar-item-link">
+                    <span class="sidebar-icon-label">
+                        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        <span>Cerrar Sesión</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== VIEWPORT DE CONTENIDO PRINCIPAL ===== -->
+    <div class="terminal-content-viewport">
+
+        <!-- ===== BARRA SUPERIOR EJECUTIVA ===== -->
+        <header class="topbar-status-bar" role="region" aria-label="Barra ejecutiva de resumen">
+            <div class="topbar-context-box">
+                <span class="topbar-beacon-dot" aria-hidden="true"></span>
+                <span class="topbar-context-title">Fichas Técnicas de Producción</span>
+            </div>
+
+            <div class="topbar-status-actions">
+                <a href="productos.html" class="btn-secundario btn-sm topbar-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    <span>Ver Catálogo de Productos</span>
+                </a>
+                <div class="app-header__acciones">
+                    <span class="app-header__negocio" id="ficha-topbar-negocio" title="Ir a Configuración del Negocio">Panadería El Roble</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== CONTENIDO PRINCIPAL ===== -->
+        <main class="terminal-main-stage" id="contenido-principal">
+
+            <!-- ========================================================
+                 1. SECCIÓN: CATÁLOGO ORGANIZADO DE FICHAS TÉCNICAS
+                 ======================================================== -->
+            <section class="catalogo-fichas-stage no-imprimir" id="seccion-catalogo-fichas" aria-label="Catálogo de Fichas Técnicas">
+                <div class="catalogo-fichas-header">
+                    <div class="catalogo-fichas-header__info">
+                        <h1>Catálogo de Fichas Técnicas</h1>
+                        <p>Fichas oficiales de producción y costeo. Selecciona cualquier receta para ver su desglose oficial e imprimir en PDF.</p>
+                    </div>
+                    <div class="catalogo-fichas-header__actions">
+                        <a href="ficha-tecnica.html?catalogo=pdf&print=1" class="btn-secundario" style="display: inline-flex; align-items: center; gap: 6px;" title="Exportar catálogo completo de productos en PDF">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect width="12" height="8" x="6" y="14"></rect></svg>
+                            <span>Exportar catálogo (PDF)</span>
+                        </a>
+                        <a href="crear-producto.html" class="btn-primario" style="display: inline-flex; align-items: center; gap: 6px;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span>+ Nueva Receta</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Barra de Búsqueda y Filtro en vivo -->
+                <div class="catalogo-fichas-toolbar">
+                    <div class="catalogo-search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="search" class="catalogo-search-input" id="input-buscar-ficha" placeholder="Buscar ficha técnica por nombre de receta o código REC..." aria-label="Buscar ficha técnica">
+                    </div>
+                    <div class="catalogo-stats-badge" id="catalogo-fichas-count">
+                        Cargando fichas...
+                    </div>
+                </div>
+
+                <!-- Cuadrícula de Tarjetas de Ficha Técnica -->
+                <div class="fichas-catalogo-grid" id="galeria-fichas-grid">
+                    <!-- Tarjetas generadas dinámicamente por ficha-tecnica.js -->
+                </div>
+            </section>
+
+            <!-- ========================================================
+                 2. SECCIÓN: HOJA FÍSICA E IMPRIMIBLE (PREVIEW & PRINT)
+                 (Visible en ?id=X o previsualización directa)
+                 ======================================================== -->
+            <div class="preview-container-wrap" id="vista-hoja-container" style="display: none;">
+
+                <!-- Barra de herramientas superior -->
+                <div class="barra-preview no-imprimir">
+                    <div class="barra-preview__info">
+                        <h2>Ficha Técnica de Producción y Costeo</h2>
+                        <p id="barra-subtitulo">Cargando datos del producto...</p>
+                    </div>
+                    <div class="barra-preview__acciones">
+                        <div class="barra-preview__selector">
+                            <label for="select-ficha-producto" class="barra-preview__label">Cambiar:</label>
+                            <select id="select-ficha-producto" class="select-ficha-producto" aria-label="Seleccionar ficha técnica de producto">
+                                <!-- Opciones pobladas dinámicamente -->
+                            </select>
+                        </div>
+                        <button class="btn-preview btn-preview--imprimir" id="btn-imprimir-ficha" type="button">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect width="12" height="8" x="6" y="14"></rect></svg>
+                            <span>Imprimir / Guardar PDF</span>
+                        </button>
+                        <a href="productos.html" class="btn-preview btn-preview--volver">
+                            ← Volver a productos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hoja Física Imprimible -->
+                <article class="ficha-hoja" id="ficha-imprimible">
+
+                    <!-- 1. Encabezado Institucional -->
+                    <header class="ficha-header">
+                        <div class="ficha-marca">
+                            <img src="../assets/img/costia-icon-green.png" alt="Costia">
+                            <div>
+                                <h1 class="ficha-marca__titulo">Ficha Técnica de Costeo</h1>
+                                <div class="ficha-marca__negocio" id="ficha-negocio-nombre">Costia Negocio</div>
+                            </div>
+                        </div>
+                        <div class="ficha-meta">
+                            <span class="ficha-badge-codigo" id="ficha-codigo">REC-001</span><br>
+                            <span>Fecha: <strong id="ficha-fecha">—</strong></span><br>
+                            <span>Versión: <strong>1.0 (Estandarizada)</strong></span><br>
+                            <span>Estado: <strong class="ficha-estado-vigente">Vigente</strong></span>
+                        </div>
+                    </header>
+
+                    <!-- 2. Título del Producto y Precio Destacado -->
+                    <div class="ficha-producto-header">
+                        <div>
+                            <h2 class="ficha-producto-titulo" id="ficha-prod-nombre">Cargando...</h2>
+                            <p class="ficha-producto-sub" id="ficha-prod-sub">Receta y costeo estandarizado</p>
+                        </div>
+                        <div class="ficha-precios-wrap">
+                            <div class="ficha-kpi-precio-caja">
+                                <small>Precio Mostrador</small>
+                                <strong id="ficha-precio-venta">$ 0</strong>
+                            </div>
+                            <div class="ficha-kpi-precio-caja ficha-kpi-precio-caja--delivery">
+                                <small>Delivery (Apps 25%)</small>
+                                <strong id="ficha-precio-delivery-header">$ 0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Especificaciones del Lote de Producción -->
+                    <div class="ficha-specs">
+                        <div class="spec-item">
+                            <small>Rendimiento lote</small>
+                            <strong id="ficha-unidades">1 unidad</strong>
+                        </div>
+                        <div class="spec-item">
+                            <small>Merma técnica</small>
+                            <strong id="ficha-merma-pct">0%</strong>
+                        </div>
+                        <div class="spec-item">
+                            <small>Costo empaque / ud</small>
+                            <strong id="ficha-empaque-costo">$ 0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <small>Modo / Margen</small>
+                            <strong class="ficha-color-esmeralda" id="ficha-modo-label">—</strong>
+                        </div>
+                    </div>
+
+                    <!-- 4. Tabla de Materias Primas / Ingredientes al Gramo -->
+                    <h3 class="seccion-titulo">01. Composición de Ingredientes del Lote</h3>
+                    <table class="ficha-tabla">
+                        <thead>
+                            <tr>
+                                <th style="width: 38%;">Ingrediente</th>
+                                <th class="col-num" style="width: 14%;">Cantidad</th>
+                                <th style="width: 12%;">Unidad</th>
+                                <th class="col-num" style="width: 18%;">Costo Unit. Compra</th>
+                                <th class="col-num" style="width: 18%;">Subtotal Receta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ficha-tbody-ingredientes">
+                            <tr><td colspan="5" style="text-align:center;">Cargando ingredientes...</td></tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" id="ficha-tfoot-label">Subtotal Materias Primas del Lote</td>
+                                <td class="col-num" id="ficha-subtotal-insumos">$ 0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <!-- 5. Estructura de Costos e Indicadores Financieros -->
+                    <h3 class="seccion-titulo">02. Estructura de Costos y Utilidad por Unidad</h3>
+                    <div class="ficha-financiera-grid">
+                        <div class="card-financiera">
+                            <div class="fila-desglose">
+                                <span>Insumos directos / ud:</span>
+                                <strong id="ficha-desg-insumos">$ 0</strong>
+                            </div>
+                            <div class="fila-desglose">
+                                <span>Merma técnica calculada:</span>
+                                <strong id="ficha-desg-merma">+$ 0</strong>
+                            </div>
+                            <div class="fila-desglose">
+                                <span>Empaque y embalaje / ud:</span>
+                                <strong id="ficha-desg-empaque">+$ 0</strong>
+                            </div>
+                            <div class="fila-desglose">
+                                <span>Cuota arriendo y servicios / ud:</span>
+                                <strong id="ficha-desg-fijos">+$ 0</strong>
+                            </div>
+                            <div class="fila-desglose">
+                                <span>Costo Unitario Total Real:</span>
+                                <strong class="ficha-color-ambar" id="ficha-desg-costo-total">$ 0</strong>
+                            </div>
+                        </div>
+
+                        <div class="card-financiera">
+                            <div class="fila-desglose">
+                                <span>Costo unitario real:</span>
+                                <strong id="ficha-desg-costo-base">$ 0</strong>
+                            </div>
+                            <div class="fila-desglose">
+                                <span>Margen comercial aplicado:</span>
+                                <strong class="ficha-color-esmeralda" id="ficha-desg-margen-pct">—</strong>
+                            </div>
+                            <div class="fila-desglose">
+                                <span>Ganancia neta por unidad:</span>
+                                <strong class="ficha-color-esmeralda" id="ficha-desg-ganancia-ud">+$ 0</strong>
+                            </div>
+                            <div class="fila-desglose">
+                                <span>Ganancia estimada del lote:</span>
+                                <strong class="ficha-color-esmeralda" id="ficha-desg-ganancia-lote">$ 0</strong>
+                            </div>
+                            <div class="fila-desglose">
+                                <span>Precio Mostrador:</span>
+                                <strong class="ficha-color-esmeralda-lg" id="ficha-desg-precio-final">$ 0</strong>
+                            </div>
+                            <div class="fila-desglose fila-desglose--delivery">
+                                <span>Sugerido Delivery (Rappi/DiDi 25%):</span>
+                                <strong id="ficha-desg-precio-delivery">$ 0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Caja de Punto de Equilibrio (Break-Even) -->
+                    <div class="caja-break-even" id="ficha-caja-break-even">
+                        <div class="caja-break-even__icono" aria-hidden="true">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+                        </div>
+                        <div class="caja-break-even__info">
+                            <h4>Punto de Equilibrio Operativo</h4>
+                            <p id="ficha-break-even-texto">
+                                Calculando punto de equilibrio según los gastos fijos del negocio...
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 7. Notas Técnicas y Almacenamiento -->
+                    <div class="ficha-notas">
+                        <strong>Instrucciones y conservación:</strong> Mantener en condiciones higiénicas óptimas. Esta ficha técnica estandariza los costos y proporciones oficiales para la preparación del lote.
+                    </div>
+
+                    <!-- 8. Firmas de Aprobación -->
+                    <div class="ficha-firmas">
+                        <div class="linea-firma">Preparado por / Cocina</div>
+                        <div class="linea-firma">Aprobado / Administración</div>
+                    </div>
+
+                    <!-- 9. Pie de página institucional -->
+                    <footer class="ficha-footer">
+                        <span>Generado con precisión por <strong>Costia</strong> · Inteligencia Financiera Gastronómica</span>
+                        <span>Documento oficial de costeo y estandarización</span>
+                    </footer>
+
+                </article>
+            </div>
+
+            <!-- ========================================================
+                 3. SECCIÓN: CATÁLOGO COMPLETO CONSOLIDADO (EXPORTACIÓN PDF)
+                 ======================================================== -->
+            <div class="preview-container-wrap" id="vista-catalogo-pdf-container" style="display: none;">
+                <div class="barra-preview-catalogo no-imprimir" id="barra-preview-catalogo">
+                    <div class="barra-preview__info">
+                        <h2>Catálogo Consolidado de Productos &amp; Recetas</h2>
+                        <p id="barra-catalogo-subtitulo">Portafolio oficial completo listo para imprimir o guardar como PDF</p>
+                    </div>
+                    <div class="barra-preview__acciones">
+                        <button class="btn-preview btn-preview--imprimir-catalogo" id="btn-imprimir-catalogo-pdf" type="button">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect width="12" height="8" x="6" y="14"></rect></svg>
+                            <span>Imprimir / Guardar PDF</span>
+                        </button>
+                        <a href="productos.html" class="btn-preview btn-preview--volver-catalogo" id="btn-volver-catalogo-pdf">
+                            ← Volver a productos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hoja Física Imprimible del Catálogo Maestro -->
+                <article class="catalogo-hoja-pdf ficha-hoja--catalogo-pdf" id="catalogo-imprimible-completo">
+                    <!-- Inyectado por ficha-tecnica.js -->
+                </article>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/models.js?v=24"></script>
+<script src="../assets/js/store.js?v=24"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/app-shell.js?v=24"></script>
+<script src="../assets/js/asesor/asesor-parser.js?v=25"></script>
+<script src="../assets/js/asesor/asesor-finanzas.js?v=25"></script>
+<script src="../assets/js/asesor/asesor-ui.js?v=25"></script>
+<script src="../assets/js/asesor/asesor-comandos.js?v=25"></script>
+<script src="../assets/js/asesor/asesor-flujo.js?v=25"></script>
+<script src="../assets/js/asesor-agente.js?v=25"></script>
+<script src="../assets/js/ficha-tecnica.js?v=24"></script>
+</body>
+</html>
