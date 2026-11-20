@@ -224,7 +224,10 @@ class Producto {
         this.id                  = Number(id);
         this.nombre              = String(nombre).trim();
         this.modo                = modo === 'multiplicador' ? 'multiplicador' : 'margen';
-        this.valorModo           = Number(valorModo) || (this.modo === 'multiplicador' ? 2.0 : 30);
+        const valorRaw           = Number(valorModo);
+        this.valorModo           = (!isNaN(valorRaw) && valorRaw > 0)
+            ? Math.round(valorRaw * 10000) / 10000
+            : (this.modo === 'multiplicador' ? 2.0 : 30);
         this.tipoMargen          = tipoMargen === 'venta' ? 'venta' : 'costo';
         this.unidadesProducidas  = Math.max(1, parseInt(unidadesProducidas) || 1);
         this.costoEmpaque        = Math.max(0, parseFloat(costoEmpaque) || 0);
@@ -290,6 +293,13 @@ class Producto {
         const precioVenta = this.calcularPrecioVenta(listaInsumos);
         if (precioVenta <= 0) return 0;
         return Math.round(((precioVenta - costoUnidad) / precioVenta) * 100);
+    }
+
+    calcularPrecioDelivery(listaInsumos = [], comisionPct = 25) {
+        const precioVenta = this.calcularPrecioVenta(listaInsumos);
+        const pct = Math.min(80, Math.max(0, Number(comisionPct) || 0));
+        if (pct <= 0) return Math.round(precioVenta);
+        return Math.round(precioVenta / (1 - (pct / 100)));
     }
 
     detectarCambioPrecio(listaInsumos = []) {

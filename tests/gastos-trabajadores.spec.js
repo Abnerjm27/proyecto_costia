@@ -48,8 +48,13 @@ test.describe('Costia — Configuración de Gastos Fijos, Trabajadores y Salario
     await modal.locator('#btn-guardar-config-gastos').click();
     await expect(modal).toBeHidden();
 
-    // Verificar en Crear Producto que se cargue la cuota calculada
+    // Verificar en Crear Producto que se cargue la cuota calculada en el Paso 2
     await page.goto('/paginas/crear-producto.html');
+    const fila = page.locator('#receta-cuerpo tr.receta-fila').first();
+    await fila.locator('.fila-insumo').selectOption({ index: 1 });
+    await fila.locator('.fila-cantidad').fill('500');
+    await page.locator('#btn-ir-paso-2').click();
+
     const btnCargarFijos = page.locator('#btn-cargar-gastos-fijos-form');
     await expect(btnCargarFijos).toBeVisible();
     await btnCargarFijos.click();

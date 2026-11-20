@@ -1,4 +1,4 @@
-/**
+﻿/**
  * terminal-theme.css — Sistema de Diseño y Tokens Financieros Costia Pro
  *
  * Organización Financiera Pro:
@@ -12,31 +12,34 @@
  */
 
 :root {
-    /* === PALETA COSTIA ORIGINAL FINANCIERA (POR DEFECTO) === */
-    --cp-bg-dark: #F2F7F4;
-    --cp-surface-dark: #FFFFFF;
-    --cp-surface-elevated: #E4EFEA;
-    --cp-surface-hover: #D9E8E1;
-    --cp-border: rgba(7, 31, 23, 0.12);
-    --cp-border-subtle: rgba(7, 31, 23, 0.08);
-    --cp-border-focus: #0A6847;
+    /* === PALETA COSTIA ATELIER CÁLIDO (POR DEFECTO) === */
+    --cp-bg-dark: #F6F2EA;
+    --cp-surface-dark: #FDFBF7;
+    --cp-surface-elevated: #EDE6D8;
+    --cp-surface-hover: #E4DCCA;
+    --cp-border: rgba(26, 30, 27, 0.11);
+    --cp-border-subtle: rgba(26, 30, 27, 0.08);
+    --cp-border-focus: #0F6A4A;
 
-    --cp-yellow: #0A6847;
-    --cp-yellow-hover: #0D7A54;
-    --cp-yellow-glow: rgba(10, 104, 71, 0.2);
+    --cp-yellow: #0F6A4A;
+    --cp-yellow-hover: #0B4F37;
+    --cp-yellow-glow: rgba(15, 106, 74, 0.16);
 
-    --cp-green: #0A6847;
-    --cp-green-bg: rgba(10, 104, 71, 0.12);
-    --cp-green-glow: rgba(10, 104, 71, 0.25);
+    --cp-green: #0F6A4A;
+    --cp-green-bg: rgba(15, 106, 74, 0.12);
+    --cp-green-glow: rgba(15, 106, 74, 0.2);
 
-    --cp-red: #C53030;
-    --cp-red-bg: rgba(197, 48, 48, 0.12);
-    --cp-red-glow: rgba(197, 48, 48, 0.25);
+    --cp-amber: #A35018;
+    --cp-amber-bg: #FBF1E8;
 
-    --cp-text-primary: #10211B;
-    --cp-text-secondary: #3D4F47;
-    --cp-text-muted: #6B7280;
-    --cp-text-inverse: #FFFFFF;
+    --cp-red: #B42318;
+    --cp-red-bg: rgba(180, 35, 24, 0.1);
+    --cp-red-glow: rgba(180, 35, 24, 0.18);
+
+    --cp-text-primary: #1A1E1B;
+    --cp-text-secondary: #4E554F;
+    --cp-text-muted: #555D57;
+    --cp-text-inverse: #FDFBF7;
 
     /* Compatibilidad con selectores de apoyo */
     --bn-bg-dark: var(--cp-bg-dark);
@@ -61,80 +64,86 @@
     --bn-text-inverse: var(--cp-text-inverse);
 }
 
-/* Modo Oscuro Alternativo (Solo si el usuario lo activa manualmente) */
+/* Modo Oscuro Alternativo (Madera Oscura & Tinta Nocturna) */
 [data-theme="dark"] {
-    --cp-bg-dark: #0B0E11;
-    --cp-surface-dark: #181A20;
-    --cp-surface-elevated: #202630;
-    --cp-surface-hover: #2B313A;
-    --cp-border: #2B313A;
-    --cp-border-subtle: #1E2329;
-    --cp-border-focus: #0ECB81;
+    --cp-bg-dark: #0A1410;
+    --cp-surface-dark: #11201A;
+    --cp-surface-elevated: #182B23;
+    --cp-surface-hover: #21382E;
+    --cp-border: rgba(246, 242, 234, 0.12);
+    --cp-border-subtle: rgba(246, 242, 234, 0.08);
+    --cp-border-focus: #2BB67E;
 
-    --cp-yellow: #0ECB81;
-    --cp-yellow-hover: #12E693;
-    --cp-yellow-glow: rgba(14, 203, 129, 0.25);
+    --cp-yellow: #2BB67E;
+    --cp-yellow-hover: #3CD194;
+    --cp-yellow-glow: rgba(43, 182, 126, 0.22);
 
-    --cp-green: #0ECB81;
-    --cp-green-bg: rgba(14, 203, 129, 0.15);
-    --cp-green-glow: rgba(14, 203, 129, 0.25);
+    --cp-green: #2BB67E;
+    --cp-green-bg: rgba(43, 182, 126, 0.15);
+    --cp-green-glow: rgba(43, 182, 126, 0.22);
 
-    --cp-red: #F6465D;
-    --cp-red-bg: rgba(246, 70, 93, 0.15);
-    --cp-red-glow: rgba(246, 70, 93, 0.25);
+    --cp-amber: #E08E4B;
+    --cp-amber-bg: rgba(224, 142, 75, 0.14);
 
-    --cp-text-primary: #EAECEF;
-    --cp-text-secondary: #848E9C;
-    --cp-text-muted: #5E6673;
-    --cp-text-inverse: #0B0E11;
+    --cp-red: #F87171;
+    --cp-red-bg: rgba(248, 113, 113, 0.15);
+    --cp-red-glow: rgba(248, 113, 113, 0.22);
 
-    --fondo-claro: #0B0E11;
-    --superficie: #181A20;
-    --papel-elevado: #202630;
-    --tinta: #EAECEF;
-    --texto-secundario: #848E9C;
-    --linea: #2B313A;
-    --linea-fuerte: #363C45;
+    --cp-text-primary: #F4F0E6;
+    --cp-text-secondary: #B8B3A6;
+    --cp-text-muted: #9A9589;
+    --cp-text-inverse: #0A1410;
+
+    --fondo-claro: #0A1410;
+    --superficie: #11201A;
+    --papel-elevado: #182B23;
+    --tinta: #F4F0E6;
+    --texto-secundario: #B8B3A6;
+    --linea: rgba(246, 242, 234, 0.12);
+    --linea-fuerte: rgba(246, 242, 234, 0.22);
 }
 
 /* Modo Claro Explícito */
 [data-theme="light"] {
-    --cp-bg-dark: #F2F7F4;
-    --cp-surface-dark: #FFFFFF;
-    --cp-surface-elevated: #E4EFEA;
-    --cp-surface-hover: #D9E8E1;
-    --cp-border: rgba(7, 31, 23, 0.12);
-    --cp-border-subtle: rgba(7, 31, 23, 0.08);
-    --cp-border-focus: #0A6847;
+    --cp-bg-dark: #F6F2EA;
+    --cp-surface-dark: #FDFBF7;
+    --cp-surface-elevated: #EDE6D8;
+    --cp-surface-hover: #E4DCCA;
+    --cp-border: rgba(26, 30, 27, 0.11);
+    --cp-border-subtle: rgba(26, 30, 27, 0.08);
+    --cp-border-focus: #0F6A4A;
 
-    --cp-yellow: #0A6847;
-    --cp-yellow-hover: #0D7A54;
-    --cp-yellow-glow: rgba(10, 104, 71, 0.2);
+    --cp-yellow: #0F6A4A;
+    --cp-yellow-hover: #0B4F37;
+    --cp-yellow-glow: rgba(15, 106, 74, 0.16);
 
-    --cp-green: #0A6847;
-    --cp-green-bg: rgba(10, 104, 71, 0.12);
-    --cp-green-glow: rgba(10, 104, 71, 0.25);
+    --cp-green: #0F6A4A;
+    --cp-green-bg: rgba(15, 106, 74, 0.12);
+    --cp-green-glow: rgba(15, 106, 74, 0.2);
 
-    --cp-red: #C53030;
-    --cp-red-bg: rgba(197, 48, 48, 0.12);
-    --cp-red-glow: rgba(197, 48, 48, 0.25);
+    --cp-amber: #A35018;
+    --cp-amber-bg: #FBF1E8;
 
-    --cp-text-primary: #10211B;
-    --cp-text-secondary: #3D4F47;
-    --cp-text-muted: #6B7280;
-    --cp-text-inverse: #FFFFFF;
+    --cp-red: #B42318;
+    --cp-red-bg: rgba(180, 35, 24, 0.1);
+    --cp-red-glow: rgba(180, 35, 24, 0.18);
 
-    --fondo-claro: #F2F7F4;
-    --superficie: #FFFFFF;
-    --papel-elevado: #E4EFEA;
-    --tinta: #10211B;
-    --texto-secundario: #3D4F47;
-    --linea: rgba(7, 31, 23, 0.12);
-    --linea-fuerte: rgba(7, 31, 23, 0.22);
-    --verde-esmeralda: #0A6847;
-    --verde-esmeralda-claro: #0D7A54;
-    --sombra-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-    --sombra-md: 0 8px 20px rgba(0, 0, 0, 0.08);
+    --cp-text-primary: #1A1E1B;
+    --cp-text-secondary: #4E554F;
+    --cp-text-muted: #555D57;
+    --cp-text-inverse: #FDFBF7;
+
+    --fondo-claro: #F6F2EA;
+    --superficie: #FDFBF7;
+    --papel-elevado: #EDE6D8;
+    --tinta: #1A1E1B;
+    --texto-secundario: #4E554F;
+    --linea: rgba(26, 30, 27, 0.11);
+    --linea-fuerte: rgba(26, 30, 27, 0.22);
+    --verde-esmeralda: #0F6A4A;
+    --verde-esmeralda-claro: #14805B;
+    --sombra-sm: 0 2px 8px rgba(26, 30, 27, 0.05);
+    --sombra-md: 0 8px 20px rgba(26, 30, 27, 0.08);
 }
 
 /* Tipografía de apoyo */
@@ -149,10 +158,10 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    background: var(--verde-pino, #071F17);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--verde-pino, #0D241C);
+    border-bottom: 1px solid rgba(246, 242, 234, 0.1);
     font-size: 0.8rem;
-    color: #F2F7F4;
+    color: #F6F2EA;
     font-family: var(--font-mono);
     min-height: 44px;
     width: 100%;
@@ -190,7 +199,7 @@
     gap: 6px;
     padding: 3px 8px;
     border-radius: 4px;
-    background: rgba(14, 203, 129, 0.15);
+    background: rgba(43, 182, 126, 0.15);
     color: var(--cp-green);
     font-weight: 700;
     font-size: 0.75rem;
@@ -203,7 +212,6 @@
     height: 6px;
     border-radius: 50%;
     background: var(--cp-green);
-    box-shadow: 0 0 8px var(--cp-green);
 }
 
 /* Ticker values / tabular figures */
@@ -282,19 +290,19 @@
     min-width: 44px;
     padding: 10px 20px;
     border-radius: 8px;
-    background: var(--verde-esmeralda, #0A6847);
-    color: #FFFFFF;
+    background: var(--verde-esmeralda, #0F6A4A);
+    color: #FDFBF7;
     font-weight: 700;
     font-size: 0.95rem;
     border: none;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.1s ease;
+    transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 
 .terminal-btn-primary:hover,
 .bn-btn-primary:hover {
-    background: var(--verde-esmeralda-claro, #0D7A54);
-    box-shadow: 0 0 14px rgba(10, 104, 71, 0.35);
+    background: var(--verde-esmeralda-claro, #14805B);
+    box-shadow: 0 4px 12px rgba(13, 36, 28, 0.22);
 }
 
 .terminal-btn-secondary,
@@ -319,7 +327,7 @@
 .terminal-btn-secondary:hover,
 .bn-btn-secondary:hover {
     background: var(--cp-surface-hover);
-    border-color: #474D57;
+    border-color: var(--cp-border-focus);
 }
 
 /* Inputs accesibles para terminal y componentes dedicados */
@@ -342,9 +350,10 @@
 
 .terminal-workspace input:focus,
 .terminal-workspace select:focus {
-    border-color: var(--cp-yellow);
-    outline: none;
-    box-shadow: 0 0 0 2px var(--cp-yellow-glow);
+    border-color: var(--cp-border-focus);
+    outline: 2px solid var(--cp-yellow-glow);
+    outline-offset: 1px;
+    box-shadow: none;
 }
 
 /* Switch de Tema en Header */
@@ -364,7 +373,7 @@
     cursor: pointer;
     min-height: 44px;
     min-width: 44px;
-    transition: all 0.18s ease;
+    transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
 }
 
 .terminal-theme-switch:hover,
@@ -556,7 +565,6 @@
     height: 2px;
     background: var(--cp-yellow);
     border-radius: 0 0 2px 2px;
-    box-shadow: 0 0 8px var(--cp-yellow);
 }
 
 .bottom-nav__item.activo img {
@@ -574,22 +582,22 @@
     min-width: 56px;
     min-height: 56px;
     border-radius: 50%;
-    background: var(--cp-yellow) !important;
-    color: #0B0E11 !important;
+    background: var(--cp-emerald, #0F6A4A) !important;
+    color: #FDFBF7 !important;
     font-size: 28px;
     font-weight: 300;
     text-decoration: none;
     line-height: 1;
     margin-top: -24px;
-    box-shadow: 0 4px 16px var(--cp-yellow-glow), 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 4px 14px rgba(13, 36, 28, 0.24) !important;
     border: 3px solid var(--cp-surface-dark) !important;
     transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .bottom-nav__fab:hover {
-    background: var(--cp-yellow-hover) !important;
+    background: var(--cp-emerald-hover, #0B553B) !important;
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(240, 185, 11, 0.35), 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 6px 18px rgba(13, 36, 28, 0.32) !important;
 }
 
 .bottom-nav__fab:active {

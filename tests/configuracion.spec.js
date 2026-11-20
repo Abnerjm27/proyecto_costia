@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test';
+import fs from 'fs';
 import path from 'path';
 
 test.describe('Costia — Estación Integral de Configuración y Advertencias Bonitas', () => {
 
     test('debe cargar la página de configuración con espacios amplios para hacer cambios', async ({ page }) => {
-        const artifactDir = 'C:/Users/abner/.gemini/antigravity/brain/17c7b45b-a242-4611-9dd8-c079375806d4';
+        const artifactDir = path.resolve(process.cwd(), 'test-results/visual');
+        fs.mkdirSync(artifactDir, { recursive: true });
         await page.setViewportSize({ width: 1440, height: 900 });
 
         await page.goto('/paginas/configuracion.html');
@@ -58,20 +60,24 @@ test.describe('Costia — Estación Integral de Configuración y Advertencias Bo
         await page.screenshot({ path: path.join(artifactDir, 'check_configuracion_page.png'), fullPage: false });
     });
 
-    test('desde el sidebar de cualquier página debe abrir la nueva página de configuración', async ({ page }) => {
+    test('desde el sidebar de cualquier página debe abrir Mi Negocio (configuración) con 1 clic', async ({ page }) => {
         await page.setViewportSize({ width: 1440, height: 900 });
         await page.goto('/paginas/dashboard.html');
 
-        const cfgToggle = page.locator('#sidebar-config-toggle');
-        if (await cfgToggle.isVisible()) {
-            await cfgToggle.click();
-            await page.waitForTimeout(200);
-            const linkConfig = page.locator('#link-sidebar-config-page');
-            await expect(linkConfig).toBeVisible();
-            await linkConfig.click();
-            await page.waitForURL('**/configuracion.html');
-            expect(page.url()).toContain('configuracion.html');
-        }
+        const linkConfig = page.locator('#link-sidebar-config-page');
+        await expect(linkConfig).toBeVisible();
+        await linkConfig.click();
+        await page.waitForURL('**/configuracion.html');
+        expect(page.url()).toContain('configuracion.html');
+
+        // Verificar persistencia de comisión Delivery e Impoconsumo
+        await page.fill('#cfg-input-delivery-pct', '20');
+        await page.check('#cfg-check-impoconsumo');
+        await page.click('#btn-guardar-todo-config');
+        await page.waitForTimeout(300);
+        await page.reload();
+        await expect(page.locator('#cfg-input-delivery-pct')).toHaveValue('20');
+        await expect(page.locator('#cfg-check-impoconsumo')).toBeChecked();
     });
 
 });

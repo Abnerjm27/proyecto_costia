@@ -367,9 +367,13 @@ class AuthController {
             ['Harina de trigo',  'kg',     3200.00],
             ['Levadura seca',    'g',      45.00],
             ['Mantequilla',      'g',      18.00],
-            ['Azúcar blanca',    'kg',     2800.00],
-            ['Huevo',            'unidad', 350.00],
-            ['Chocolate amargo', 'g',      62.00],
+            ['Azúcar blanca',     'kg',     2800.00],
+            ['Huevo',             'unidad', 350.00],
+            ['Chocolate amargo',  'g',      62.00],
+            ['Leche entera',      'l',      4200.00],
+            ['Café molido',       'g',      55.00],
+            ['Queso campesino',   'g',      24.00],
+            ['Avena en hojuelas', 'g',      9.00],
         ];
 
         $insumoIds = [];
@@ -384,8 +388,8 @@ class AuthController {
         }
 
         $stmtProd = $this->db->prepare("
-            INSERT INTO productos (usuario_id, nombre, modo, valor_modo, unidades_producidas, precio_venta_anterior)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO productos (usuario_id, nombre, modo, valor_modo, tipo_margen, unidades_producidas, costo_empaque, porcentaje_merma, costo_mano_obra, precio_venta_anterior)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $stmtItem = $this->db->prepare("
             INSERT INTO receta_items (producto_id, insumo_id, cantidad, unidad_receta)
@@ -393,14 +397,14 @@ class AuthController {
         ");
 
         // Pan artesanal
-        $stmtProd->execute([$usuarioId, 'Pan artesanal', 'margen', 45.00, 10, 558.25]);
+        $stmtProd->execute([$usuarioId, 'Pan artesanal', 'margen', 35.00, 'venta', 10, 50.00, 5.00, 800.00, 821.92]);
         $p1 = (int)$this->db->lastInsertId();
         $stmtItem->execute([$p1, $insumoIds[1], 500, 'g']);
         $stmtItem->execute([$p1, $insumoIds[2], 10,  'g']);
         $stmtItem->execute([$p1, $insumoIds[3], 100, 'g']);
 
         // Torta de chocolate
-        $stmtProd->execute([$usuarioId, 'Torta de chocolate', 'multiplicador', 2.50, 1, 39900.00]);
+        $stmtProd->execute([$usuarioId, 'Torta de chocolate', 'margen', 38.00, 'venta', 1, 1800.00, 4.00, 3200.00, 34836.13]);
         $p2 = (int)$this->db->lastInsertId();
         $stmtItem->execute([$p2, $insumoIds[1], 300,  'g']);
         $stmtItem->execute([$p2, $insumoIds[3], 200,  'g']);
@@ -409,11 +413,47 @@ class AuthController {
         $stmtItem->execute([$p2, $insumoIds[6], 150,  'g']);
 
         // Galletas de avena
-        $stmtProd->execute([$usuarioId, 'Galletas de avena', 'margen', 60.00, 24, 180.67]);
+        $stmtProd->execute([$usuarioId, 'Galletas de avena', 'margen', 40.00, 'venta', 24, 35.00, 3.00, 700.00, 397.35]);
         $p3 = (int)$this->db->lastInsertId();
-        $stmtItem->execute([$p3, $insumoIds[1], 200, 'g']);
-        $stmtItem->execute([$p3, $insumoIds[3], 80,  'g']);
-        $stmtItem->execute([$p3, $insumoIds[4], 0.1, 'kg']);
-        $stmtItem->execute([$p3, $insumoIds[5], 1,   'unidad']);
+        $stmtItem->execute([$p3, $insumoIds[1],  200, 'g']);
+        $stmtItem->execute([$p3, $insumoIds[10], 150, 'g']);
+        $stmtItem->execute([$p3, $insumoIds[3],  80,  'g']);
+        $stmtItem->execute([$p3, $insumoIds[4],  0.1, 'kg']);
+        $stmtItem->execute([$p3, $insumoIds[5],  1,   'unidad']);
+
+        // Croissant de mantequilla
+        $stmtProd->execute([$usuarioId, 'Croissant de mantequilla', 'margen', 40.00, 'venta', 12, 120.00, 6.00, 2200.00, 1780.94]);
+        $p4 = (int)$this->db->lastInsertId();
+        $stmtItem->execute([$p4, $insumoIds[1], 600, 'g']);
+        $stmtItem->execute([$p4, $insumoIds[2], 15,  'g']);
+        $stmtItem->execute([$p4, $insumoIds[3], 250, 'g']);
+        $stmtItem->execute([$p4, $insumoIds[7], 250, 'ml']);
+        $stmtItem->execute([$p4, $insumoIds[4], 60,  'g']);
+        $stmtItem->execute([$p4, $insumoIds[5], 1,   'unidad']);
+
+        // Pan de queso campesino
+        $stmtProd->execute([$usuarioId, 'Pan de queso campesino', 'margen', 35.00, 'venta', 12, 90.00, 4.00, 1800.00, 1981.23]);
+        $p5 = (int)$this->db->lastInsertId();
+        $stmtItem->execute([$p5, $insumoIds[1], 400, 'g']);
+        $stmtItem->execute([$p5, $insumoIds[9], 350, 'g']);
+        $stmtItem->execute([$p5, $insumoIds[3], 60,  'g']);
+        $stmtItem->execute([$p5, $insumoIds[5], 2,   'unidad']);
+        $stmtItem->execute([$p5, $insumoIds[7], 150, 'ml']);
+
+        // Capuchino artesanal (12 oz)
+        $stmtProd->execute([$usuarioId, 'Capuchino artesanal (12 oz)', 'margen', 45.00, 'venta', 1, 420.00, 5.00, 550.00, 5471.09]);
+        $p6 = (int)$this->db->lastInsertId();
+        $stmtItem->execute([$p6, $insumoIds[8], 18,  'g']);
+        $stmtItem->execute([$p6, $insumoIds[7], 220, 'ml']);
+        $stmtItem->execute([$p6, $insumoIds[4], 10,  'g']);
+
+        // Brownie de chocolate
+        $stmtProd->execute([$usuarioId, 'Brownie de chocolate', 'multiplicador', 2.20, 'costo', 16, 60.00, 2.00, 0.00, 2529.43]);
+        $p7 = (int)$this->db->lastInsertId();
+        $stmtItem->execute([$p7, $insumoIds[6], 200, 'g']);
+        $stmtItem->execute([$p7, $insumoIds[3], 150, 'g']);
+        $stmtItem->execute([$p7, $insumoIds[4], 200, 'g']);
+        $stmtItem->execute([$p7, $insumoIds[5], 3,   'unidad']);
+        $stmtItem->execute([$p7, $insumoIds[1], 120, 'g']);
     }
 }

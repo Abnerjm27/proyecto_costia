@@ -56,10 +56,30 @@ class ConfiguracionController {
         if (selCategoria && cfg.categoriaNegocio) selCategoria.value = cfg.categoriaNegocio;
 
         const selMargen = document.getElementById('cfg-select-margen-default');
-        if (selMargen && cfg.margenDefault) selMargen.value = cfg.margenDefault;
+        if (selMargen && cfg.margenDefault) selMargen.value = String(cfg.margenDefault);
 
         const selMulti = document.getElementById('cfg-select-multi-default');
-        if (selMulti && cfg.modeloComercial) selMulti.value = cfg.modeloComercial;
+        if (selMulti && cfg.modeloComercial) selMulti.value = String(cfg.modeloComercial);
+
+        const inpDelivery = document.getElementById('cfg-input-delivery-pct');
+        if (inpDelivery) {
+            const comPct = Number(cfg.comisionDeliveryPct);
+            inpDelivery.value = (!isNaN(comPct) && comPct >= 0 && comPct <= 50) ? comPct : 25;
+        }
+
+        const chkImpo = document.getElementById('cfg-check-impoconsumo');
+        if (chkImpo) {
+            chkImpo.checked = cfg.incluirImpoconsumo === true;
+        }
+
+        this.sincronizarPresetsLotes();
+    }
+
+    sincronizarPresetsLotes() {
+        const lotesActual = String(parseInt(document.getElementById('cfg-input-lotes-mes')?.value, 10) || 100);
+        document.querySelectorAll('[data-lotes-preset]').forEach(btn => {
+            btn.classList.toggle('activo', btn.dataset.lotesPreset === lotesActual);
+        });
     }
 
     actualizarModoEspacio(esCasa) {
@@ -124,9 +144,26 @@ class ConfiguracionController {
         ids.forEach(id => {
             const el = document.getElementById(id);
             if (el) {
-                el.addEventListener('input', () => this.recalcularEnVivo());
-                el.addEventListener('change', () => this.recalcularEnVivo());
+                el.addEventListener('input', () => {
+                    this.recalcularEnVivo();
+                    if (id === 'cfg-input-lotes-mes') this.sincronizarPresetsLotes();
+                });
+                el.addEventListener('change', () => {
+                    this.recalcularEnVivo();
+                    if (id === 'cfg-input-lotes-mes') this.sincronizarPresetsLotes();
+                });
             }
+        });
+
+        // Presets rápidos de lotes al mes
+        document.querySelectorAll('[data-lotes-preset]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const val = parseInt(btn.dataset.lotesPreset, 10) || 100;
+                const inpLotes = document.getElementById('cfg-input-lotes-mes');
+                if (inpLotes) inpLotes.value = val;
+                this.recalcularEnVivo();
+                this.sincronizarPresetsLotes();
+            });
         });
 
         // Guardar cambios
@@ -185,6 +222,9 @@ class ConfiguracionController {
         const categoria = document.getElementById('cfg-select-categoria')?.value || 'panaderia';
         const margenDef = document.getElementById('cfg-select-margen-default')?.value || '40';
         const multiDef = document.getElementById('cfg-select-multi-default')?.value || '2.5';
+        const rawDelivery = parseFloat(document.getElementById('cfg-input-delivery-pct')?.value);
+        const comisionDeliveryPct = (!isNaN(rawDelivery) && rawDelivery >= 0 && rawDelivery <= 50) ? rawDelivery : 25;
+        const incluirImpoconsumo = document.getElementById('cfg-check-impoconsumo')?.checked === true;
 
         const payload = {
             tipoUbicacion: esCasa ? 'casa' : 'local',
@@ -196,7 +236,9 @@ class ConfiguracionController {
             lotesMensualesEstimados: lotes,
             categoriaNegocio: categoria,
             margenDefault: margenDef,
-            modeloComercial: multiDef
+            modeloComercial: multiDef,
+            comisionDeliveryPct,
+            incluirImpoconsumo
         };
 
         if (typeof store.guardarConfigGastos === 'function') {

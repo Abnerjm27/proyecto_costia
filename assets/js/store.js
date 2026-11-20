@@ -11,12 +11,20 @@ class StoreService {
         { id: 4, nombre: 'Azúcar blanca', unidad: 'kg', precio: 2800, precio_anterior: 2950 },
         { id: 5, nombre: 'Huevo', unidad: 'unidad', precio: 350 },
         { id: 6, nombre: 'Chocolate amargo', unidad: 'g', precio: 62 },
+        { id: 7, nombre: 'Leche entera', unidad: 'l', precio: 4200 },
+        { id: 8, nombre: 'Café molido', unidad: 'g', precio: 55 },
+        { id: 9, nombre: 'Queso campesino', unidad: 'g', precio: 24 },
+        { id: 10, nombre: 'Avena en hojuelas', unidad: 'g', precio: 9 },
     ];
 
     static PRODUCTOS_DEFAULT = [
-        { id: 1, nombre: 'Pan artesanal', modo: 'margen', valorModo: 45, unidadesProducidas: 10, precioVentaAnterior: 558.25, costoSnapshot: 385, receta: [{ insumoId: 1, cantidad: 500, unidadReceta: 'g' }, { insumoId: 2, cantidad: 10, unidadReceta: 'g' }, { insumoId: 3, cantidad: 100, unidadReceta: 'g' }] },
-        { id: 2, nombre: 'Torta de chocolate', modo: 'multiplicador', valorModo: 2.5, unidadesProducidas: 1, precioVentaAnterior: 39900, costoSnapshot: 15960, receta: [{ insumoId: 1, cantidad: 300, unidadReceta: 'g' }, { insumoId: 3, cantidad: 200, unidadReceta: 'g' }, { insumoId: 4, cantidad: 0.25, unidadReceta: 'kg' }, { insumoId: 5, cantidad: 4, unidadReceta: 'unidad' }, { insumoId: 6, cantidad: 150, unidadReceta: 'g' }] },
-        { id: 3, nombre: 'Galletas de avena', modo: 'margen', valorModo: 60, unidadesProducidas: 24, precioVentaAnterior: 180.67, costoSnapshot: 112.92, receta: [{ insumoId: 1, cantidad: 200, unidadReceta: 'g' }, { insumoId: 3, cantidad: 80, unidadReceta: 'g' }, { insumoId: 4, cantidad: 0.1, unidadReceta: 'kg' }, { insumoId: 5, cantidad: 1, unidadReceta: 'unidad' }] },
+        { id: 1, nombre: 'Pan artesanal', modo: 'margen', valorModo: 35, tipoMargen: 'venta', unidadesProducidas: 10, costoEmpaque: 50, porcentajeMerma: 5, costoManoObra: 800, precioVentaAnterior: 821.92, costoSnapshot: 534.25, receta: [{ insumoId: 1, cantidad: 500, unidadReceta: 'g' }, { insumoId: 2, cantidad: 10, unidadReceta: 'g' }, { insumoId: 3, cantidad: 100, unidadReceta: 'g' }] },
+        { id: 2, nombre: 'Torta de chocolate', modo: 'margen', valorModo: 38, tipoMargen: 'venta', unidadesProducidas: 1, costoEmpaque: 1800, porcentajeMerma: 4, costoManoObra: 3200, precioVentaAnterior: 34836.13, costoSnapshot: 21598.40, receta: [{ insumoId: 1, cantidad: 300, unidadReceta: 'g' }, { insumoId: 3, cantidad: 200, unidadReceta: 'g' }, { insumoId: 4, cantidad: 0.25, unidadReceta: 'kg' }, { insumoId: 5, cantidad: 4, unidadReceta: 'unidad' }, { insumoId: 6, cantidad: 150, unidadReceta: 'g' }] },
+        { id: 3, nombre: 'Galletas de avena', modo: 'margen', valorModo: 40, tipoMargen: 'venta', unidadesProducidas: 24, costoEmpaque: 35, porcentajeMerma: 3, costoManoObra: 700, precioVentaAnterior: 397.35, costoSnapshot: 238.41, receta: [{ insumoId: 1, cantidad: 200, unidadReceta: 'g' }, { insumoId: 10, cantidad: 150, unidadReceta: 'g' }, { insumoId: 3, cantidad: 80, unidadReceta: 'g' }, { insumoId: 4, cantidad: 0.1, unidadReceta: 'kg' }, { insumoId: 5, cantidad: 1, unidadReceta: 'unidad' }] },
+        { id: 4, nombre: 'Croissant de mantequilla', modo: 'margen', valorModo: 40, tipoMargen: 'venta', unidadesProducidas: 12, costoEmpaque: 120, porcentajeMerma: 6, costoManoObra: 2200, precioVentaAnterior: 1780.94, costoSnapshot: 1068.57, receta: [{ insumoId: 1, cantidad: 600, unidadReceta: 'g' }, { insumoId: 2, cantidad: 15, unidadReceta: 'g' }, { insumoId: 3, cantidad: 250, unidadReceta: 'g' }, { insumoId: 7, cantidad: 250, unidadReceta: 'ml' }, { insumoId: 4, cantidad: 60, unidadReceta: 'g' }, { insumoId: 5, cantidad: 1, unidadReceta: 'unidad' }] },
+        { id: 5, nombre: 'Pan de queso campesino', modo: 'margen', valorModo: 35, tipoMargen: 'venta', unidadesProducidas: 12, costoEmpaque: 90, porcentajeMerma: 4, costoManoObra: 1800, precioVentaAnterior: 1981.23, costoSnapshot: 1287.80, receta: [{ insumoId: 1, cantidad: 400, unidadReceta: 'g' }, { insumoId: 9, cantidad: 350, unidadReceta: 'g' }, { insumoId: 3, cantidad: 60, unidadReceta: 'g' }, { insumoId: 5, cantidad: 2, unidadReceta: 'unidad' }, { insumoId: 7, cantidad: 150, unidadReceta: 'ml' }] },
+        { id: 6, nombre: 'Capuchino artesanal (12 oz)', modo: 'margen', valorModo: 45, tipoMargen: 'venta', unidadesProducidas: 1, costoEmpaque: 420, porcentajeMerma: 5, costoManoObra: 550, precioVentaAnterior: 5471.09, costoSnapshot: 3009.10, receta: [{ insumoId: 8, cantidad: 18, unidadReceta: 'g' }, { insumoId: 7, cantidad: 220, unidadReceta: 'ml' }, { insumoId: 4, cantidad: 10, unidadReceta: 'g' }] },
+        { id: 7, nombre: 'Brownie de chocolate', modo: 'multiplicador', valorModo: 2.2, tipoMargen: 'costo', unidadesProducidas: 16, costoEmpaque: 60, porcentajeMerma: 2, costoManoObra: 0, precioVentaAnterior: 2529.43, costoSnapshot: 1149.74, receta: [{ insumoId: 6, cantidad: 200, unidadReceta: 'g' }, { insumoId: 3, cantidad: 150, unidadReceta: 'g' }, { insumoId: 4, cantidad: 200, unidadReceta: 'g' }, { insumoId: 5, cantidad: 3, unidadReceta: 'unidad' }, { insumoId: 1, cantidad: 120, unidadReceta: 'g' }] },
     ];
 
     /**
@@ -55,7 +63,7 @@ class StoreService {
             if (data.autenticado && data.usuario) {
                 this.tieneSesion = true;
                 this.usuario     = data.usuario;
-                if (data.usuario.negocio) this.guardarNegocio(data.usuario.negocio);
+                if (data.usuario.negocio) localStorage.setItem(this.CLAVE_NEGOCIO, String(data.usuario.negocio).trim());
                 this.actualizarBadgeUI();
                 await this.sincronizarConServidor();
                 return true;
@@ -74,9 +82,10 @@ class StoreService {
         if (!this.tieneSesion) return;
 
         try {
-            const [resIns, resProd] = await Promise.all([
+            const [resIns, resProd, resCfg] = await Promise.all([
                 fetch('../backend/api/insumos.php', { cache: 'no-store' }),
-                fetch('../backend/api/productos.php', { cache: 'no-store' })
+                fetch('../backend/api/productos.php', { cache: 'no-store' }),
+                fetch('../backend/api/configuracion.php', { cache: 'no-store' })
             ]);
 
             if (resIns.ok) {
@@ -98,6 +107,19 @@ class StoreService {
             if (resProd.ok) {
                 const dataProd = await resProd.json();
                 if (dataProd.status === 'success' && Array.isArray(dataProd.productos)) this.guardarProductosLocal(dataProd.productos);
+            }
+
+            if (resCfg && resCfg.ok) {
+                const dataCfg = await resCfg.json();
+                if (dataCfg.status === 'success') {
+                    if (dataCfg.negocio) {
+                        localStorage.setItem(this.CLAVE_NEGOCIO, String(dataCfg.negocio).trim());
+                        this.actualizarBadgeUI();
+                    }
+                    if (dataCfg.config_gastos && typeof dataCfg.config_gastos === 'object') {
+                        localStorage.setItem(this.CLAVE_CONFIG_GASTOS, JSON.stringify(dataCfg.config_gastos));
+                    }
+                }
             }
 
             this.notificarActualizacion();
@@ -421,7 +443,24 @@ class StoreService {
 
     cargarNegocio() { return localStorage.getItem(this.CLAVE_NEGOCIO) || 'Panadería El Roble'; }
     obtenerNegocio() { return this.cargarNegocio(); }
-    guardarNegocio(nombre) { localStorage.setItem(this.CLAVE_NEGOCIO, nombre.trim()); }
+    guardarNegocio(nombre) {
+        localStorage.setItem(this.CLAVE_NEGOCIO, nombre.trim());
+        this.sincronizarConfigServidor();
+    }
+
+    async sincronizarConfigServidor() {
+        if (!this.tieneSesion) return;
+        try {
+            await fetch('../backend/api/configuracion.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    negocio: this.cargarNegocio(),
+                    config_gastos: this.cargarConfigGastos()
+                })
+            });
+        } catch (_) {}
+    }
 
     cargarConfigGastos() {
         const raw = localStorage.getItem(this.CLAVE_CONFIG_GASTOS);
@@ -430,14 +469,18 @@ class StoreService {
     }
 
     obtenerConfigGastos() {
-        return this.cargarConfigGastos() || {
+        const defaults = {
             tipoUbicacion: 'local', ubicacionDescripcion: 'Local en arriendo',
             arriendoMensual: 1200000, recibosMensuales: 180000,
             numTrabajadores: 1, salarioTrabajador: 1423500,
             nominaMensualTotal: 1423500, lotesMensualesEstimados: 100,
             cuotaManoObraPorLote: 14235, cuotaFijaTotalPorLote: 28035,
-            pagoHoraManoObra: 8897, horasMesManoObra: 160, otrosGastosMensuales: 100000
+            pagoHoraManoObra: 8897, horasMesManoObra: 160, otrosGastosMensuales: 100000,
+            incluirImpoconsumo: false, impoconsumoPct: 8, comisionDeliveryPct: 25,
+            margenDefault: '40', modeloComercial: '2.5'
         };
+        const guardado = this.cargarConfigGastos();
+        return guardado ? { ...defaults, ...guardado } : defaults;
     }
 
     guardarConfigGastos(config) {
@@ -447,6 +490,11 @@ class StoreService {
         const lotes = Math.max(1, parseInt(config.lotesMensualesEstimados ?? actual.lotesMensualesEstimados ?? 100) || 100);
         const arriendo = Math.max(0, parseInt(config.arriendoMensual ?? actual.arriendoMensual ?? 0) || 0);
         const recibos = Math.max(0, parseInt(config.recibosMensuales ?? actual.recibosMensuales ?? 0) || 0);
+        const incluirImpo = config.incluirImpoconsumo !== undefined
+            ? Boolean(config.incluirImpoconsumo)
+            : Boolean(actual.incluirImpoconsumo);
+        const impoconsumoPct = Math.max(0, Math.min(30, Number(config.impoconsumoPct ?? actual.impoconsumoPct ?? 8) || 0));
+        const comisionDeliveryPct = Math.max(0, Math.min(50, Number(config.comisionDeliveryPct ?? actual.comisionDeliveryPct ?? 25) || 0));
 
         const nominaTotal = trab * sal;
         const cuotaMano = Math.round(nominaTotal / lotes);
@@ -463,15 +511,25 @@ class StoreService {
             cuotaManoObraPorLote: cuotaMano,
             cuotaFijaTotalPorLote: cuotaTotal,
             pagoHoraManoObra: pagoHora,
+            incluirImpoconsumo: incluirImpo,
+            impoconsumoPct,
+            comisionDeliveryPct,
+            margenDefault: String(config.margenDefault ?? actual.margenDefault ?? '40'),
+            modeloComercial: String(config.modeloComercial ?? actual.modeloComercial ?? '2.5'),
             configurado: true,
             actualizadoEn: new Date().toISOString()
         };
         localStorage.setItem(this.CLAVE_CONFIG_GASTOS, JSON.stringify(nuevo));
         this.notificarActualizacion();
+        this.sincronizarConfigServidor();
         return nuevo;
     }
 
     abrirModalConfigGastos() {
+        if (window.location.pathname.includes('configuracion.html')) {
+            document.getElementById('seccion-gastos-fijos')?.scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
         let modal = document.getElementById('modal-config-gastos');
         const cfg = this.obtenerConfigGastos();
 
@@ -496,9 +554,9 @@ class StoreService {
                         </button>
                     </header>
                     <div class="modal-config-body">
-                        <div class="modal-cfg-banner-full" style="background:#F2F7F4; border:1px solid rgba(10,104,71,0.2); border-radius:10px; padding:8px 12px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
-                            <span style="font-size:11.5px; color:#071F17; line-height:1.3;">Esta configuración ahora tiene su estación completa de 6 módulos.</span>
-                            <a href="configuracion.html#seccion-gastos-fijos" style="font-size:11.5px; font-weight:700; color:#0A6847; text-decoration:none; background:#fff; border:1px solid #0A6847; padding:4px 8px; border-radius:6px; white-space:nowrap;">Ir a Configuración &rarr;</a>
+                        <div class="modal-cfg-banner-full" style="background:#F6F2EA; border:1px solid #E4DCCA; border-radius:10px; padding:8px 12px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                            <span style="font-size:11.5px; color:#0D241C; line-height:1.3;">También puedes configurar identidad, comisiones e impuestos desde Mi Negocio.</span>
+                            <a href="configuracion.html#seccion-gastos-fijos" style="font-size:11.5px; font-weight:700; color:#0F6A4A; text-decoration:none; background:#FDFBF7; border:1px solid #0F6A4A; padding:4px 8px; border-radius:6px; white-space:nowrap;">Abrir Mi Negocio &rarr;</a>
                         </div>
                         <div class="cfg-grupo">
                             <label class="cfg-label">Lugar de producción</label>
@@ -584,8 +642,8 @@ class StoreService {
             `;
             document.body.appendChild(modal);
 
-            document.getElementById('btn-cerrar-config-gastos')?.addEventListener('click', () => this.cerrarModalConfigGastos());
-            document.getElementById('btn-cancelar-config-gastos')?.addEventListener('click', () => this.cerrarModalConfigGastos());
+            modal.querySelector('#btn-cerrar-config-gastos')?.addEventListener('click', () => this.cerrarModalConfigGastos());
+            modal.querySelector('#btn-cancelar-config-gastos')?.addEventListener('click', () => this.cerrarModalConfigGastos());
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) this.cerrarModalConfigGastos();
             });
@@ -593,28 +651,28 @@ class StoreService {
             // Función reactiva de cálculo en vivo
             const recalcularPreview = () => {
                 const esCasa = modal.querySelector('input[name="cfg-espacio"]:checked')?.value === 'casa';
-                const arriendoVal = esCasa ? 0 : Math.max(0, parseInt(document.getElementById('cfg-input-arriendo')?.value) || 0);
-                const recibosVal = Math.max(0, parseInt(document.getElementById('cfg-input-recibos')?.value) || 0);
-                const trabVal = Math.max(0, parseInt(document.getElementById('cfg-input-trabajadores')?.value) || 0);
-                const salVal = Math.max(0, parseInt(document.getElementById('cfg-input-salario')?.value) || 0);
-                const lotesVal = Math.max(1, parseInt(document.getElementById('cfg-input-lotes-mes')?.value) || 100);
+                const arriendoVal = esCasa ? 0 : Math.max(0, parseInt(modal.querySelector('#cfg-input-arriendo')?.value) || 0);
+                const recibosVal = Math.max(0, parseInt(modal.querySelector('#cfg-input-recibos')?.value) || 0);
+                const trabVal = Math.max(0, parseInt(modal.querySelector('#cfg-input-trabajadores')?.value) || 0);
+                const salVal = Math.max(0, parseInt(modal.querySelector('#cfg-input-salario')?.value) || 0);
+                const lotesVal = Math.max(1, parseInt(modal.querySelector('#cfg-input-lotes-mes')?.value) || 100);
 
                 const nominaTotal = trabVal * salVal;
                 const fijosTotal = arriendoVal + recibosVal + nominaTotal;
                 const cuotaMano = Math.round(nominaTotal / lotesVal);
                 const cuotaTotal = Math.round(fijosTotal / lotesVal);
 
-                const badgeNom = document.getElementById('cfg-badge-nomina');
-                const dispMano = document.getElementById('cfg-disp-cuota-mano');
-                const dispTotal = document.getElementById('cfg-disp-cuota-total');
+                const badgeNom = modal.querySelector('#cfg-badge-nomina');
+                const dispMano = modal.querySelector('#cfg-disp-cuota-mano');
+                const dispTotal = modal.querySelector('#cfg-disp-cuota-total');
 
                 if (badgeNom) badgeNom.textContent = `${Store.fmt(nominaTotal)} nómina`;
                 if (dispMano) dispMano.textContent = `${Store.fmt(cuotaMano)} / lote`;
                 if (dispTotal) dispTotal.textContent = `${Store.fmt(cuotaTotal)} / lote`;
             };
 
-            ['cfg-input-arriendo', 'cfg-input-recibos', 'cfg-input-trabajadores', 'cfg-input-salario', 'cfg-input-lotes-mes'].forEach(id => {
-                const el = document.getElementById(id);
+            ['#cfg-input-arriendo', '#cfg-input-recibos', '#cfg-input-trabajadores', '#cfg-input-salario', '#cfg-input-lotes-mes'].forEach(sel => {
+                const el = modal.querySelector(sel);
                 el?.addEventListener('input', recalcularPreview);
                 el?.addEventListener('change', recalcularPreview);
             });
@@ -624,8 +682,8 @@ class StoreService {
             radios.forEach(r => {
                 r.addEventListener('change', () => {
                     const esCasa = modal.querySelector('input[name="cfg-espacio"]:checked')?.value === 'casa';
-                    const wrapArriendo = document.getElementById('wrap-cfg-arriendo');
-                    const inpArriendo = document.getElementById('cfg-input-arriendo');
+                    const wrapArriendo = modal.querySelector('#wrap-cfg-arriendo');
+                    const inpArriendo = modal.querySelector('#cfg-input-arriendo');
                     if (wrapArriendo && inpArriendo) {
                         if (esCasa) {
                             wrapArriendo.style.opacity = '0.45';
@@ -644,13 +702,13 @@ class StoreService {
             });
 
             // Guardar configuración
-            document.getElementById('btn-guardar-config-gastos')?.addEventListener('click', () => {
+            modal.querySelector('#btn-guardar-config-gastos')?.addEventListener('click', () => {
                 const esCasa = modal.querySelector('input[name="cfg-espacio"]:checked')?.value === 'casa';
-                const arriendoVal = esCasa ? 0 : Math.max(0, parseInt(document.getElementById('cfg-input-arriendo')?.value) || 0);
-                const recibosVal = Math.max(0, parseInt(document.getElementById('cfg-input-recibos')?.value) || 0);
-                const trabVal = Math.max(0, parseInt(document.getElementById('cfg-input-trabajadores')?.value) || 0);
-                const salVal = Math.max(0, parseInt(document.getElementById('cfg-input-salario')?.value) || 0);
-                const lotesVal = Math.max(1, parseInt(document.getElementById('cfg-input-lotes-mes')?.value) || 100);
+                const arriendoVal = esCasa ? 0 : Math.max(0, parseInt(modal.querySelector('#cfg-input-arriendo')?.value) || 0);
+                const recibosVal = Math.max(0, parseInt(modal.querySelector('#cfg-input-recibos')?.value) || 0);
+                const trabVal = Math.max(0, parseInt(modal.querySelector('#cfg-input-trabajadores')?.value) || 0);
+                const salVal = Math.max(0, parseInt(modal.querySelector('#cfg-input-salario')?.value) || 0);
+                const lotesVal = Math.max(1, parseInt(modal.querySelector('#cfg-input-lotes-mes')?.value) || 100);
                 const modeloVal = modal.querySelector('#cfg-select-modelo')?.value || '2.5';
 
                 this.guardarConfigGastos({
@@ -665,7 +723,7 @@ class StoreService {
                 });
 
                 this.cerrarModalConfigGastos();
-                this.toast(`¡Gastos guardados! Cuota de nómina y costos fijos lista para tus recetas.`);
+                this.toast(`Gastos fijos guardados. Cuota de nómina y operación lista para tus recetas.`);
             });
         }
 
@@ -682,27 +740,27 @@ class StoreService {
             radLocal.closest('.cfg-radio-card')?.classList.add('activo');
         }
 
-        const wrapArriendo = document.getElementById('wrap-cfg-arriendo');
-        const inpArriendo = document.getElementById('cfg-input-arriendo');
+        const wrapArriendo = modal.querySelector('#wrap-cfg-arriendo');
+        const inpArriendo = modal.querySelector('#cfg-input-arriendo');
         if (inpArriendo) inpArriendo.value = cfg.arriendoMensual !== null ? cfg.arriendoMensual : (esCasa ? 0 : 1200000);
         if (wrapArriendo) {
             wrapArriendo.style.opacity = esCasa ? '0.45' : '1';
             wrapArriendo.style.pointerEvents = esCasa ? 'none' : 'auto';
         }
 
-        const inpRecibos = document.getElementById('cfg-input-recibos');
+        const inpRecibos = modal.querySelector('#cfg-input-recibos');
         if (inpRecibos) inpRecibos.value = cfg.recibosMensuales !== null ? cfg.recibosMensuales : 180000;
 
-        const inpTrab = document.getElementById('cfg-input-trabajadores');
+        const inpTrab = modal.querySelector('#cfg-input-trabajadores');
         if (inpTrab) inpTrab.value = cfg.numTrabajadores !== undefined ? cfg.numTrabajadores : 1;
 
-        const inpSalario = document.getElementById('cfg-input-salario');
+        const inpSalario = modal.querySelector('#cfg-input-salario');
         if (inpSalario) inpSalario.value = cfg.salarioTrabajador !== undefined ? cfg.salarioTrabajador : 1423500;
 
-        const inpLotes = document.getElementById('cfg-input-lotes-mes');
+        const inpLotes = modal.querySelector('#cfg-input-lotes-mes');
         if (inpLotes) inpLotes.value = cfg.lotesMensualesEstimados || 100;
 
-        const selModelo = document.getElementById('cfg-select-modelo');
+        const selModelo = modal.querySelector('#cfg-select-modelo');
         if (selModelo && cfg.modeloComercial) selModelo.value = cfg.modeloComercial;
 
         // Disparar recálculo inicial del preview
@@ -714,9 +772,9 @@ class StoreService {
         const nomInit = trabInit * salInit;
         const fijInit = arrInit + recInit + nomInit;
 
-        const badgeNom = document.getElementById('cfg-badge-nomina');
-        const dispMano = document.getElementById('cfg-disp-cuota-mano');
-        const dispTotal = document.getElementById('cfg-disp-cuota-total');
+        const badgeNom = modal.querySelector('#cfg-badge-nomina');
+        const dispMano = modal.querySelector('#cfg-disp-cuota-mano');
+        const dispTotal = modal.querySelector('#cfg-disp-cuota-total');
         if (badgeNom) badgeNom.textContent = `${this.fmt(nomInit)} nómina`;
         if (dispMano) dispMano.textContent = `${this.fmt(Math.round(nomInit / lotesInit))} / lote`;
         if (dispTotal) dispTotal.textContent = `${this.fmt(Math.round(fijInit / lotesInit))} / lote`;

@@ -5,16 +5,18 @@
  * Exclusiones: No cachea llamadas al directorio /backend/ (APIs dinámicas y autenticación).
  */
 
-const CACHE_NAME = 'costia-pwa-v1';
+const CACHE_NAME = 'costia-pwa-v3';
 
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/paginas/dashboard.html',
   '/paginas/productos.html',
   '/paginas/insumos.html',
   '/paginas/crear-producto.html',
   '/paginas/ficha-tecnica.html',
+  '/paginas/configuracion.html',
   '/paginas/login.html',
   '/paginas/registro.html',
   '/assets/css/base.css',

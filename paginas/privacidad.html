@@ -7,18 +7,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/base.css?v=23">
+    <link rel="stylesheet" href="../assets/css/base.css?v=31">
     <link rel="icon" href="../assets/img/costia-icon.png">
     <link rel="manifest" href="../manifest.json">
-    <meta name="theme-color" content="#071F17">
+    <meta name="theme-color" content="#0D241C">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
     <style>
         body {
-            background-color: var(--fondo-claro);
-            color: var(--tinta);
+            background-color: var(--fondo-claro, #F6F2EA);
+            color: var(--tinta, #10211B);
             font-family: var(--font-texto);
             line-height: 1.6;
             padding: 30px 16px 60px;
@@ -44,7 +44,7 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            color: var(--verde-pino);
+            color: var(--verde-pino, #0D241C);
             font-family: var(--font-titulos);
             font-weight: 700;
             font-size: 20px;
@@ -61,27 +61,27 @@
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            background: #ffffff;
-            border: 1px solid var(--linea-fuerte);
+            background: #FDFBF7;
+            border: 1px solid var(--linea-fuerte, #D9CFBA);
             border-radius: 10px;
-            color: var(--verde-pino);
+            color: var(--verde-pino, #0D241C);
             text-decoration: none;
             font-size: 13.5px;
             font-weight: 600;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
 
         .btn-volver-app:hover {
-            background: var(--verde-pino);
-            color: #ffffff;
-            border-color: var(--verde-pino);
+            background: var(--verde-pino, #0D241C);
+            color: #FDFBF7;
+            border-color: var(--verde-pino, #0D241C);
         }
 
         .privacidad-hoja {
-            background: #ffffff;
-            border: 1px solid var(--linea);
+            background: #FDFBF7;
+            border: 1px solid var(--linea, #E4DCCA);
             border-radius: 16px;
-            box-shadow: 0 12px 32px -8px rgba(7, 31, 23, 0.08);
+            box-shadow: 0 12px 32px -8px rgba(13, 36, 28, 0.08);
             padding: 44px 48px;
         }
 
@@ -93,8 +93,8 @@
 
         .privacidad-badge {
             display: inline-block;
-            background: rgba(10, 104, 71, 0.1);
-            color: var(--verde-esmeralda);
+            background: rgba(15, 106, 74, 0.1);
+            color: var(--verde-esmeralda, #0F6A4A);
             font-family: var(--font-mono);
             font-size: 11.5px;
             font-weight: 600;
@@ -109,23 +109,23 @@
             font-family: var(--font-titulos);
             font-size: 32px;
             font-weight: 700;
-            color: var(--verde-pino);
+            color: var(--verde-pino, #0D241C);
             line-height: 1.25;
             margin-bottom: 12px;
         }
 
         .privacidad-fecha {
             font-size: 13px;
-            color: var(--texto-secundario);
+            color: var(--texto-secundario, #4E554F);
             margin-bottom: 28px;
-            border-bottom: 1px solid var(--linea);
+            border-bottom: 1px solid var(--linea, #E4DCCA);
             padding-bottom: 16px;
         }
 
         .privacidad-resumen {
-            background: #F2F7F4;
-            border-left: 4px solid var(--verde-esmeralda);
-            border-radius: 8px;
+            background: #FBF1E8;
+            border: 1px solid rgba(163, 80, 24, 0.24);
+            border-radius: 10px;
             padding: 16px 20px;
             font-size: 14.5px;
             color: #10211B;

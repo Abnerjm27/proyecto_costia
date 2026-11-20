@@ -1,21 +1,21 @@
 /* ============================================================
    FICHA-TECNICA.CSS — Estilos de Catálogo y Ficha Técnica de Costeo
-   Costia · Terminal Pro · Fintech Gastronómica
+   Costia · Atelier Cálido · Obradores & Panaderías
    Paleta:
-     Pino: #071F17 | Esmeralda: #0A6847 | Fondo: #F2F7F4 | Blanco: #FFFFFF
+     Pino: #0D241C | Salvia: #0F6A4A | Fondo: #F6F2EA | Marfil: #FDFBF7 | Cobre: #A35018
    ============================================================ */
 
 :root {
-    --pino: #071F17;
-    --esmeralda: #0A6847;
-    --esmeralda-suave: #EAF4EE;
-    --ambar: #8C470E;
-    --ambar-suave: #FEF7EE;
+    --pino: #0D241C;
+    --esmeralda: #0F6A4A;
+    --esmeralda-suave: #E8F2EC;
+    --ambar: #A35018;
+    --ambar-suave: #FBF1E8;
     --tinta: #10211B;
-    --gris-texto: #3D4F47;
-    --gris-borde: rgba(7, 31, 23, 0.12);
-    --gris-fondo: #F2F7F4;
-    --blanco: #FFFFFF;
+    --gris-texto: #4E554F;
+    --gris-borde: #E4DCCA;
+    --gris-fondo: #F6F2EA;
+    --blanco: #FDFBF7;
 }
 
 /* ============================================================
@@ -40,11 +40,12 @@
 
 .catalogo-fichas-header__info h1 {
     font-family: 'Literata', Georgia, serif;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     color: var(--pino);
     margin: 0 0 6px 0;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.35px;
+    line-height: 1.2;
 }
 
 .catalogo-fichas-header__info p {
@@ -70,7 +71,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    box-shadow: 0 2px 8px rgba(7, 31, 23, 0.04);
+    box-shadow: 0 2px 8px rgba(13, 36, 28, 0.04);
     flex-wrap: wrap;
 }
 
@@ -78,7 +79,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #F8FAF9;
+    background: #F6F2EA;
     border: 1px solid var(--gris-borde);
     border-radius: 8px;
     padding: 8px 14px;
@@ -89,7 +90,7 @@
 
 .catalogo-search-box:focus-within {
     border-color: var(--esmeralda);
-    background: #FFFFFF;
+    background: #FDFBF7;
 }
 
 .catalogo-search-box svg {
@@ -117,7 +118,7 @@
     background: var(--esmeralda-suave);
     padding: 6px 12px;
     border-radius: 20px;
-    border: 1px solid rgba(10, 104, 71, 0.2);
+    border: 1px solid rgba(15, 106, 74, 0.22);
 }
 
 /* Grid de Tarjetas de Ficha Técnica */
@@ -135,14 +136,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 4px 12px rgba(7, 31, 23, 0.05);
+    box-shadow: 0 4px 12px rgba(13, 36, 28, 0.05);
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     box-sizing: border-box;
 }
 
 .ficha-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(7, 31, 23, 0.1);
+    box-shadow: 0 8px 24px rgba(13, 36, 28, 0.1);
     border-color: var(--esmeralda);
 }
 
@@ -159,7 +160,7 @@
     font-weight: 700;
     color: var(--esmeralda);
     background: var(--esmeralda-suave);
-    border: 1px solid rgba(10, 104, 71, 0.2);
+    border: 1px solid rgba(15, 106, 74, 0.22);
     padding: 3px 8px;
     border-radius: 6px;
 }
@@ -176,7 +177,7 @@
 
 .ficha-card__titulo {
     font-family: 'Literata', Georgia, serif;
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 700;
     color: var(--pino);
     margin: 0 0 6px 0;
@@ -193,7 +194,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    background: #FAFDFB;
+    background: #F9F6F0;
     border: 1px solid var(--gris-borde);
     border-radius: 10px;
     padding: 12px;
@@ -250,7 +251,7 @@
     justify-content: center;
     gap: 6px;
     background: var(--pino);
-    color: #FFFFFF;
+    color: #FDFBF7;
     font-size: 13px;
     font-weight: 600;
     padding: 9px 16px;
@@ -258,13 +259,13 @@
     text-decoration: none;
     border: none;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
     min-height: 40px;
 }
 
 .btn-abrir-ficha:hover {
     background: var(--esmeralda);
-    color: #FFFFFF;
+    color: #FDFBF7;
     transform: translateY(-1px);
 }
 
@@ -299,8 +300,8 @@
 .barra-preview-catalogo {
     width: 100%;
     max-width: 820px;
-    background: #071F17;
-    color: #ffffff;
+    background: #0D241C;
+    color: #F4F0E6;
     padding: 14px 22px;
     border-radius: 14px;
     margin-bottom: 24px;
@@ -313,15 +314,18 @@
     gap: 14px;
 }
 
-.barra-preview__info h2 {
+.barra-preview__info h2,
+.barra-preview-catalogo .barra-preview__info h2,
+.barra-preview-catalogo h2 {
     font-size: 15px;
     font-weight: 700;
+    color: #F4F0E6;
     margin: 0;
 }
 
 .barra-preview__info p {
     font-size: 12px;
-    color: #E4EFEA;
+    color: #EDE6D8;
     margin-top: 2px;
 }
 
@@ -340,13 +344,13 @@
 
 .barra-preview__label {
     font-size: 12px;
-    color: #A3C9BC;
+    color: #A7DFC2;
     font-weight: 600;
 }
 
 .select-ficha-producto {
-    background: #FAFDFB;
-    color: #071F17;
+    background: #FDFBF7;
+    color: #0D241C;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
     padding: 6px 10px;
@@ -367,31 +371,31 @@
     align-items: center;
     gap: 6px;
     border: none;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     min-height: 38px;
 }
 
 .btn-preview--imprimir {
-    background: #0A6847;
-    color: #ffffff;
+    background: #0F6A4A;
+    color: #FDFBF7;
     box-shadow: none;
 }
 
 .btn-preview--imprimir:hover {
-    background: #071F17;
-    color: #ffffff;
+    background: #0D241C;
+    color: #FDFBF7;
     transform: translateY(-1px);
 }
 
 .btn-preview--volver {
     background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
+    color: #F4F0E6;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-preview--volver:hover {
     background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+    color: #F4F0E6;
 }
 
 /* Hoja Imprimible Oficial */
@@ -563,7 +567,7 @@
 }
 
 .seccion-titulo {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -582,8 +586,8 @@
 }
 
 .ficha-tabla th {
-    background: #071F17;
-    color: #E4EFEA;
+    background: #0D241C;
+    color: #F6F2EA;
     font-size: 11.5px;
     font-weight: 600;
     text-transform: uppercase;
@@ -608,7 +612,7 @@
 }
 
 .ficha-tabla tbody tr:nth-child(even) {
-    background: #FAFDFB;
+    background: #F9F6F0;
 }
 
 .ficha-tabla tfoot td {
@@ -640,7 +644,7 @@
     font-size: 12.5px;
     padding: 5px 0;
     color: var(--gris-texto);
-    border-bottom: 1px dashed rgba(7, 31, 23, 0.08);
+    border-bottom: 1px dashed rgba(13, 36, 28, 0.1);
 }
 
 .fila-desglose:last-child {
@@ -681,9 +685,8 @@
 .caja-break-even {
     display: flex;
     gap: 14px;
-    background: #FAFDFB;
-    border: 1px solid var(--gris-borde);
-    border-left: 4px solid var(--esmeralda);
+    background: var(--ambar-suave);
+    border: 1px solid rgba(163, 80, 24, 0.24);
     border-radius: 10px;
     padding: 16px 18px;
     margin-bottom: 24px;
@@ -691,13 +694,13 @@
 }
 
 .caja-break-even__icono svg {
-    color: var(--esmeralda);
+    color: var(--ambar);
     flex-shrink: 0;
     margin-top: 2px;
 }
 
 .caja-break-even__info h4 {
-    font-size: 13px;
+    font-size: 14.5px;
     font-weight: 700;
     color: var(--pino);
     margin: 0 0 4px 0;
@@ -711,7 +714,7 @@
 }
 
 .ficha-notas {
-    background: #FAFDFB;
+    background: #F9F6F0;
     border: 1px dashed var(--gris-borde);
     border-radius: 8px;
     padding: 12px 14px;
@@ -758,7 +761,7 @@
 }
 
 .catalogo-pdf-intro {
-    background: #FAFDFB;
+    background: #F9F6F0;
     border: 1px solid var(--gris-borde);
     border-radius: 8px;
     padding: 12px 16px;
@@ -778,14 +781,14 @@
 }
 
 .catalogo-pdf-tabla-resumen th {
-    background: #071F17;
-    color: #FFFFFF;
+    background: #0D241C;
+    color: #F6F2EA;
     padding: 9px 12px;
     font-weight: 600;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    border: 1px solid #071F17;
+    border: 1px solid #0D241C;
 }
 
 .catalogo-pdf-tabla-resumen td {
@@ -795,7 +798,7 @@
 }
 
 .catalogo-pdf-tabla-resumen tbody tr:nth-child(even) {
-    background: #F9FCFA;
+    background: #F9F6F0;
 }
 
 .catalogo-pdf-card {
@@ -805,7 +808,7 @@
     border-radius: 10px;
     padding: 18px 20px;
     margin-bottom: 24px;
-    background: #FFFFFF;
+    background: #FDFBF7;
 }
 
 .catalogo-pdf-card__header {
@@ -854,7 +857,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    background: #F4F8F5;
+    background: #F6F2EA;
     border-radius: 6px;
     padding: 8px 12px;
     margin-bottom: 14px;
@@ -909,6 +912,7 @@
 
     .ficha-hoja,
     .catalogo-hoja-pdf {
+        background: #FFFFFF !important;
         border: none !important;
         box-shadow: none !important;
         padding: 0 !important;
@@ -919,7 +923,8 @@
     .catalogo-pdf-card {
         page-break-inside: avoid !important;
         break-inside: avoid !important;
-        border: 1px solid #D0DDD5 !important;
+        background: #FFFFFF !important;
+        border: 1px solid #D9CFBA !important;
         margin-bottom: 20px !important;
     }
 }
@@ -936,3 +941,130 @@
         padding: 24px 20px;
     }
 }
+
+/* --- Modo oscuro para vista web de Fichas Técnicas (hoja física imprimible permanece blanca) --- */
+body.dark-mode .catalogo-fichas-stage,
+[data-theme="dark"] .catalogo-fichas-stage {
+    color: #F4F0E6;
+}
+
+body.dark-mode .catalogo-fichas-titulo,
+[data-theme="dark"] .catalogo-fichas-titulo,
+body.dark-mode .catalogo-fichas-header__info h1,
+[data-theme="dark"] .catalogo-fichas-header__info h1 {
+    color: #F4F0E6 !important;
+}
+
+body.dark-mode .catalogo-fichas-subtitulo,
+[data-theme="dark"] .catalogo-fichas-subtitulo,
+body.dark-mode .catalogo-fichas-header__info p,
+[data-theme="dark"] .catalogo-fichas-header__info p {
+    color: #B8B3A6 !important;
+}
+
+body.dark-mode .catalogo-fichas-toolbar,
+[data-theme="dark"] .catalogo-fichas-toolbar,
+body.dark-mode .catalogo-search-box,
+[data-theme="dark"] .catalogo-search-box,
+body.dark-mode .catalogo-fichas-vacio,
+[data-theme="dark"] .catalogo-fichas-vacio {
+    background: #11201A !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+    color: #F4F0E6 !important;
+}
+
+body.dark-mode .catalogo-search-box input,
+[data-theme="dark"] .catalogo-search-box input {
+    color: #F4F0E6 !important;
+}
+
+body.dark-mode .ficha-card,
+[data-theme="dark"] .ficha-card {
+    background: #11201A !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+body.dark-mode .ficha-card__codigo,
+[data-theme="dark"] .ficha-card__codigo {
+    color: #2BB67E !important;
+    background: rgba(43, 182, 126, 0.14) !important;
+    border-color: rgba(43, 182, 126, 0.3) !important;
+}
+
+body.dark-mode .ficha-card__badge-modo,
+[data-theme="dark"] .ficha-card__badge-modo,
+body.dark-mode .catalogo-stats-badge,
+[data-theme="dark"] .catalogo-stats-badge {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #EDE6D8 !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+body.dark-mode .catalogo-fichas-header .btn-secundario,
+[data-theme="dark"] .catalogo-fichas-header .btn-secundario {
+    background: #182B23 !important;
+    color: #EDE6D8 !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+body.dark-mode .ficha-card__titulo,
+[data-theme="dark"] .ficha-card__titulo {
+    color: #F4F0E6 !important;
+}
+
+body.dark-mode .ficha-card__meta,
+[data-theme="dark"] .ficha-card__meta,
+body.dark-mode .ficha-card__subtitulo,
+[data-theme="dark"] .ficha-card__subtitulo {
+    color: #B8B3A6 !important;
+}
+
+body.dark-mode .ficha-card__specs,
+[data-theme="dark"] .ficha-card__specs {
+    background: #0D1914 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .ficha-card__spec-item small,
+[data-theme="dark"] .ficha-card__spec-item small {
+    color: #B8B3A6 !important;
+}
+
+body.dark-mode .ficha-card__spec-item strong,
+[data-theme="dark"] .ficha-card__spec-item strong,
+body.dark-mode .ficha-card__spec-val,
+[data-theme="dark"] .ficha-card__spec-val {
+    color: #F4F0E6 !important;
+}
+
+body.dark-mode .ficha-card__spec-item strong.valor-esmeralda,
+[data-theme="dark"] .ficha-card__spec-item strong.valor-esmeralda {
+    color: #2BB67E !important;
+}
+
+body.dark-mode .ficha-card__spec-item strong.valor-ambar,
+[data-theme="dark"] .ficha-card__spec-item strong.valor-ambar {
+    color: #E08E4B !important;
+}
+
+body.dark-mode .ficha-card__footer,
+[data-theme="dark"] .ficha-card__footer {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .ficha-card__delivery-hint,
+[data-theme="dark"] .ficha-card__delivery-hint {
+    color: #B8B3A6 !important;
+}
+
+body.dark-mode .ficha-card__delivery-hint strong,
+[data-theme="dark"] .ficha-card__delivery-hint strong {
+    color: #F4F0E6 !important;
+}
+
+body.dark-mode .btn-abrir-ficha,
+[data-theme="dark"] .btn-abrir-ficha {
+    background: #0F6A4A !important;
+    color: #FDFBF7 !important;
+}
+

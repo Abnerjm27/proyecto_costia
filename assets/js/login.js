@@ -5,10 +5,28 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const formLogin = document.getElementById('form-login');
+    const errorBanner = document.getElementById('auth-error-banner');
     if (!formLogin) return;
+
+    function mostrarErrorAuth(msg) {
+        if (!errorBanner) return;
+        errorBanner.textContent = msg;
+        errorBanner.hidden = false;
+    }
+
+    function ocultarErrorAuth() {
+        if (!errorBanner) return;
+        errorBanner.textContent = '';
+        errorBanner.hidden = true;
+    }
+
+    formLogin.querySelectorAll('input').forEach(inp => {
+        inp.addEventListener('input', ocultarErrorAuth);
+    });
 
     formLogin.addEventListener('submit', async (e) => {
         e.preventDefault();
+        ocultarErrorAuth();
 
         const form = e.target;
         const btn = form.querySelector('button[type="submit"]');
@@ -33,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (window.Store) {
                     Store.toastDiferido(`¡Bienvenido de vuelta, ${data.usuario.negocio}!`);
                 }
-                window.location.href = 'productos.html';
+                window.location.href = 'dashboard.html';
             } else {
                 const email = String(formData.get('email') || '').trim();
                 const password = String(formData.get('password') || '').trim();
@@ -42,10 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         Store.guardarNegocio('Panadería El Roble (Demo)');
                         Store.toastDiferido('¡Bienvenido de vuelta, Panadería El Roble (Modo Local)!');
                     }
-                    window.location.href = 'productos.html';
+                    window.location.href = 'dashboard.html';
                     return;
                 }
-                alert(data.mensaje || 'Error al iniciar sesión');
+                mostrarErrorAuth(data.mensaje || 'Correo o contraseña incorrectos. Verifica tus datos e inténtalo de nuevo.');
             }
         } catch (err) {
             const email = String(formData.get('email') || '').trim();
@@ -55,10 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     Store.guardarNegocio('Panadería El Roble (Demo)');
                     Store.toastDiferido('¡Bienvenido de vuelta, Panadería El Roble (Modo Local)!');
                 }
-                window.location.href = 'productos.html';
+                window.location.href = 'dashboard.html';
                 return;
             }
-            alert('No se pudo conectar con el servidor local. Asegúrate de tener XAMPP con Apache y MySQL encendidos.');
+            mostrarErrorAuth('No se pudo conectar con el servidor local. Asegúrate de tener XAMPP con Apache y MySQL encendidos.');
         } finally {
             btn.disabled = false;
             btn.textContent = 'Iniciar sesión';

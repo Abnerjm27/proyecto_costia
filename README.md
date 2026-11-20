@@ -1,123 +1,170 @@
-# Costia — Sistema de Costeo y Fijación de Precios de Venta
+# Costia — Sistema de Costeo Gastronómico y Fijación de Precios de Venta
 
-Aplicación web orientada a negocios de manufactura, gastronomía y panadería que elaboran sus propios productos. Permite calcular el costo real de producción por unidad a partir de recetas e insumos, sugiriendo precios de venta mediante márgenes de ganancia en porcentaje o multiplicadores de costo según el tipo de negocio.
+Aplicación web orientada a negocios gastronómicos, panaderías, pastelerías, cafeterías de especialidad y pequeños talleres de manufactura. Calcula el costo real por unidad a partir de recetas, merma técnica, empaque, mano de obra y prorrateo de gastos fijos mensuales, sugiriendo precios rentables para mostrador y plataformas de domicilio (Delivery), asistido por un Asesor Financiero con IA.
 
 ---
 
 ## 🛠 Requisitos del Entorno
 
-* **Servidor web:** Apache (vía XAMPP, WAMP o Laragon).
-* **PHP:** Versión 8.0 o superior con extensión `pdo_mysql` habilitada.
-* **Base de datos:** MySQL / MariaDB 10.4+.
-* **Navegador web:** Chrome, Edge, Firefox u Opera actualizado.
+* **PHP:** Versión **8.0 o superior** (8.2 recomendado) con extensión `pdo_mysql` habilitada.
+* **Base de datos:** MySQL / MariaDB 10.4+ (opcional para pruebas rápidas gracias al respaldo en `localStorage`, obligatorio para persistencia multiusuario).
+* **Servidor web (opcional):** Apache vía XAMPP, Laragon o WAMP, o el servidor embebido de PHP (`php -S`).
+* **Node.js (opcional, solo para pruebas automatizadas):** Versión 18+ con Playwright.
+* **Ollama (opcional, para IA generativa local):** Servidor local en `http://127.0.0.1:11434` con el modelo `qwen2.5:3b` (si no está instalado, el Asesor IA opera con su motor determinista integrado).
 
 ---
 
-## 🗄️ Configuración de la Base de Datos (MySQL)
+## 🚀 Ejecución Rápida
 
-El proyecto incluye el script completo con la estructura relacional y datos de demostración en el archivo [`database/database.sql`](database/database.sql).
+### Modo 1: Arrancar en 1 comando sin configurar Apache
+Ideal para estudiar el proyecto o ejecutar la aplicación en segundos (funciona offline con `localStorage`, y sincroniza con MySQL si el servicio está encendido):
 
-### Opción A: Desde phpMyAdmin (XAMPP)
-1. Inicia **Apache** y **MySQL** desde el panel de control de XAMPP.
-2. Abre tu navegador e ingresa a `http://localhost/phpmyadmin`.
-3. Haz clic en la pestaña superior **Importar**.
-4. Haz clic en **Seleccionar archivo** y elige el archivo `database.sql` ubicado en la carpeta `database/` de este proyecto.
-5. Presiona el botón **Importar** al final de la página. Se creará automáticamente la base de datos `costia_db` con las tablas:
-   * `usuarios`
-   * `insumos`
-   * `productos`
-   * `receta_items`
-
-### Opción B: Desde la Consola de MySQL (CMD / PowerShell)
 ```bash
-# Navegar a la carpeta bin de MySQL en XAMPP o tenerlo en el PATH:
-C:\xampp\mysql\bin\mysql.exe -u root -p < database/database.sql
+php -S 127.0.0.1:8085
 ```
+Luego abre en tu navegador: `http://127.0.0.1:8085/index.html`
+
+### Modo 2: Apache + MySQL (XAMPP / Laragon)
+1. Copia `.env.example` a `.env` si necesitas ajustar credenciales locales (`DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`). Por defecto usa `127.0.0.1:3306`, usuario `root`, sin contraseña y base `costia_db`.
+2. Inicia **Apache** y **MySQL** en XAMPP/Laragon.
+3. Importa [`database/database.sql`](database/database.sql) desde `http://localhost/phpmyadmin` o por consola:
+   ```bash
+   mysql -u root -p < database/database.sql
+   ```
+   *(Nota: `Database::getConnection()` también crea automáticamente la base `costia_db` y actualiza columnas si no existen).*
 
 ---
 
 ## 👤 Usuario de Prueba Preconfigurado
 
-Si deseas iniciar sesión directamente sin registrarte, puedes usar:
 * **Correo:** `demo@costia.com`
 * **Contraseña:** `admin123`
 
-*(O también puedes crear una cuenta nueva desde la página de Registro; el sistema automáticamente inicializará insumos y recetas de ejemplo en tu cuenta).*
+*(También puedes crear cuentas nuevas desde `paginas/registro.html`; el sistema siembra automáticamente los 10 insumos y 7 recetas de demostración al registrarse).*
+
+---
+
+## 🤖 Asesor Financiero IA (Híbrido: Ollama + Motor Determinista)
+
+El panel del Asesor IA (accesible desde la barra superior o el menú lateral) interpreta comandos en lenguaje cotidiano (*"harina subió a 4500 el kilo"*, *"torta de zanahoria con 300g de harina..."*, *"¿cuál es mi receta menos rentable?"*):
+
+* **Con Ollama activo:** `backend/api/asesor.php` consulta `http://127.0.0.1:11434` (modelo recomendado: `qwen2.5:3b`) protegido con filtros CORS estrictos (`localhost` / `127.0.0.1`) y guardrails contra *prompt injection*.
+  ```bash
+  ollama pull qwen2.5:3b
+  ```
+* **Sin Ollama:** Conmuta transparentemente al analizador modular del frontend (`assets/js/asesor/`) sin bloquear ninguna función.
+
+---
+
+## 🧪 Pruebas Automatizadas E2E (Playwright)
+
+El proyecto incluye pruebas automatizadas de flujo completo, seguridad OWASP, modo oscuro, cálculos financieros y diseño responsive:
+
+```bash
+npm install
+npx playwright install chromium
+npm test
+```
+
+> **Portabilidad PHP en Playwright:** `playwright.config.js` usa `process.env.PHP_BIN` si está definida; de lo contrario detecta `C:\xampp\php\php.exe` en Windows o usa `php` del `PATH`. Puedes forzar la ruta así:
+> ```bash
+> PHP_BIN=/usr/bin/php npm test
+> ```
 
 ---
 
 ## 🏗 Arquitectura del Software
 
-El sistema sigue los principios de **Programación Orientada a Objetos (POO)** y **Modelo-Vista-Controlador (MVC)**:
+El proyecto implementa **POO (Programación Orientada a Objetos)** y **MVC desacoplado** sobre frontend Vanilla ES6+ y API REST PHP 8 + PDO:
 
 ```
 proyecto_costia/
-├── .agents/                  # Reglas y flujos de trabajo de IA
-├── .gitignore                # Exclusiones de Git (zips, temporales, IDEs)
+├── .env.example                    # Plantilla de variables de entorno (BD y PHP_BIN)
+├── .gitignore                      # Exclusiones de Git y artefactos temporales
+├── index.html                      # Landing page editorial con simulador en vivo
+├── manifest.json                   # Manifiesto PWA instalable
+├── sw.js                           # Service Worker PWA (Network-First con caché v3)
+├── playwright.config.js            # Configuración E2E portable
 ├── assets/
-│   ├── css/                  # Hojas de estilo modularizadas (incluye presentacion.css)
-│   ├── img/                  # Iconos SVG e imágenes de interfaz
+│   ├── css/
+│   │   ├── base.css                # Tokens Atelier Cálido, tipografía, botones, Asesor IA
+│   │   ├── terminal-theme.css      # Variables de tema claro/oscuro y barra móvil
+│   │   ├── app-shell.css           # Layout lateral, topbar y viewport responsivo
+│   │   ├── app.css                 # Componentes compartidos, modales y confirmaciones
+│   │   ├── presentacion.css        # Estilos de landing page y mesa de costeo
+│   │   ├── auth.css                # Login y registro
+│   │   ├── productos.css           # Dashboard Inicio, Ledger Bar, Simulador y Catálogo
+│   │   ├── insumos.css             # Inventario de materias primas y variaciones
+│   │   ├── crear-producto.css      # Wizard de 3 pasos y panel de liquidación
+│   │   ├── ficha-tecnica.css       # Catálogo PDF imprimible (@media print)
+│   │   └── configuracion.css       # Estación Mi Negocio y prorrateo de nómina
+│   ├── img/                        # Logotipos e iconografía SVG
 │   └── js/
-│       ├── models.js         # Clases de dominio: Insumo, Producto, ItemReceta, UnidadConverter
-│       ├── store.js          # Servicio central de sincronización híbrida (MySQL + LocalStorage)
-│       ├── insumos.js        # Controlador de la vista Insumos
-│       ├── productos.js      # Controlador de la vista Productos y KPIs
-│       ├── crear-producto.js # Controlador del formulario de recetas y cotización
-│       ├── presentacion.js   # Lógica del simulador interactivo de la landing
-│       └── asesor/           # Módulo del Asesor Inteligente Costia
+│       ├── models.js               # Entidades JS + UnidadConverter + motor de cálculo
+│       ├── store.js                # StoreService híbrido (API REST MySQL <-> localStorage)
+│       ├── theme.js                # Gestor de tema claro/oscuro persistente
+│       ├── app-shell.js            # Navegación lateral, badges de alerta y shell
+│       ├── dashboard.js            # Simulador Mostrador vs Delivery, estrés e Impoconsumo
+│       ├── insumos.js              # CRUD de insumos, historial y cascada de precios
+│       ├── productos.js            # Catálogo, filtros, duplicación y alertas
+│       ├── crear-producto.js       # Wizard 3 pasos, merma y alertas de unidad
+│       ├── ficha-tecnica.js        # Generador de ficha técnica individual y catálogo PDF
+│       ├── configuracion.js        # Gastos fijos, nómina, respaldo JSON y cuenta
+│       ├── login.js / registro.js  # Autenticación y aceptación legal Habeas Data
+│       ├── presentacion.js         # Simulador interactivo de index.html
+│       ├── asesor-agente.js        # Orquestador del Asesor Financiero IA
+│       └── asesor/                 # Módulos: parser, finanzas, comandos, flujo y UI
 ├── backend/
-│   ├── api/
-│   │   ├── insumos.php       # Endpoint REST (GET, POST, DELETE) para insumos
-│   │   ├── productos.php     # Endpoint REST (GET, POST, DELETE, PATCH) para recetas
-│   │   ├── demo.php          # Endpoint para restaurar datos iniciales en MySQL
-│   │   └── asesor.php        # Endpoint del asistente de IA
-│   ├── auth/
-│   │   ├── login.php         # Endpoint para autenticar usuario
-│   │   ├── registro.php      # Endpoint para registrar nuevo usuario
-│   │   ├── session.php       # Verificación de sesión activa PHP
-│   │   └── logout.php        # Cierre y destrucción de sesión segura
+│   ├── conexion.php                # Diagnóstico rápido de conexión MySQL
 │   ├── config/
-│   │   └── Database.php      # Conexión PDO Singleton a MySQL con soporte de entorno
-│   ├── controllers/
-│   │   ├── AuthController.php      # Lógica de sesiones y hashing BCRYPT
-│   │   ├── InsumoController.php    # CRUD e integridad relacional de insumos
-│   │   └── ProductoController.php  # CRUD y transacciones ACID para recetas
-│   ├── models/
-│   │   ├── Usuario.php       # Entidad Usuario
-│   │   ├── Insumo.php        # Entidad Insumo
-│   │   ├── Producto.php      # Entidad Producto
-│   │   └── RecetaItem.php    # Entidad Ingrediente de Receta
-│   └── conexion.php          # Verificador de enlace con la base de datos
+│   │   ├── Database.php            # Singleton PDO con auto-migración de esquema
+│   │   └── Session.php             # Sesión segura (HttpOnly, SameSite=Lax) + headers
+│   ├── models/                     # Usuario, Insumo, Producto, RecetaItem
+│   ├── controllers/                # AuthController (rate-limit, BCRYPT), InsumoController, ProductoController
+│   ├── api/
+│   │   ├── insumos.php             # REST GET/POST/DELETE para insumos
+│   │   ├── productos.php           # REST GET/POST/PATCH/DELETE (ACID) para productos
+│   │   ├── configuracion.php       # REST GET/POST/PUT para identidad y gastos fijos del negocio
+│   │   ├── demo.php                # Restauración transaccional de catálogo demo
+│   │   ├── eliminar-cuenta.php     # Derecho al Olvido (borrado en cascada Habeas Data)
+│   │   └── asesor.php              # Puente seguro hacia Ollama local + guardrails
+│   └── auth/                       # login.php, registro.php, session.php, logout.php
 ├── database/
-│   └── database.sql          # Script DDL/DML de MySQL con llaves foráneas y datos demo
+│   └── database.sql                # DDL/DML 3FN completo (10 insumos, 7 recetas, usuario demo)
 ├── docs/
-│   ├── entregas/             # Material de sustentación y paquetes de avance académico
-│   │   ├── GUIA_PRESENTACION.md
-│   │   ├── presentacion_primer_avance.html
-│   │   └── primer_avance.zip
-│   └── superpowers/          # Especificaciones de diseño y planes de ejecución
+│   ├── entregas/GUIA_PRESENTACION.md # Guía actualizada de estudio y sustentación
+│   └── superpowers/                # Especificaciones y planes de diseño
 ├── paginas/
-│   ├── insumos.html          # Vista de inventario de materias primas
-│   ├── productos.html        # Vista de tarjetas de productos y KPIs
-│   ├── crear-producto.html   # Vista de armado de recetas y fijación de precios
-│   ├── ficha-tecnica.html    # Vista imprimible y detallada de ficha técnica
-│   ├── ficha-preview.html    # Previsualización rápida de ficha técnica
-│   ├── login.html            # Vista de inicio de sesión
-│   └── registro.html         # Vista de creación de cuenta
-└── index.html                # Landing page de presentación del sistema
+│   ├── dashboard.html              # Inicio: resumen del negocio y simulador en vivo
+│   ├── insumos.html                # Inventario de materias primas
+│   ├── productos.html              # Mis Recetas y precios
+│   ├── crear-producto.html         # Nueva Receta (Wizard 3 pasos)
+│   ├── ficha-tecnica.html          # Catálogo e impresión de Fichas Técnicas PDF
+│   ├── ficha-preview.html          # Vista individual imprimible directa
+│   ├── configuracion.html          # Mi Negocio: identidad, arriendo, nómina, respaldo
+│   ├── login.html / registro.html  # Acceso y registro de cuenta
+│   └── terminos.html / privacidad.html # Ley 1480 (Retracto) y Ley 1581 (Habeas Data)
+└── tests/                          # Suite Playwright E2E (17 archivos .spec.js)
 ```
 
 ---
 
-## ⚡ Características Principales
+## 📖 Mapa de Estudio Rápido (Para entender el código en 4 pasos)
 
-1. **Persistencia Híbrida Inteligente:** Los datos se sincronizan directamente con MySQL cuando el usuario ha iniciado sesión. Si el servidor se apaga o se prueba sin base de datos, funciona de manera transparente con `localStorage`.
-2. **Costeo Gastronómico Integral:** Permite contemplar no solo ingredientes crudos, sino también:
-   * **% de Merma / Desperdicio en cocción/horneado** (ajusta el costo real de materias primas).
-   * **Costo de Empaque por unidad** (cajas, bolsas, etiquetas, etc.).
-   * **Mano de obra y gastos fijos repartidos por lote** (arriendo y servicios distribuidos de forma justa).
-3. **Márgenes Comerciales Flexibles:** Permite alternar entre **Mark-up (Margen sobre el Costo: Costo + %)** y **Margen Bruto Comercial (Margen sobre el Precio de Venta: Ganancia = % del Precio final)** con fórmulas financieras rigurosas.
-4. **Integridad Relacional Protegida:** Al intentar eliminar un insumo, el sistema verifica si está en uso en algún producto activo y solicita confirmación con el listado de recetas afectadas.
-5. **Conversión Universal de Medidas:** Convierte automáticamente entre unidades de masa (`kg`, `g`, `pizca`, `arroba`, `tonelada`) y volumen (`l`, `ml`, `taza`, `cucharada`, `cucharadita`).
-6. **Alertas de Rentabilidad:** Detecta variaciones en los costos de materias primas y avisa visualmente cuánto sube o baja el precio de venta recomendado.
-7. **Clonación de Recetas:** Permite duplicar productos existentes con un solo clic para crear variantes rápidamente.
+Si vas a estudiar o sustentar el proyecto, sigue este orden:
+
+1. **Modelo de datos y dominio:**
+   * [`database/database.sql`](database/database.sql) → 4 tablas en 3FN (`usuarios` incluye `config_gastos` y campos de Habeas Data, `insumos`, `productos`, `receta_items`).
+   * [`backend/models/`](backend/models/) + [`assets/js/models.js`](assets/js/models.js) → Conversor universal `UnidadConverter` y fórmulas de costo real/margen.
+2. **Backend MVC, seguridad y sincronización híbrida:**
+   * [`backend/config/Database.php`](backend/config/Database.php) + [`backend/config/Session.php`](backend/config/Session.php) → Singleton PDO y cookies blindadas.
+   * [`backend/controllers/AuthController.php`](backend/controllers/AuthController.php) y [`ProductoController.php`](backend/controllers/ProductoController.php) → BCRYPT, rate limit anti-fuerza bruta y transacciones ACID.
+   * [`assets/js/store.js`](assets/js/store.js) → Cómo `StoreService` sincroniza insumos, productos y configuración de negocio con MySQL o cae transparentemente a `localStorage`.
+3. **Flujos de negocio del frontend:**
+   * [`assets/js/dashboard.js`](assets/js/dashboard.js) → Simulador Mostrador vs Delivery (25%), prueba de estrés e Impoconsumo (8%).
+   * [`assets/js/crear-producto.js`](assets/js/crear-producto.js) → Wizard de 3 pasos, alerta de unidad desproporcionada y prorrateo.
+   * [`assets/js/configuracion.js`](assets/js/configuracion.js) + [`assets/js/ficha-tecnica.js`](assets/js/ficha-tecnica.js) → Prorrateo de nómina, exportación JSON y PDF imprimible.
+4. **Asesor Financiero IA:**
+   * [`assets/js/asesor-agente.js`](assets/js/asesor-agente.js) + [`assets/js/asesor/`](assets/js/asesor/) + [`backend/api/asesor.php`](backend/api/asesor.php).
+
+Para el guion detallado de exposición y respuestas a preguntas del docente, consulta [`docs/entregas/GUIA_PRESENTACION.md`](docs/entregas/GUIA_PRESENTACION.md).

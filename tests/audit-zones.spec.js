@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
+import fs from 'fs';
 import path from 'path';
 
-const ARTIFACT_DIR = 'C:/Users/abner/.gemini/antigravity/brain/17c7b45b-a242-4611-9dd8-c079375806d4';
+const ARTIFACT_DIR = path.resolve(process.cwd(), 'test-results/visual');
+fs.mkdirSync(ARTIFACT_DIR, { recursive: true });
 
 test.describe('Auditoría Visual Integral por Zonas de Costia', () => {
     test.setTimeout(90000);

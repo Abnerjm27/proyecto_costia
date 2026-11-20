@@ -34,18 +34,23 @@ test.describe('Costia — Autenticación y Registro', () => {
     await expect(page).toHaveURL(/paginas\/productos\.html/);
   });
 
-  test('debe validar credenciales erróneas mostrando alerta', async ({ page }) => {
+  test('debe validar credenciales erróneas mostrando alerta inline sin alert()', async ({ page }) => {
     await page.goto('/paginas/login.html');
+
+    let dialogTriggered = false;
+    page.on('dialog', async (d) => {
+      dialogTriggered = true;
+      await d.dismiss();
+    });
 
     await page.locator('#email').fill('usuario_inexistente@costia.com');
     await page.locator('#password').fill('clave_incorrecta_123');
-
-    const dialogPromise = page.waitForEvent('dialog');
     await page.locator('button[type="submit"]').click();
 
-    const dialog = await dialogPromise;
-    expect(dialog.message()).toMatch(/incorrect|Error|no se pudo/i);
-    await dialog.accept();
+    const banner = page.locator('#auth-error-banner');
+    await expect(banner).toBeVisible({ timeout: 8000 });
+    await expect(banner).toContainText(/incorrect|Error|no se pudo/i);
+    expect(dialogTriggered).toBe(false);
   });
 
   test('debe iniciar sesión con las credenciales demo preconfiguradas', async ({ page }) => {
@@ -55,8 +60,8 @@ test.describe('Costia — Autenticación y Registro', () => {
     await page.locator('#password').fill('admin123');
     await page.locator('button[type="submit"]').click();
 
-    // Redirección exitosa a productos.html
-    await expect(page).toHaveURL(/paginas\/productos\.html/, { timeout: 10000 });
+    // Redirección exitosa a dashboard.html (Inicio)
+    await expect(page).toHaveURL(/paginas\/dashboard\.html/, { timeout: 10000 });
   });
 
   test('debe cargar la pantalla de registro con sus dos casillas legales separadas (Términos y Privacidad)', async ({ page }) => {

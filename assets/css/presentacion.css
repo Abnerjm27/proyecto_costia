@@ -6,24 +6,24 @@
 
 /* ─── 1. TOKENS Y VARIABLES DE SISTEMA ──────────────────────── */
 :root {
-    --papel-obrador: #F2F7F4;
-    --papel-elevado: #E4EFEA;
-    --superficie-blanca: #FFFFFF;
-    --pino-abisal: #071F17;
-    --pino-medio: #0C3326;
-    --pino-suave: #144535;
-    --tinta-principal: #10211B;
-    --tinta-secundaria: #3D4F47;
-    --tinta-tenue: #475951;
-    --esmeralda-accion: #0A7851;
-    --esmeralda-hover: #076241;
+    --papel-obrador: #F6F2EA;
+    --papel-elevado: #EDE6D8;
+    --superficie-blanca: #FDFBF7;
+    --pino-abisal: #0D241C;
+    --pino-medio: #14362A;
+    --pino-suave: #1B4838;
+    --tinta-principal: #1A1E1B;
+    --tinta-secundaria: #4E554F;
+    --tinta-tenue: #555D57;
+    --esmeralda-accion: #0F6A4A;
+    --esmeralda-hover: #0B4F37;
     --esmeralda-luz: #34D399;
-    --cobre-costo: #8C470E;
-    --gris-fijos: #475569;
-    --borde-fino: rgba(16, 33, 27, 0.12);
-    --borde-fino-fuerte: rgba(16, 33, 27, 0.22);
-    --borde-fino-oscuro: rgba(240, 247, 244, 0.14);
-    --borde-fino-oscuro-fuerte: rgba(240, 247, 244, 0.24);
+    --cobre-costo: #A35018;
+    --gris-fijos: #4E554F;
+    --borde-fino: rgba(26, 30, 27, 0.11);
+    --borde-fino-fuerte: rgba(26, 30, 27, 0.22);
+    --borde-fino-oscuro: rgba(246, 242, 234, 0.14);
+    --borde-fino-oscuro-fuerte: rgba(246, 242, 234, 0.24);
     --font-editorial: 'Literata', Georgia, serif;
     --font-ui: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'Azeret Mono', monospace;
@@ -235,8 +235,9 @@ body.pagina-atelier {
     font-weight: 500;
     line-height: 1.08;
     letter-spacing: -0.025em;
-    color: #FFFFFF;
+    color: #FDFBF7;
     margin: 0 0 22px;
+    text-wrap: balance;
 }
 
 .hero-titulo-acento {
@@ -339,7 +340,7 @@ body.pagina-atelier {
     padding: 6px 11px;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 160ms var(--ease-out);
+    transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
 }
 
 .hero-receta-tab:hover {

@@ -79,11 +79,20 @@ class FichaTecnicaControlador {
         });
     }
 
+    static obtenerComisionDeliveryPct() {
+        const cfg = (typeof Store !== 'undefined' && typeof Store.obtenerConfigGastos === 'function')
+            ? Store.obtenerConfigGastos()
+            : {};
+        const pct = Number(cfg?.comisionDeliveryPct);
+        return (!isNaN(pct) && pct >= 0 && pct < 100) ? pct : 25;
+    }
+
     static renderizarCatalogo(productos, insumos, filtro = '') {
         const grid = document.getElementById('galeria-fichas-grid') || document.getElementById('fichas-catalogo-grid');
         const badgeCount = document.getElementById('catalogo-fichas-count');
         if (!grid) return;
 
+        const comisionDeliveryPct = this.obtenerComisionDeliveryPct();
         const fmt = (val) => (typeof Store !== 'undefined' && typeof Store.fmt === 'function') 
             ? Store.fmt(val) 
             : `$ ${Math.round(val).toLocaleString('es-CO')}`;
@@ -115,12 +124,13 @@ class FichaTecnicaControlador {
             const precioVenta = p.calcularPrecioVenta(insumos);
             const gananciaUd = p.calcularGananciaNeta(insumos);
             const precioDelivery = (typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularPrecioAppDelivery === 'function')
-                ? AsesorFinanzas.calcularPrecioAppDelivery(precioVenta, 25)
-                : Math.round(precioVenta / 0.75);
+                ? AsesorFinanzas.calcularPrecioAppDelivery(precioVenta, comisionDeliveryPct)
+                : Math.round(precioVenta / (1 - (comisionDeliveryPct / 100)));
 
+            const valorFmt = Number(Number(p.valorModo).toFixed(1));
             const modoLabel = p.modo === 'margen'
-                ? `Margen ${p.valorModo}%`
-                : `×${p.valorModo} costo`;
+                ? `Margen ${valorFmt}%`
+                : `×${valorFmt} costo`;
 
             const cantInsumos = p.receta ? p.receta.length : 0;
             const uds = Math.max(1, p.unidadesProducidas || 1);
@@ -149,7 +159,7 @@ class FichaTecnicaControlador {
                                 <strong class="valor-esmeralda">+${fmt(gananciaUd)}</strong>
                             </div>
                             <div class="ficha-card__spec-item">
-                                <small>Delivery (Apps 25%)</small>
+                                <small>Delivery (Apps ${comisionDeliveryPct}%)</small>
                                 <strong>${fmt(precioDelivery)}</strong>
                             </div>
                         </div>
@@ -221,19 +231,23 @@ class FichaTecnicaControlador {
         const mermaCosto   = prod.calcularCostoMerma(insumos);
         const uds          = Math.max(1, prod.unidadesProducidas || 1);
 
+        const comisionDeliveryPct = this.obtenerComisionDeliveryPct();
         const precioDelivery = (typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularPrecioAppDelivery === 'function')
-            ? AsesorFinanzas.calcularPrecioAppDelivery(precioVenta, 25)
-            : Math.round(precioVenta / 0.75);
+            ? AsesorFinanzas.calcularPrecioAppDelivery(precioVenta, comisionDeliveryPct)
+            : Math.round(precioVenta / (1 - (comisionDeliveryPct / 100)));
 
+        setElTxt('ficha-label-delivery-hdr', `Delivery (Apps ${comisionDeliveryPct}%)`);
+        setElTxt('ficha-label-delivery-desg', `Sugerido Delivery (Apps ${comisionDeliveryPct}%):`);
         setElTxt('ficha-precio-venta', `${fmt(precioVenta)} / ud`);
         setElTxt('ficha-precio-delivery-header', `${fmt(precioDelivery)} / ud`);
         setElTxt('ficha-unidades', `${uds} ${uds === 1 ? 'unidad' : 'unidades'}`);
         setElTxt('ficha-merma-pct', `${prod.porcentajeMerma || 0}%`);
         setElTxt('ficha-empaque-costo', fmt(prod.costoEmpaque || 0));
 
+        const valorFmt = Number(Number(prod.valorModo).toFixed(1));
         const modoLabel = prod.modo === 'margen'
-            ? `Margen ${prod.valorModo}% (${prod.tipoMargen === 'venta' ? 's/venta' : 's/costo'})`
-            : `×${prod.valorModo} costo`;
+            ? `Margen ${valorFmt}% (${prod.tipoMargen === 'venta' ? 's/venta' : 's/costo'})`
+            : `×${valorFmt} costo`;
         setElTxt('ficha-modo-label', modoLabel);
 
         // 3. Tabla de ingredientes del lote
@@ -338,13 +352,15 @@ class FichaTecnicaControlador {
             return;
         }
 
+        const comisionDeliveryPct = this.obtenerComisionDeliveryPct();
+
         // 1. Encabezado institucional maestro
         let html = `
             <header class="ficha-header">
                 <div class="ficha-marca">
                     <img src="../assets/img/costia-icon-green.png" alt="Costia">
                     <div>
-                        <h1 class="ficha-marca__titulo">Catálogo Oficial de Productos &amp; Recetas</h1>
+                        <h2 class="ficha-marca__titulo">Catálogo Oficial de Productos &amp; Recetas</h2>
                         <div class="ficha-marca__negocio">${Store.escapeHtml(negocio)}</div>
                     </div>
                 </div>
@@ -383,7 +399,8 @@ class FichaTecnicaControlador {
             const precioVenta = p.calcularPrecioVenta(insumos);
             const gananciaUd = p.calcularGananciaNeta(insumos);
             const uds = Math.max(1, p.unidadesProducidas || 1);
-            const modoLabel = p.modo === 'margen' ? `${p.valorModo}%` : `×${p.valorModo}`;
+            const valorFmt = Number(Number(p.valorModo).toFixed(1));
+            const modoLabel = p.modo === 'margen' ? `${valorFmt}%` : `×${valorFmt}`;
 
             html += `
                 <tr>
@@ -413,12 +430,13 @@ class FichaTecnicaControlador {
             const mermaCosto = p.calcularCostoMerma(insumos);
             const uds = Math.max(1, p.unidadesProducidas || 1);
             const precioDelivery = (typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularPrecioAppDelivery === 'function')
-                ? AsesorFinanzas.calcularPrecioAppDelivery(precioVenta, 25)
-                : Math.round(precioVenta / 0.75);
+                ? AsesorFinanzas.calcularPrecioAppDelivery(precioVenta, comisionDeliveryPct)
+                : Math.round(precioVenta / (1 - (comisionDeliveryPct / 100)));
 
+            const valorFmtDet = Number(Number(p.valorModo).toFixed(1));
             const modoLabel = p.modo === 'margen'
-                ? `Margen ${p.valorModo}% (${p.tipoMargen === 'venta' ? 's/venta' : 's/costo'})`
-                : `×${p.valorModo} costo`;
+                ? `Margen ${valorFmtDet}% (${p.tipoMargen === 'venta' ? 's/venta' : 's/costo'})`
+                : `×${valorFmtDet} costo`;
 
             let subtotalLote = 0;
             let filasIngredientes = '';
@@ -465,7 +483,7 @@ class FichaTecnicaControlador {
                         </div>
                         <div class="catalogo-pdf-card__precios">
                             <div class="catalogo-pdf-card__precio-mostrador">${fmt(precioVenta)} / ud</div>
-                            <div class="catalogo-pdf-card__precio-delivery">Delivery Apps (25%): <strong>${fmt(precioDelivery)}</strong></div>
+                            <div class="catalogo-pdf-card__precio-delivery">Delivery Apps (${comisionDeliveryPct}%): <strong>${fmt(precioDelivery)}</strong></div>
                         </div>
                     </div>
 

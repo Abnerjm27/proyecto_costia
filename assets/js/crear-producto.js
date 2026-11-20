@@ -14,15 +14,19 @@ class CrearProductoController {
     };
 
     constructor() {
-        this.modoPrecio         = 'margen';
-        this.filaIdCounter      = 0;
-        this.productoEditandoId = null;
+        this.modoPrecio                  = 'margen';
+        this.filaIdCounter               = 0;
+        this.productoEditandoId          = null;
+        this.pasoActual                  = 1;
+        this.porcentajeGastoProporcional = 25;
+        this.recomendacionModoActual     = null;
     }
 
     iniciar() {
         this.configurarEventosGenerales();
         const editando = this.cargarProductoSiEsEdicion();
         if (!editando) {
+            this.precargarDefaultsNegocio();
             this.agregarFila(); // fila inicial
             this.actualizarResumen();
         }
@@ -43,10 +47,36 @@ class CrearProductoController {
         }
     }
 
+    precargarDefaultsNegocio() {
+        const cfg = typeof Store.obtenerConfigGastos === 'function' ? Store.obtenerConfigGastos() : {};
+        const margenDef = parseFloat(cfg.margenDefault);
+        const multDef = parseFloat(cfg.modeloComercial);
+
+        const inpMargen = document.getElementById('input-margen');
+        const sldMargen = document.getElementById('slider-margen');
+        const inpMult = document.getElementById('input-multiplicador');
+        const selTipo = document.getElementById('tipo-margen');
+
+        if (!isNaN(margenDef) && margenDef > 0) {
+            if (inpMargen) inpMargen.value = margenDef;
+            if (sldMargen) sldMargen.value = Math.min(200, margenDef);
+        }
+        if (!isNaN(multDef) && multDef >= 1 && inpMult) {
+            inpMult.value = multDef;
+        }
+        if (selTipo) {
+            selTipo.value = 'venta';
+        }
+    }
+
     configurarEventosGenerales() {
         // 1. Receta y cantidades
+        document.getElementById('producto-nombre')?.addEventListener('input', () => this.actualizarResumen());
         document.getElementById('btn-agregar')?.addEventListener('click', () => this.agregarFila());
         document.getElementById('unidades-producidas')?.addEventListener('input', () => this.actualizarResumen());
+
+        // 1b. Navegación y herramientas del Wizard de 3 pasos
+        this.configurarEventosWizard();
 
         // 2. Costos adicionales
         document.getElementById('porcentaje-merma')?.addEventListener('input', () => this.actualizarResumen());
@@ -54,12 +84,11 @@ class CrearProductoController {
         document.getElementById('costo-mano-obra')?.addEventListener('input', () => this.actualizarResumen());
         this.configurarHerramientasManualesCostos();
 
-        // 3. Modos de precio y tabs estilo Terminal Pro
+        // 3. Modos de precio y tabs
         document.getElementById('tab-margen')?.addEventListener('click', () => this.cambiarModo('margen'));
         document.getElementById('tab-multiplicador')?.addEventListener('click', () => this.cambiarModo('multiplicador'));
 
         // 4. Panel Margen %
-        document.querySelector('.sugerencia__aplicar')?.addEventListener('click', () => this.aplicarMargenSugerido());
         document.getElementById('tipo-margen')?.addEventListener('change', () => this.actualizarResumen());
         document.getElementById('slider-margen')?.addEventListener('input', () => this.sincronizarMargen('slider'));
         document.getElementById('input-margen')?.addEventListener('input', () => this.sincronizarMargen('input'));
@@ -70,21 +99,11 @@ class CrearProductoController {
             window.location.href = 'configuracion.html#seccion-precios';
         });
 
-        // 6. Asesor IA y triggers
-        const abrirChatAsesor = () => {
+        // 6. Botón Asesor IA
+        document.getElementById('btn-fab-asesor')?.addEventListener('click', () => {
             if (window.asesorAgente && typeof window.asesorAgente.abrirChat === 'function') {
                 window.asesorAgente.abrirChat();
             }
-        };
-        document.getElementById('btn-abrir-asesor')?.addEventListener('click', abrirChatAsesor);
-        document.getElementById('btn-abrir-asesor-precio')?.addEventListener('click', abrirChatAsesor);
-        document.getElementById('btn-fab-asesor')?.addEventListener('click', abrirChatAsesor);
-
-        // Tooltip del botón flotante
-        document.getElementById('btn-cerrar-tooltip-fab')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const tooltip = document.getElementById('tooltip-fab-asesor');
-            if (tooltip) tooltip.style.display = 'none';
         });
 
         // 7. Botón de guardado
@@ -114,6 +133,19 @@ class CrearProductoController {
             });
 
             cuerpo.addEventListener('click', (e) => {
+                const btnCorregir = e.target.closest('.btn-corregir-unidad-fila');
+                if (btnCorregir) {
+                    const fila = btnCorregir.closest('.receta-fila');
+                    const selUnidad = fila?.querySelector('.fila-unidad-receta');
+                    const targetUnit = btnCorregir.dataset.targetUnit;
+                    if (selUnidad && targetUnit) {
+                        selUnidad.value = targetUnit;
+                        this.actualizarResumen();
+                        Store.toast(`Unidad cambiada a ${targetUnit}`);
+                    }
+                    return;
+                }
+
                 const btnEliminar = e.target.closest('.receta-fila__eliminar');
                 if (btnEliminar) {
                     const fila = btnEliminar.closest('.receta-fila');
@@ -158,11 +190,18 @@ class CrearProductoController {
     }
 
     aplicarMargenSugerido() {
-        const input  = document.getElementById('input-margen');
-        const slider = document.getElementById('slider-margen');
-        if (input)  input.value  = 30;
-        if (slider) slider.value = 30;
+        const sugerido   = this.recomendacionModoActual?.margenComp || 30;
+        const tipoSug    = this.recomendacionModoActual?.tipoMargenComp;
+        const input      = document.getElementById('input-margen');
+        const slider     = document.getElementById('slider-margen');
+        const selTipo    = document.getElementById('tipo-margen');
+
+        if (input)  input.value  = sugerido;
+        if (slider) slider.value = Math.min(200, sugerido);
+        if (selTipo && tipoSug) selTipo.value = tipoSug;
+
         this.actualizarResumen();
+        Store.toast(`Margen sugerido aplicado: ${sugerido}%`);
     }
 
     mostrarPreguntas(categoria) {
@@ -172,6 +211,410 @@ class CrearProductoController {
 
     actualizarMultiplicador() {
         this.actualizarResumen();
+    }
+
+    // ─── Navegación Wizard de 3 Pasos y Recomendaciones ───────────
+
+    /**
+     * Enlaza los eventos del stepper, botones Siguiente/Volver y tarjetas de recomendación.
+     */
+    configurarEventosWizard() {
+        document.querySelectorAll('.wizard-step-tab[data-paso]').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const paso = parseInt(tab.dataset.paso, 10);
+                if (paso) this.irAPaso(paso);
+            });
+        });
+
+        document.getElementById('btn-ir-paso-2')?.addEventListener('click', () => this.irAPaso(2));
+        document.getElementById('btn-volver-paso-1')?.addEventListener('click', () => this.irAPaso(1));
+        document.getElementById('btn-ir-paso-3')?.addEventListener('click', () => this.irAPaso(3));
+        document.getElementById('btn-volver-paso-2')?.addEventListener('click', () => this.irAPaso(2));
+        document.getElementById('btn-volver-paso-1-desde-3')?.addEventListener('click', () => this.irAPaso(1));
+
+        document.querySelectorAll('.gastos-prop-pill[data-pct-gasto]').forEach(pill => {
+            pill.addEventListener('click', () => {
+                const pct = parseFloat(pill.dataset.pctGasto);
+                if (isNaN(pct)) return;
+                this.porcentajeGastoProporcional = pct;
+                document.querySelectorAll('.gastos-prop-pill').forEach(p => p.classList.remove('activo'));
+                pill.classList.add('activo');
+                this.actualizarResumen();
+            });
+        });
+
+        document.getElementById('btn-aplicar-gastos-recomendados')?.addEventListener('click', () => {
+            this.aplicarGastosProporcionalesSugeridos();
+        });
+
+        document.getElementById('btn-corregir-gasto-proporcional')?.addEventListener('click', () => {
+            this.aplicarGastosProporcionalesSugeridos();
+        });
+
+        document.getElementById('btn-aplicar-modo-recomendado')?.addEventListener('click', () => {
+            this.aplicarModoRecomendado();
+        });
+
+        document.querySelectorAll('.modo-comp-card[data-seleccionar-modo]').forEach(card => {
+            card.addEventListener('click', () => {
+                const modoElegido = card.dataset.seleccionarModo;
+                if (modoElegido) {
+                    this.aplicarModoRecomendado(modoElegido);
+                }
+            });
+        });
+    }
+
+    /**
+     * Verifica que el Paso 1 tenga al menos un insumo con cantidad y costo válido (> 0).
+     */
+    tieneInsumosValidos() {
+        const items = this.obtenerItemsRecetaFormulario();
+        if (items.length === 0) return false;
+        const insumos = this.obtenerInsumos();
+        const prodTemp = new Producto({
+            id: 0,
+            nombre: 'validacion',
+            receta: items
+        });
+        return prodTemp.calcularCostoIngredientes(insumos) > 0;
+    }
+
+    /**
+     * Navega entre los pasos 1, 2 y 3 conservando todo el estado del formulario.
+     * Exige al menos un insumo válido en el Paso 1 para avanzar al Paso 2 o Paso 3.
+     */
+    irAPaso(numeroPaso, opciones = {}) {
+        const paso = Math.min(3, Math.max(1, parseInt(numeroPaso, 10) || 1));
+        const insumosValidos = this.tieneInsumosValidos();
+
+        if (paso > 1 && !opciones.forzar && !insumosValidos) {
+            Store.toast('Primero registra al menos un insumo con cantidad en el Paso 1 para calcular los gastos proporcionales.', 'info');
+            const primerSelect = document.querySelector('#receta-cuerpo .fila-insumo');
+            if (primerSelect) primerSelect.focus();
+            return false;
+        }
+
+        this.pasoActual = paso;
+
+        document.querySelectorAll('.wizard-paso-panel').forEach(panel => {
+            const panelPaso = parseInt(panel.dataset.pasoPanel, 10);
+            panel.classList.toggle('activo', panelPaso === paso);
+        });
+
+        document.querySelectorAll('.wizard-step-tab').forEach(tab => {
+            const tabPaso = parseInt(tab.dataset.paso, 10);
+            const esActivo = tabPaso === paso;
+            const estaCompletado = tabPaso < paso || (tabPaso === 1 && insumosValidos && paso > 1);
+            tab.classList.toggle('activo', esActivo);
+            tab.classList.toggle('completado', estaCompletado);
+            tab.setAttribute('aria-selected', esActivo ? 'true' : 'false');
+            if (esActivo) {
+                tab.setAttribute('aria-current', 'step');
+            } else {
+                tab.removeAttribute('aria-current');
+            }
+        });
+
+        const fill = document.getElementById('wizard-progress-fill');
+        if (fill) {
+            fill.style.width = paso === 1 ? '33.33%' : (paso === 2 ? '66.66%' : '100%');
+        }
+
+        const layout = document.getElementById('crear-layout');
+        if (layout) {
+            layout.classList.toggle('crear-layout--con-resumen', paso === 3);
+        }
+
+        this.actualizarResumen();
+        return true;
+    }
+
+    /**
+     * Calcula sugerencias de mano de obra, merma y empaque/desechable
+     * estrictamente proporcionales al costo de los insumos del Paso 1.
+     */
+    calcularGastosProporcionalesSugeridos(costoIngredientesLote, unidades, nombreProducto = '') {
+        const unidadesSeguras = Math.max(1, parseInt(unidades, 10) || 1);
+        const costoLote = Math.max(0, Number(costoIngredientesLote) || 0);
+        const costoInsumoUnidad = costoLote / unidadesSeguras;
+        const pctGasto = this.porcentajeGastoProporcional || 25;
+
+        const manoObraSugeridaLote = Math.max(0, Math.round(costoLote * (pctGasto / 100)));
+        const manoObraSugeridaUnidad = Math.round(manoObraSugeridaLote / unidadesSeguras);
+
+        const nombreNorm = String(nombreProducto || '').toLowerCase();
+        const esHornoComplejo = /\b(empanada|buñuelo|bunuelo|churro|hojaldre|croissant|frito|fritura)\b/i.test(nombreNorm);
+        const mermaSugeridaPct = costoLote > 0 ? (esHornoComplejo ? 5 : 3) : 0;
+
+        let empaqueSugeridoUnidad = 0;
+        if (costoInsumoUnidad <= 0) {
+            empaqueSugeridoUnidad = 0;
+        } else if (costoInsumoUnidad <= 500) {
+            empaqueSugeridoUnidad = Math.max(10, Math.round((costoInsumoUnidad * 0.06) / 10) * 10);
+        } else if (costoInsumoUnidad <= 2000) {
+            empaqueSugeridoUnidad = Math.round((costoInsumoUnidad * 0.08) / 10) * 10;
+        } else if (costoInsumoUnidad <= 6000) {
+            empaqueSugeridoUnidad = 250;
+        } else {
+            empaqueSugeridoUnidad = 800;
+        }
+
+        const costoMermaUnidad = Math.round(costoInsumoUnidad * (mermaSugeridaPct / 100));
+        const costoFinalUnidad = Math.round(costoInsumoUnidad + costoMermaUnidad + empaqueSugeridoUnidad + manoObraSugeridaUnidad);
+
+        return {
+            pctGasto,
+            costoLote,
+            unidades: unidadesSeguras,
+            costoInsumoUnidad,
+            manoObraSugeridaLote,
+            manoObraSugeridaUnidad,
+            mermaSugeridaPct,
+            empaqueSugeridoUnidad,
+            costoFinalUnidad
+        };
+    }
+
+    /**
+     * Aplica a los campos del Paso 2 los valores proporcionales sugeridos según el Paso 1.
+     */
+    aplicarGastosProporcionalesSugeridos() {
+        const insumos = this.obtenerInsumos();
+        const items = this.obtenerItemsRecetaFormulario();
+        const unidades = Math.max(1, parseInt(document.getElementById('unidades-producidas')?.value, 10) || 1);
+        const nombre = document.getElementById('producto-nombre')?.value.trim() || '';
+
+        const prodTemp = new Producto({ id: 0, nombre: nombre || 'preview', unidadesProducidas: unidades, receta: items });
+        const costoLote = prodTemp.calcularCostoIngredientes(insumos);
+
+        if (costoLote <= 0) {
+            Store.toast('Primero registra al menos un insumo en el Paso 1.', 'info');
+            return;
+        }
+
+        const prop = this.calcularGastosProporcionalesSugeridos(costoLote, unidades, nombre);
+
+        const inpMerma   = document.getElementById('porcentaje-merma');
+        const inpEmpaque = document.getElementById('costo-empaque');
+        const inpMano    = document.getElementById('costo-mano-obra');
+
+        if (inpMerma)   inpMerma.value   = prop.mermaSugeridaPct;
+        if (inpEmpaque) inpEmpaque.value = prop.empaqueSugeridoUnidad;
+        if (inpMano)    inpMano.value    = prop.manoObraSugeridaLote;
+
+        this.actualizarResumen();
+        Store.toast(
+            `Gastos proporcionales (${prop.pctGasto}%) aplicados: Mano de obra ${Store.fmt(prop.manoObraSugeridaLote)}, merma ${prop.mermaSugeridaPct}%, empaque ${Store.fmt(prop.empaqueSugeridoUnidad)}/ud.`
+        );
+    }
+
+    /**
+     * Evalúa los Pasos 1 y 2 para recomendar el modo de fijación de precio óptimo
+     * (Margen % cuando ya se registraron gastos reales vs Multiplicador × cuando son bajos/cero).
+     */
+    calcularRecomendacionModo({ nombre, unidades, costoInsumoUnidad, gastoAdicionalUnidad, receta, merma, empaque, manoObra, insumos }) {
+        const ratioGastos = costoInsumoUnidad > 0 ? (gastoAdicionalUnidad / costoInsumoUnidad) : 0;
+        const recCat = (typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularMargenRecomendadoSegunProducto === 'function')
+            ? AsesorFinanzas.calcularMargenRecomendadoSegunProducto(nombre, 1, unidades)
+            : { margen: 40, razon: 'Margen equilibrado estándar.' };
+
+        let modoRecomendado = 'margen';
+        let tipoMargenSugerido = 'venta';
+        let margenComp = recCat.margen;
+        let multComp = unidades >= 10 ? 2.0 : 2.5;
+        let razon = '';
+
+        if (ratioGastos < 0.12) {
+            modoRecomendado = 'multiplicador';
+            razon = 'En el Paso 2 registraste pocos o cero gastos operativos adicionales. El modo Multiplicador × es mejor aquí porque multiplica el costo de tus insumos para absorber gastos ocultos no detallados y asegurar tu ganancia.';
+        } else if (ratioGastos > 0.85) {
+            modoRecomendado = 'margen';
+            tipoMargenSugerido = 'costo';
+            margenComp = 30;
+            razon = 'Los gastos del Paso 2 ya tienen un peso alto sobre tus insumos. El modo Margen % sobre costo (30%) es mejor para no inflar en exceso el precio final y mantener competitividad.';
+        } else {
+            modoRecomendado = 'margen';
+            tipoMargenSugerido = 'venta';
+            margenComp = recCat.margen;
+            razon = 'En el Paso 2 ya incluiste gastos operativos, merma y empaque proporcionales a tus insumos. El modo Margen % es ideal porque suma tu utilidad exacta sobre el costo real sin duplicar gastos.';
+        }
+
+        const construirPreview = (modo, valorModo, tipoMargen = 'costo') => {
+            const p = new Producto({
+                id: 0,
+                nombre: nombre || 'preview',
+                modo,
+                valorModo,
+                tipoMargen,
+                unidadesProducidas: unidades,
+                costoEmpaque: empaque,
+                porcentajeMerma: merma,
+                costoManoObra: manoObra,
+                receta
+            });
+            return {
+                precio: p.calcularPrecioVenta(insumos),
+                ganancia: p.calcularGananciaNeta(insumos)
+            };
+        };
+
+        const prevMargen = construirPreview('margen', margenComp, tipoMargenSugerido);
+        const prevMult   = construirPreview('multiplicador', multComp, 'costo');
+
+        return {
+            modo: modoRecomendado,
+            ratioGastos,
+            margenComp,
+            tipoMargenComp: tipoMargenSugerido,
+            precioMargenComp: prevMargen.precio,
+            gananciaMargenComp: prevMargen.ganancia,
+            multComp,
+            precioMultComp: prevMult.precio,
+            gananciaMultComp: prevMult.ganancia,
+            valorRecomendado: modoRecomendado === 'margen' ? margenComp : multComp,
+            razon
+        };
+    }
+
+    /**
+     * Aplica el modo de precio recomendado (o el seleccionado desde las tarjetas comparativas del Paso 3).
+     */
+    aplicarModoRecomendado(modoForzado = null) {
+        const rec = this.recomendacionModoActual;
+        if (!rec) return;
+
+        const modo = modoForzado || rec.modo;
+        if (modo === 'margen') {
+            const inpMargen = document.getElementById('input-margen');
+            const slMargen  = document.getElementById('slider-margen');
+            const selTipo   = document.getElementById('tipo-margen');
+            if (inpMargen) inpMargen.value = rec.margenComp;
+            if (slMargen)  slMargen.value  = Math.min(200, rec.margenComp);
+            if (selTipo)   selTipo.value   = rec.tipoMargenComp;
+            this.cambiarModo('margen');
+            Store.toast(`Modo Margen % (${rec.margenComp}%) aplicado según tu receta y gastos.`);
+        } else {
+            const inpMult = document.getElementById('input-multiplicador');
+            if (inpMult) inpMult.value = rec.multComp;
+            this.cambiarModo('multiplicador');
+            Store.toast(`Modo Multiplicador ×${rec.multComp} aplicado según tu receta y gastos.`);
+        }
+    }
+
+    /**
+     * Actualiza los textos, métricas proporcionales, alertas y recomendaciones de los 3 pasos.
+     */
+    actualizarTarjetasWizard({ nombre, unidades, receta, costoIngredientes, costoMerma, empaque, manoObra, merma, insumos }) {
+        const setTxt = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = val;
+        };
+
+        const itemsCount = receta.length;
+        const tieneInsumos = itemsCount > 0 && costoIngredientes > 0;
+        const costoInsumoUnidad = costoIngredientes / unidades;
+        const prop = this.calcularGastosProporcionalesSugeridos(costoIngredientes, unidades, nombre);
+
+        // 1. Stepper y Paso 1
+        setTxt(
+            'stepper-resumen-1',
+            tieneInsumos ? `${itemsCount} insumo(s) · ${Store.fmt(costoInsumoUnidad)}/ud` : 'Define receta y unidades'
+        );
+        setTxt(
+            'paso-1-estado-texto',
+            tieneInsumos
+                ? `${itemsCount} insumo(s) · Lote ${Store.fmt(costoIngredientes)} (${Store.fmt(costoInsumoUnidad)}/ud)`
+                : 'Agrega al menos 1 insumo para continuar'
+        );
+
+        // 2. Tarjeta de Gastos Proporcionales en Paso 2
+        setTxt('gasto-ref-insumos-lote', Store.fmt(costoIngredientes));
+        setTxt('gasto-ref-unidades', unidades);
+        setTxt('gasto-ref-insumo-unidad', Store.fmt(costoInsumoUnidad));
+        setTxt('rec-mano-obra-lote', Store.fmt(prop.manoObraSugeridaLote));
+        setTxt('rec-mano-obra-unidad', `${Store.fmt(prop.manoObraSugeridaUnidad)} / unidad`);
+        setTxt('rec-merma-pct', `${prop.mermaSugeridaPct}%`);
+        setTxt('rec-empaque-unidad', Store.fmt(prop.empaqueSugeridoUnidad));
+        setTxt('rec-costo-final-unidad', Store.fmt(prop.costoFinalUnidad));
+
+        const gastoDirectoUnidad = (manoObra / unidades) + empaque;
+        setTxt(
+            'stepper-resumen-2',
+            tieneInsumos
+                ? (manoObra > 0 || empaque > 0 || merma > 0
+                    ? `Merma ${merma}% · Gastos ${Store.fmt(gastoDirectoUnidad)}/ud`
+                    : `Sugerido: ${Store.fmt(prop.manoObraSugeridaUnidad + prop.empaqueSugeridoUnidad)}/ud`)
+                : 'Proporcional a tus insumos'
+        );
+
+        // Alerta de gasto desproporcionado (ej: pan de $300 con $4.000 de gastos)
+        const alertaBox = document.getElementById('alerta-desproporcion-gastos');
+        const alertaTxt = document.getElementById('alerta-desproporcion-texto');
+        if (alertaBox && alertaTxt) {
+            const umbralDesproporcion = Math.max(costoInsumoUnidad * 0.85, 100);
+            if (tieneInsumos && gastoDirectoUnidad > umbralDesproporcion) {
+                alertaBox.style.display = 'flex';
+                alertaTxt.innerHTML = `<strong>Gasto desproporcionado:</strong> Estás sumando <strong>${Store.fmt(gastoDirectoUnidad)}/ud</strong> en gastos adicionales sobre solo <strong>${Store.fmt(costoInsumoUnidad)}/ud</strong> de insumos. Para este producto se recomienda cerca de <strong>${Store.fmt(prop.manoObraSugeridaUnidad + prop.empaqueSugeridoUnidad)}/ud</strong>.`;
+            } else {
+                alertaBox.style.display = 'none';
+            }
+        }
+
+        // 3. Recomendación inteligente de Modo en Paso 3
+        const gastoAdicionalTotalUnidad = Math.max(0, (costoMerma + (empaque * unidades) + manoObra) / unidades);
+        const recModo = this.calcularRecomendacionModo({
+            nombre,
+            unidades,
+            costoInsumoUnidad,
+            gastoAdicionalUnidad: gastoAdicionalTotalUnidad,
+            receta,
+            merma,
+            empaque,
+            manoObra,
+            insumos
+        });
+        this.recomendacionModoActual = recModo;
+
+        const tituloRec = recModo.modo === 'margen'
+            ? `Modo recomendado: Margen % (${recModo.margenComp}% ${recModo.tipoMargenComp === 'venta' ? 'sobre venta' : 'sobre costo'})`
+            : `Modo recomendado: Multiplicador Comercial (×${recModo.multComp})`;
+        setTxt('rec-modo-titulo', tituloRec);
+        setTxt('rec-modo-razon', recModo.razon);
+
+        setTxt('comp-margen-precio', Store.fmt(recModo.precioMargenComp));
+        setTxt('comp-margen-meta', `Con ${recModo.margenComp}% · Ganancia +${Store.fmt(recModo.gananciaMargenComp)}/ud`);
+        setTxt('comp-mult-precio', Store.fmt(recModo.precioMultComp));
+        setTxt('comp-mult-meta', `Con ×${recModo.multComp} · Ganancia +${Store.fmt(recModo.gananciaMultComp)}/ud`);
+
+        const cardCompMargen = document.getElementById('card-comp-margen');
+        const cardCompMult   = document.getElementById('card-comp-multiplicador');
+        const badgeCompM     = document.getElementById('comp-badge-margen');
+        const badgeCompX     = document.getElementById('comp-badge-mult');
+        const badgeTabM      = document.getElementById('badge-rec-margen');
+        const badgeTabX      = document.getElementById('badge-rec-mult');
+
+        const esMargenRec = recModo.modo === 'margen';
+        cardCompMargen?.classList.toggle('recomendada', esMargenRec);
+        cardCompMult?.classList.toggle('recomendada', !esMargenRec);
+        if (badgeCompM) badgeCompM.textContent = esMargenRec ? 'Recomendado' : 'Alternativa';
+        if (badgeCompX) badgeCompX.textContent = !esMargenRec ? 'Recomendado' : 'Alternativa';
+        if (badgeTabM)  badgeTabM.style.display = esMargenRec ? 'inline-flex' : 'none';
+        if (badgeTabX)  badgeTabX.style.display = !esMargenRec ? 'inline-flex' : 'none';
+
+        setTxt('margen-sugerido-texto', `${recModo.margenComp}%`);
+        setTxt(
+            'stepper-resumen-3',
+            tieneInsumos
+                ? (esMargenRec ? `Sugerido: Margen ${recModo.margenComp}%` : `Sugerido: Mult. ×${recModo.multComp}`)
+                : 'Modo recomendado y liquidación'
+        );
+
+        // Actualizar estado visual de completado en las pestañas del stepper
+        const tab1 = document.getElementById('tab-paso-1');
+        if (tab1) {
+            tab1.classList.toggle('completado', tieneInsumos && this.pasoActual > 1);
+        }
     }
 
     // ─── Filas de Ingredientes en la Receta ───────────────────────
@@ -273,8 +716,15 @@ class CrearProductoController {
         if (!insumo || !selUnidad) return;
 
         const compatibles = UnidadConverter.COMPATIBLES[insumo.unidad] || [insumo.unidad];
+        let unidadDefault = insumo.unidad;
+        if (['kg', 'arroba', 'tonelada'].includes(insumo.unidad) && compatibles.includes('g')) {
+            unidadDefault = 'g';
+        } else if (insumo.unidad === 'l' && compatibles.includes('ml')) {
+            unidadDefault = 'ml';
+        }
+
         selUnidad.innerHTML = compatibles.map(u =>
-            `<option value="${u}" ${u === insumo.unidad ? 'selected' : ''}>${UnidadConverter.ETIQUETAS[u] || u}</option>`
+            `<option value="${u}" ${u === unidadDefault ? 'selected' : ''}>${UnidadConverter.ETIQUETAS[u] || u}</option>`
         ).join('');
         selUnidad.disabled = false;
 
@@ -318,15 +768,28 @@ class CrearProductoController {
             const res    = item.calcularCosto(insumo);
 
             if (subtotalEl) subtotalEl.textContent = Store.fmt(res.costo);
-            if (equivEl)    equivEl.textContent    = res.equiv || '';
+            if (equivEl) {
+                if (res.costo >= 150000 && ['kg', 'l', 'arroba', 'tonelada'].includes(unidadReceta)) {
+                    const targetUnit = unidadReceta === 'l' ? 'ml' : 'g';
+                    equivEl.innerHTML = `${Store.escapeHtml(res.equiv || '')}
+                        <span class="fila-sanity-warn">
+                            Costo inusual en ${Store.escapeHtml(unidadReceta)}.
+                            <button type="button" class="btn-corregir-unidad-fila" data-target-unit="${targetUnit}">Cambiar a ${targetUnit}</button>
+                        </span>`;
+                } else {
+                    equivEl.textContent = res.equiv || '';
+                }
+            }
         });
 
         // 2. Extraer parámetros del formulario
+        const nombre     = document.getElementById('producto-nombre')?.value.trim() || '';
         const unidades   = Math.max(1, parseInt(document.getElementById('unidades-producidas')?.value, 10) || 1);
         const merma      = Math.max(0, parseFloat(document.getElementById('porcentaje-merma')?.value) || 0);
         const empaque    = Math.max(0, parseFloat(document.getElementById('costo-empaque')?.value) || 0);
         const manoObra   = Math.max(0, parseFloat(document.getElementById('costo-mano-obra')?.value) || 0);
-        const tipoMargen = document.getElementById('tipo-margen')?.value || 'costo';
+        const tipoMargen = document.getElementById('tipo-margen')?.value || 'venta';
+        const receta     = this.obtenerItemsRecetaFormulario();
 
         const valorModo = this.modoPrecio === 'margen'
             ? (parseFloat(document.getElementById('input-margen')?.value) || 0)
@@ -335,7 +798,7 @@ class CrearProductoController {
         // 3. Construir modelo Producto temporal para delegar los cálculos financieros
         const productoTemp = new Producto({
             id: 0,
-            nombre: 'preview',
+            nombre: nombre || 'preview',
             modo: this.modoPrecio,
             valorModo,
             tipoMargen,
@@ -343,7 +806,7 @@ class CrearProductoController {
             costoEmpaque: empaque,
             porcentajeMerma: merma,
             costoManoObra: manoObra,
-            receta: this.obtenerItemsRecetaFormulario()
+            receta
         });
 
         const costoIngredientes = productoTemp.calcularCostoIngredientes(insumos);
@@ -353,12 +816,14 @@ class CrearProductoController {
         const precioVenta       = productoTemp.calcularPrecioVenta(insumos);
         const gananciaUnidad    = productoTemp.calcularGananciaNeta(insumos);
 
-        const configGastos      = (typeof Store.obtenerConfigGastos === 'function' ? Store.obtenerConfigGastos() : (typeof Store.cargarConfigGastos === 'function' ? Store.cargarConfigGastos() : {})) || {};
-        const impoconsumoPct    = configGastos.impoconsumoPct ?? 8;
-        const precioConImpuesto = Math.round(precioVenta * (1 + (impoconsumoPct / 100)));
-        const precioDelivery    = (typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularPrecioAppDelivery === 'function')
-            ? AsesorFinanzas.calcularPrecioAppDelivery(precioVenta, 25)
-            : Math.round(precioVenta / 0.75);
+        const configGastos        = (typeof Store.obtenerConfigGastos === 'function' ? Store.obtenerConfigGastos() : (typeof Store.cargarConfigGastos === 'function' ? Store.cargarConfigGastos() : {})) || {};
+        const impoconsumoPct      = configGastos.impoconsumoPct ?? 8;
+        const comisionDeliveryPct = Number(configGastos.comisionDeliveryPct ?? 25);
+        const precioConImpuesto   = Math.round(precioVenta * (1 + (impoconsumoPct / 100)));
+        const impoconsumoMonto    = Math.max(0, precioConImpuesto - precioVenta);
+        const precioDelivery      = (typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularPrecioAppDelivery === 'function')
+            ? AsesorFinanzas.calcularPrecioAppDelivery(precioVenta, comisionDeliveryPct)
+            : Math.round(precioVenta / (1 - (comisionDeliveryPct / 100)));
 
         // 4. Reflejar en la UI
         const setTxt = (id, val) => {
@@ -369,7 +834,7 @@ class CrearProductoController {
         setTxt('costo-unidad',            Store.fmt(costoUnidad));
         setTxt('res-costo-ingredientes',  Store.fmt(costoIngredientes));
 
-        // Filas condicionales en el resumen de liquidación
+        // Filas condicionales en el resumen
         const fMerma = document.getElementById('res-fila-merma');
         if (fMerma) {
             fMerma.style.display = merma > 0 ? 'flex' : 'none';
@@ -389,15 +854,16 @@ class CrearProductoController {
             setTxt('res-costo-mano-obra', `+${Store.fmt(manoObra)}`);
         }
 
-        setTxt('res-costo-total',        Store.fmt(costoTotal));
-        setTxt('res-unidades',           unidades);
-        setTxt('res-costo-unidad',       Store.fmt(costoUnidad));
-        setTxt('res-ganancia-unidad',    `+${Store.fmt(gananciaUnidad)}`);
-        setTxt('res-precio-venta',       Store.fmt(precioVenta));
-        setTxt('res-precio-impoconsumo', Store.fmt(precioConImpuesto));
-        setTxt('res-impoconsumo-monto',  Store.fmt(precioConImpuesto));
-        setTxt('res-precio-delivery',    Store.fmt(precioDelivery));
-        setTxt('res-sugerido-delivery',  Store.fmt(precioDelivery));
+        setTxt('res-costo-total',          Store.fmt(costoTotal));
+        setTxt('res-unidades',             unidades);
+        setTxt('res-costo-unidad',         Store.fmt(costoUnidad));
+        setTxt('res-ganancia-unidad',      `+${Store.fmt(gananciaUnidad)}`);
+        setTxt('res-precio-venta',         Store.fmt(precioVenta));
+        setTxt('res-precio-impoconsumo',   Store.fmt(precioConImpuesto));
+        setTxt('res-impoconsumo-monto',    Store.fmt(impoconsumoMonto));
+        setTxt('res-precio-delivery',      Store.fmt(precioDelivery));
+        setTxt('res-sugerido-delivery',    Store.fmt(precioDelivery));
+        setTxt('res-delivery-label-pct',   `(Apps ${comisionDeliveryPct}% com.):`);
 
         if (this.modoPrecio === 'margen') {
             const etiquetaModo = tipoMargen === 'venta'
@@ -412,8 +878,8 @@ class CrearProductoController {
         const infoMargen = document.getElementById('tipo-margen-info');
         if (infoMargen) {
             infoMargen.textContent = tipoMargen === 'venta'
-                ? `Margen Comercial: Tu ganancia será el ${valorModo}% del precio de venta final.`
-                : `Mark-up estándar: Tu ganancia será el ${valorModo}% calculado sobre el costo por unidad.`;
+                ? `Ej: si cuesta $6.000 y quieres ${valorModo}% sobre venta, el precio garantiza que el ${valorModo}% de cada peso cobrado sea ganancia.`
+                : `Mark-up: si el costo es $1.000 y aplicas ${valorModo}%, el precio final será $${Math.round(1000 * (1 + valorModo / 100)).toLocaleString('es-CO')}.`;
         }
 
         // Estado y advertencia de Gastos Fijos en unidades individuales
@@ -476,6 +942,19 @@ class CrearProductoController {
                 badgeGastos.innerHTML = `<span style="color:var(--bn-text-secondary); font-size:12px;">Cuota de lote: <strong>${Store.fmt(manoObra)}</strong> (${Store.fmt(porUnidad)} por unidad en tanda de ${unidades}).</span>`;
             }
         }
+
+        // 5. Actualizar tarjetas de recomendación proporcional, alertas y modo sugerido del Wizard
+        this.actualizarTarjetasWizard({
+            nombre,
+            unidades,
+            receta,
+            costoIngredientes,
+            costoMerma,
+            empaque,
+            manoObra,
+            merma,
+            insumos
+        });
     }
 
     // ─── Guardar Producto en MySQL y Store ─────────────────────────
@@ -486,16 +965,18 @@ class CrearProductoController {
         const merma      = Math.max(0, parseFloat(document.getElementById('porcentaje-merma')?.value) || 0);
         const empaque    = Math.max(0, parseFloat(document.getElementById('costo-empaque')?.value) || 0);
         const manoObra   = Math.max(0, parseFloat(document.getElementById('costo-mano-obra')?.value) || 0);
-        const tipoMargen = document.getElementById('tipo-margen')?.value || 'costo';
+        const tipoMargen = document.getElementById('tipo-margen')?.value || 'venta';
         const receta     = this.obtenerItemsRecetaFormulario();
 
         if (!nombre) {
+            this.irAPaso(1, { forzar: true });
             Store.toast('Ingresa el nombre del producto.', 'error');
             document.getElementById('producto-nombre')?.focus();
             return;
         }
 
         if (receta.length === 0) {
+            this.irAPaso(1, { forzar: true });
             Store.toast('Agrega al menos un insumo con cantidad válida a la receta.', 'error');
             return;
         }
@@ -504,11 +985,11 @@ class CrearProductoController {
             ? (parseFloat(document.getElementById('input-margen')?.value) || 0)
             : (parseFloat(document.getElementById('input-multiplicador')?.value) || 1);
 
-        const btnGuardar = document.querySelector('.btn-guardar');
-        if (btnGuardar) {
-            btnGuardar.disabled = true;
-            btnGuardar.textContent = 'Liquidando orden...';
-        }
+        const botonesGuardar = document.querySelectorAll('.btn-guardar');
+        botonesGuardar.forEach(btn => {
+            btn.disabled = true;
+            btn.textContent = 'Guardando receta...';
+        });
 
         try {
             const prodTemp = new Producto({
@@ -551,10 +1032,10 @@ class CrearProductoController {
                 Store.toast(res.mensaje || 'Error al guardar el producto.', 'error');
             }
         } finally {
-            if (btnGuardar) {
-                btnGuardar.disabled = false;
-                btnGuardar.textContent = this.productoEditandoId ? 'Guardar cambios' : 'Guardar producto';
-            }
+            botonesGuardar.forEach(btn => {
+                btn.disabled = false;
+                btn.textContent = this.productoEditandoId ? 'Guardar cambios' : 'Guardar producto';
+            });
         }
     }
 
@@ -570,8 +1051,9 @@ class CrearProductoController {
 
         const titulo = document.querySelector('.contenido__titulo');
         if (titulo) titulo.textContent = 'Editar producto';
-        const btnGuardar = document.querySelector('.btn-guardar');
-        if (btnGuardar) btnGuardar.textContent = 'Guardar cambios';
+        document.querySelectorAll('.btn-guardar, .wizard-btn-guardar').forEach(btn => {
+            btn.textContent = 'Guardar cambios';
+        });
 
         document.getElementById('producto-nombre').value     = producto.nombre;
         document.getElementById('unidades-producidas').value = producto.unidadesProducidas || 1;
@@ -586,7 +1068,7 @@ class CrearProductoController {
         if (inpMano) inpMano.value = producto.costoManoObra || 0;
 
         const selTipoMargen = document.getElementById('tipo-margen');
-        if (selTipoMargen) selTipoMargen.value = producto.tipoMargen || 'costo';
+        if (selTipoMargen) selTipoMargen.value = producto.tipoMargen || 'venta';
 
         if (producto.modo === 'multiplicador') {
             this.cambiarModo('multiplicador');
@@ -837,6 +1319,7 @@ const controladorCrear = new CrearProductoController();
 window.controladorCrear = controladorCrear;
 
 // Funciones puente para mantener compatibilidad con scripts externos
+window.irAPaso                = (paso, opts) => controladorCrear.irAPaso(paso, opts);
 window.cambiarModo            = (modo) => controladorCrear.cambiarModo(modo);
 window.sincronizarMargen      = (orig) => controladorCrear.sincronizarMargen(orig);
 window.aplicarMargenSugerido  = () => controladorCrear.aplicarMargenSugerido();

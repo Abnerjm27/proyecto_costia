@@ -58,6 +58,7 @@ class Database {
             CREATE TABLE IF NOT EXISTS usuarios (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 negocio VARCHAR(100) NOT NULL,
+                config_gastos TEXT NULL DEFAULT NULL,
                 email VARCHAR(150) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -65,6 +66,9 @@ class Database {
         ");
 
         $colsUsuarios = $pdo->query("SHOW COLUMNS FROM usuarios")->fetchAll(PDO::FETCH_COLUMN);
+        if (!in_array('config_gastos', $colsUsuarios, true)) {
+            $pdo->exec("ALTER TABLE usuarios ADD COLUMN config_gastos TEXT NULL DEFAULT NULL AFTER negocio");
+        }
         if (!in_array('acepto_terminos', $colsUsuarios, true)) {
             $pdo->exec("ALTER TABLE usuarios ADD COLUMN acepto_terminos TINYINT(1) NOT NULL DEFAULT 1 AFTER password");
         }

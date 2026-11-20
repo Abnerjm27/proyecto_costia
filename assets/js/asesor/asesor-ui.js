@@ -1,9 +1,9 @@
 /**
  * asesor-ui.js — Capa de Interfaz, Drawer, Chat, Reconocimiento de Voz y Markdown
- * Costia · Terminal Pro · Fintech Gastronómica
+ * Costia · Asesor Gastronómico y Financiero
  *
  * Responsabilidades:
- * - Creación y montaje global del Drawer modal y Botón Flotante (FAB).
+ * - Creación y montaje global del Drawer modal y botón de acceso limpio en topbar.
  * - Renderizado de mensajes, burbujas y badges sin emojis genéricos.
  * - Chips interactivos y ejecutables por etapa y contexto.
  * - Fila de sugerencias rápidas ejecutables con 1 clic.
@@ -12,34 +12,46 @@
 
 class AsesorUI {
     static asegurarDrawerEnDOM() {
-        if (!document.getElementById('contenedor-fab-asesor')) {
-            const fabDiv = document.createElement('div');
-            fabDiv.className = 'asesor-fab-container';
-            fabDiv.id = 'contenedor-fab-asesor';
-            fabDiv.innerHTML = `
-                <div class="asesor-fab-tooltip" id="tooltip-fab-asesor">
-                    <span class="asesor-fab-tooltip__badge">Costia IA</span>
-                    <span class="asesor-fab-tooltip__texto">¿Quieres calcular o cambiar algo? ¡Chatea conmigo!</span>
-                    <button type="button" class="asesor-fab-tooltip__cerrar" id="btn-cerrar-tooltip-fab" aria-label="Cerrar sugerencia">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
-                </div>
-                <button type="button" class="asesor-fab-btn" id="btn-fab-asesor" aria-label="Abrir Asesor Inteligente con IA" title="Chatear con el Agente IA para crear o modificar recetas, costos y precios">
-                    <span class="asesor-fab-btn__pulso"></span>
-                    <div class="asesor-fab-btn__icono-wrap">
-                        <img src="../assets/img/costia-icon-green.png" alt="IA" class="asesor-fab-btn__icono">
-                        <span class="asesor-fab-btn__status"></span>
-                    </div>
-                    <div class="asesor-fab-btn__contenido">
-                        <div class="asesor-fab-btn__titulo">
-                            <span>Asesor IA</span>
-                            <span class="asesor-fab-btn__chip">Online</span>
-                        </div>
-                        <small class="asesor-fab-btn__sub">Costeo y pricing en vivo</small>
-                    </div>
-                </button>
-            `;
-            document.body.appendChild(fabDiv);
+        // Eliminar cualquier tooltip o contenedor flotante legado que tape contenido
+        document.getElementById('tooltip-fab-asesor')?.remove();
+        const oldFabWrap = document.getElementById('contenedor-fab-asesor');
+        if (oldFabWrap && !oldFabWrap.closest('.topbar-status-bar')) {
+            oldFabWrap.remove();
+        }
+
+        if (!document.getElementById('btn-fab-asesor')) {
+            const topbar = document.querySelector('.topbar-status-bar');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.id = 'btn-fab-asesor';
+            btn.setAttribute('aria-label', 'Abrir Asesor Inteligente con IA');
+            btn.setAttribute('title', 'Chatear con el Asesor IA de Costia');
+
+            if (topbar) {
+                let actionsBox = topbar.querySelector('.topbar-status-actions');
+                if (!actionsBox) {
+                    actionsBox = document.createElement('div');
+                    actionsBox.className = 'topbar-status-actions';
+                    topbar.appendChild(actionsBox);
+                }
+                btn.className = 'asesor-fab-btn topbar-asesor-btn';
+                btn.innerHTML = `
+                    <img src="../assets/img/costia-icon-green.png" alt="" class="topbar-asesor-btn__ico" width="18" height="18" aria-hidden="true">
+                    <span class="topbar-asesor-btn__label">Asesor IA</span>
+                `;
+                actionsBox.appendChild(btn);
+            } else {
+                const fabDiv = document.createElement('div');
+                fabDiv.className = 'asesor-fab-container asesor-fab-container--compact';
+                fabDiv.id = 'contenedor-fab-asesor';
+                btn.className = 'asesor-fab-btn topbar-asesor-btn';
+                btn.innerHTML = `
+                    <img src="../assets/img/costia-icon-green.png" alt="" class="topbar-asesor-btn__ico" width="18" height="18" aria-hidden="true">
+                    <span class="topbar-asesor-btn__label">Asesor IA</span>
+                `;
+                fabDiv.appendChild(btn);
+                document.body.appendChild(fabDiv);
+            }
         }
 
         if (document.getElementById('modal-asesor-costia')) return;

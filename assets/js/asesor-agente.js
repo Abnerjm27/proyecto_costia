@@ -122,19 +122,6 @@ class AsesorCostiaAgent {
             }
         });
 
-        const btnCerrarTooltip = document.getElementById('btn-cerrar-tooltip-fab');
-        btnCerrarTooltip?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const tip = document.getElementById('tooltip-fab-asesor');
-            if (tip) tip.classList.add('oculto');
-            sessionStorage.setItem('costia_fab_tooltip_dismissed', '1');
-        });
-
-        if (sessionStorage.getItem('costia_fab_tooltip_dismissed') === '1') {
-            const tip = document.getElementById('tooltip-fab-asesor');
-            if (tip) tip.classList.add('oculto');
-        }
-
         // Si la URL pide abrir el asesor automáticamente (?abrirAsesor=1)
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('abrirAsesor') === '1' || urlParams.get('asesor') === '1') {
@@ -1006,18 +993,17 @@ class AsesorCostiaAgent {
         const inpEmpaque = document.getElementById('costo-empaque');
         if (inpEmpaque && c.empaqueUnidad > 0) inpEmpaque.value = c.empaqueUnidad;
 
-        const inpCostoFijo = document.getElementById('costos-fijos-adicionales');
-        if (inpCostoFijo) {
-            inpCostoFijo.value = c.arriendoLote + c.recibosLote + c.manoObraLote + c.desgasteLote;
+        const inpManoObra = document.getElementById('costo-mano-obra');
+        if (inpManoObra) {
+            inpManoObra.value = c.arriendoLote + c.recibosLote + c.manoObraLote + c.desgasteLote;
         }
 
-        const inpMargen = document.getElementById('margen-ganancia');
+        const inpMargen = document.getElementById('input-margen');
+        const slMargen = document.getElementById('slider-margen');
+        const selTipo = document.getElementById('tipo-margen');
         if (inpMargen && c.margenComercial > 0) inpMargen.value = c.margenComercial;
-
-        const inpPrecio = document.getElementById('precio-venta-manual');
-        if (inpPrecio) {
-            inpPrecio.value = c.precioRecomendado;
-        }
+        if (slMargen && c.margenComercial > 0) slMargen.value = Math.min(200, c.margenComercial);
+        if (selTipo) selTipo.value = 'venta';
 
         this.controlador?.actualizarResumen();
     }

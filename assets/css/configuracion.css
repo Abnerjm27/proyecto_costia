@@ -1,6 +1,6 @@
 /* ============================================================
    CONFIGURACION.CSS — Estación de Configuración Integral Costia
-   Paleta: Pino (#071F17), Esmeralda (#0A6847), Marfil (#F2F7F4), Blanco (#FFFFFF)
+   Paleta: Pino (#0D241C), Salvia (#0F6A4A), Pergamino (#F6F2EA), Marfil (#FDFBF7), Cobre (#A35018)
    Reglas: Cero emojis, WCAG AAA, Responsive.
    ============================================================ */
 
@@ -21,10 +21,10 @@
 }
 
 .config-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(7, 31, 23, 0.1);
+    background: #FDFBF7;
+    border: 1px solid #E4DCCA;
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(7, 31, 23, 0.04);
+    box-shadow: 0 2px 8px rgba(13, 36, 28, 0.04);
     padding: 24px 28px;
     display: flex;
     flex-direction: column;
@@ -36,7 +36,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid rgba(7, 31, 23, 0.08);
+    border-bottom: 1px solid #EDE6D8;
     padding-bottom: 14px;
 }
 
@@ -44,8 +44,8 @@
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: rgba(10, 104, 71, 0.1);
-    color: #0A6847;
+    background: rgba(15, 106, 74, 0.1);
+    color: #0F6A4A;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -56,13 +56,13 @@
     font-family: var(--font-titulos, 'Literata', serif);
     font-size: 1.15rem;
     font-weight: 700;
-    color: #071F17;
+    color: #0D241C;
     margin: 0 0 2px 0;
 }
 
 .config-card__title-box p {
     font-size: 0.82rem;
-    color: #526059;
+    color: #4E554F;
     margin: 0;
 }
 
@@ -81,12 +81,12 @@
 .config-field label {
     font-size: 0.88rem;
     font-weight: 600;
-    color: #071F17;
+    color: #0D241C;
 }
 
 .config-field-hint {
     font-size: 0.76rem;
-    color: #526059;
+    color: #4E554F;
     line-height: 1.35;
 }
 
@@ -101,7 +101,7 @@
     left: 14px;
     font-family: var(--font-mono, monospace);
     font-weight: 600;
-    color: #526059;
+    color: #4E554F;
     pointer-events: none;
 }
 
@@ -109,13 +109,13 @@
     width: 100%;
     min-height: 44px;
     padding: 10px 14px;
-    border: 1px solid rgba(7, 31, 23, 0.18);
+    border: 1px solid #D9CFBA;
     border-radius: 10px;
     font-size: 0.95rem;
     font-family: inherit;
-    color: #071F17;
-    background: #FFFFFF;
-    transition: all 0.18s ease;
+    color: #0D241C;
+    background: #FDFBF7;
+    transition: border-color 0.18s ease, background-color 0.18s ease;
     box-sizing: border-box;
 }
 
@@ -125,9 +125,9 @@
 }
 
 .config-input:focus {
-    border-color: #0A6847;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(10, 104, 71, 0.15);
+    border-color: #0F6A4A;
+    outline: 2px solid rgba(15, 106, 74, 0.22);
+    box-shadow: none;
 }
 
 .config-radio-row {
@@ -137,30 +137,31 @@
 }
 
 .config-radio-card {
-    border: 1px solid rgba(7, 31, 23, 0.16);
+    border: 1px solid #E4DCCA;
     border-radius: 12px;
     padding: 12px 14px;
     display: flex;
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    transition: all 0.18s ease;
-    background: #FAFCFA;
+    transition: border-color 0.18s ease, background-color 0.18s ease;
+    background: #F6F2EA;
 }
 
 .config-radio-card:hover {
-    border-color: #0A6847;
-    background: #FFFFFF;
+    border-color: #0F6A4A;
+    background: #FDFBF7;
 }
 
 .config-radio-card.active {
-    border-color: #0A6847;
-    background: rgba(10, 104, 71, 0.06);
-    box-shadow: 0 0 0 1px #0A6847;
+    border-color: #0F6A4A;
+    background: #E8F2EC;
+    outline: 1px solid #0F6A4A;
+    box-shadow: none;
 }
 
 .config-radio-card input {
-    accent-color: #0A6847;
+    accent-color: #0F6A4A;
     width: 18px;
     height: 18px;
 }
@@ -168,19 +169,19 @@
 .config-radio-card__text strong {
     display: block;
     font-size: 0.88rem;
-    color: #071F17;
+    color: #0D241C;
 }
 
 .config-radio-card__text small {
     display: block;
     font-size: 0.75rem;
-    color: #526059;
+    color: #4E554F;
 }
 
-/* Tarjeta métrica destacada de Nómina y Prorrateo */
+/* Tarjeta métrica destacada de Nómina y Prorrateo (columnas limpias sin nested cards) */
 .config-prorrateo-box {
-    background: #071F17;
-    color: #FFFFFF;
+    background: #0D241C;
+    color: #F4F0E6;
     border-radius: 14px;
     padding: 20px;
     display: flex;
@@ -192,7 +193,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(244, 240, 230, 0.14);
     padding-bottom: 10px;
 }
 
@@ -200,33 +201,55 @@
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #A3D9C9;
+    color: #A7DFC2;
     font-weight: 700;
 }
 
 .config-prorrateo-kpi-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 0;
+}
+
+.config-prorrateo-kpi {
+    background: transparent;
+    border: none;
+    border-right: 1px solid rgba(244, 240, 230, 0.14);
+    border-radius: 0;
+    padding: 4px 16px;
+}
+
+.config-prorrateo-kpi:first-child {
+    padding-left: 0;
+}
+
+.config-prorrateo-kpi:last-child {
+    border-right: none;
+    padding-right: 0;
 }
 
 @media (max-width: 640px) {
     .config-prorrateo-kpi-grid {
         grid-template-columns: 1fr;
     }
-}
-
-.config-prorrateo-kpi {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 12px;
+    .config-prorrateo-kpi {
+        border-right: none;
+        border-bottom: 1px solid rgba(244, 240, 230, 0.14);
+        padding: 12px 0;
+    }
+    .config-prorrateo-kpi:first-child {
+        padding-top: 2px;
+    }
+    .config-prorrateo-kpi:last-child {
+        border-bottom: none;
+        padding-bottom: 2px;
+    }
 }
 
 .config-prorrateo-kpi label {
     display: block;
     font-size: 0.72rem;
-    color: #CBD5E1;
+    color: #EDE6D8;
     margin-bottom: 4px;
 }
 
@@ -235,13 +258,13 @@
     font-family: var(--font-mono, monospace);
     font-size: 1.15rem;
     font-weight: 700;
-    color: #2ECC71;
+    color: #2BB67E;
 }
 
 .config-prorrateo-kpi small {
     display: block;
     font-size: 0.7rem;
-    color: #94A3B8;
+    color: #B8B3A6;
     margin-top: 2px;
 }
 
@@ -263,30 +286,30 @@
     font-weight: 600;
     cursor: pointer;
     min-height: 44px;
-    transition: all 0.16s ease;
+    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
     border: 1px solid transparent;
 }
 
 .btn-mantenimiento--secundario {
-    background: #FFFFFF;
-    border-color: rgba(7, 31, 23, 0.18);
-    color: #071F17;
+    background: #FDFBF7;
+    border-color: #D9CFBA;
+    color: #0D241C;
 }
 
 .btn-mantenimiento--secundario:hover {
-    background: #F2F7F4;
-    border-color: #0A6847;
+    background: #F6F2EA;
+    border-color: #0F6A4A;
 }
 
 .btn-mantenimiento--alerta {
-    background: #FFFBEB;
-    border-color: rgba(217, 119, 6, 0.3);
-    color: #92400E;
+    background: #FBF1E8;
+    border-color: rgba(163, 80, 24, 0.28);
+    color: #A35018;
 }
 
 .btn-mantenimiento--alerta:hover {
-    background: #FEF3C7;
-    border-color: #D97706;
+    background: #F5E2D0;
+    border-color: #A35018;
 }
 
 .btn-mantenimiento--peligro {
@@ -325,4 +348,141 @@
         text-align: center !important;
     }
 }
+
+/* --- Presets rápidos de lotes y tarjetas de opciones fiscales/delivery --- */
+.lotes-presets-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.lote-preset-btn {
+    border: 1px solid #D9CFBA;
+    background: #F6F2EA;
+    color: #0D241C;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.lote-preset-btn:hover,
+.lote-preset-btn.activo {
+    background: #0F6A4A;
+    border-color: #0F6A4A;
+    color: #FDFBF7;
+}
+
+.config-check-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #E4DCCA;
+    border-radius: 10px;
+    background: #F6F2EA;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.config-check-card input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: #0F6A4A;
+    cursor: pointer;
+}
+
+.config-check-card__texto strong {
+    display: block;
+    font-size: 0.88rem;
+    color: #0D241C;
+}
+
+.config-check-card__texto span {
+    display: block;
+    font-size: 0.78rem;
+    color: #4E554F;
+    margin-top: 2px;
+}
+
+/* --- MODO OSCURO COMPLETO EN MI NEGOCIO (ATELIER CÁLIDO) --- */
+body.dark-mode .config-card,
+[data-theme="dark"] .config-card {
+    background: #11201A !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+body.dark-mode .config-card__header,
+[data-theme="dark"] .config-card__header {
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .config-card__icon-wrap,
+[data-theme="dark"] .config-card__icon-wrap {
+    background: rgba(43, 182, 126, 0.16) !important;
+    color: #2BB67E !important;
+}
+
+body.dark-mode .config-card__title,
+[data-theme="dark"] .config-card__title,
+body.dark-mode .config-card__title-box h2,
+[data-theme="dark"] .config-card__title-box h2,
+body.dark-mode .config-label,
+[data-theme="dark"] .config-label,
+body.dark-mode .config-field label,
+[data-theme="dark"] .config-field label,
+body.dark-mode .config-radio-card__text strong,
+[data-theme="dark"] .config-radio-card__text strong,
+body.dark-mode .config-check-card__texto strong,
+[data-theme="dark"] .config-check-card__texto strong,
+body.dark-mode .config-input-prefix,
+[data-theme="dark"] .config-input-prefix {
+    color: #F4F0E6 !important;
+}
+
+body.dark-mode .config-card__desc,
+[data-theme="dark"] .config-card__desc,
+body.dark-mode .config-card__title-box p,
+[data-theme="dark"] .config-card__title-box p,
+body.dark-mode .config-hint,
+[data-theme="dark"] .config-hint,
+body.dark-mode .config-field-hint,
+[data-theme="dark"] .config-field-hint,
+body.dark-mode .config-radio-card__text small,
+[data-theme="dark"] .config-radio-card__text small,
+body.dark-mode .config-check-card__texto span,
+[data-theme="dark"] .config-check-card__texto span {
+    color: #B8B3A6 !important;
+}
+
+body.dark-mode .config-input,
+[data-theme="dark"] .config-input,
+body.dark-mode .config-radio-card,
+[data-theme="dark"] .config-radio-card,
+body.dark-mode .config-check-card,
+[data-theme="dark"] .config-check-card,
+body.dark-mode .btn-mantenimiento--secundario,
+[data-theme="dark"] .btn-mantenimiento--secundario {
+    background: #0D1914 !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    color: #F4F0E6 !important;
+}
+
+body.dark-mode .config-radio-card.active,
+[data-theme="dark"] .config-radio-card.active {
+    background: #182B23 !important;
+    border-color: #2BB67E !important;
+}
+
+body.dark-mode .lote-preset-btn:not(.activo),
+[data-theme="dark"] .lote-preset-btn:not(.activo) {
+    background: #182B23 !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    color: #EDE6D8 !important;
+}
+
 

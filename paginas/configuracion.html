@@ -7,11 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/base.css?v=26">
-    <link rel="stylesheet" href="../assets/css/terminal-theme.css">
-    <link rel="stylesheet" href="../assets/css/app-shell.css?v=26">
-    <link rel="stylesheet" href="../assets/css/app.css?v=26">
-    <link rel="stylesheet" href="../assets/css/configuracion.css?v=26">
+    <link rel="stylesheet" href="../assets/css/base.css?v=31">
+    <link rel="stylesheet" href="../assets/css/terminal-theme.css?v=31">
+    <link rel="stylesheet" href="../assets/css/app-shell.css?v=31">
+    <link rel="stylesheet" href="../assets/css/app.css?v=31">
+    <link rel="stylesheet" href="../assets/css/configuracion.css?v=31">
     <link rel="icon" href="../assets/img/costia-icon-green.png">
     <link rel="manifest" href="../manifest.json">
     <meta name="theme-color" content="#071F17">
@@ -26,7 +26,7 @@
 
 <!-- BARRA SUPERIOR PARA PANTALLAS MÓVILES (< 900px) -->
 <header class="costia-mobile-bar" role="banner">
-    <a href="productos.html" class="costia-mobile-brand">
+    <a href="dashboard.html" class="costia-mobile-brand">
         <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="costia-mobile-brand-logo">
         <span class="costia-mobile-brand-title">Costia</span>
     </a>
@@ -38,93 +38,8 @@
 
 <div class="terminal-shell-container">
 
-    <!-- ===== SIDEBAR LATERAL PROFESIONAL ===== -->
-    <aside class="terminal-sidebar" id="terminal-sidebar" aria-label="Navegación principal de Costia">
-        <div class="sidebar-inner">
-            <div class="sidebar-brand-box">
-                <a href="dashboard.html" class="sidebar-brand-link">
-                    <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="sidebar-brand-logo">
-                    <span class="sidebar-brand-title">Costia</span>
-                </a>
-                <button type="button" class="sidebar-close-btn" id="btn-sidebar-close" aria-label="Cerrar menú lateral">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-            </div>
-
-            <ul class="sidebar-nav-list" role="navigation">
-                <li>
-                    <a href="dashboard.html" class="sidebar-item-link">
-                        <span class="sidebar-icon-label">
-                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-                            <span>Dashboard</span>
-                        </span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item-group">
-                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="false">
-                        <span class="sidebar-icon-label">
-                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                            <span>Insumos</span>
-                        </span>
-                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-                    </button>
-                    <div class="sidebar-subnav">
-                        <a href="insumos.html" class="sidebar-sublink">Inventario Activo</a>
-                        <a href="insumos.html#alzas" class="sidebar-sublink">Historial de Alzas</a>
-                    </div>
-                </li>
-
-                <li class="sidebar-item-group">
-                    <button type="button" class="sidebar-item-link" data-sidebar-toggle="true" aria-expanded="false">
-                        <span class="sidebar-icon-label">
-                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                            <span>Productos &amp; Recetas</span>
-                        </span>
-                        <svg class="sidebar-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-                    </button>
-                    <div class="sidebar-subnav">
-                        <a href="productos.html" class="sidebar-sublink">Catálogo Completo</a>
-                        <a href="crear-producto.html" class="sidebar-sublink">+ Crear Receta</a>
-                        <a href="ficha-tecnica.html" class="sidebar-sublink">Fichas de Impresión</a>
-                    </div>
-                </li>
-
-
-                <li>
-                    <a href="#modal-asesor-costia" class="sidebar-item-link" id="link-sidebar-asesor">
-                        <span class="sidebar-icon-label">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            <span>Asesor IA</span>
-                        </span>
-                        <span class="sidebar-status-dot" title="Online"></span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item-group">
-                    <a href="configuracion.html" class="sidebar-item-link sidebar-item-link--activo" id="link-sidebar-config-page">
-                        <span class="sidebar-icon-label">
-                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                            <span>Configuración</span>
-                        </span>
-                    </a>
-                    <div class="sidebar-subnav" id="subnav-configuracion" style="display:block;">
-                        <a href="#seccion-identidad" class="sidebar-sublink sidebar-sublink--activo" id="link-sidebar-config-page">Configuración y Gastos Fijos</a>
-                        <button type="button" class="sidebar-sublink sidebar-sublink--danger" id="link-sidebar-restaurar-demo">Restaurar Datos Demo</button>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="sidebar-footer-box">
-            <a href="login.html" class="sidebar-item-link sidebar-logout-link" id="btn-sidebar-cerrar-sesion-directo">
-                <span class="sidebar-icon-label">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    <span>Cerrar Sesión</span>
-                </span>
-            </a>
-        </div>
-    </aside>
+    <!-- ===== SIDEBAR LATERAL UNIFICADA (hidratada por app-shell.js) ===== -->
+    <aside class="terminal-sidebar" id="terminal-sidebar" aria-label="Navegación principal de Costia"></aside>
 
     <!-- ===== CONTENEDOR VIEWPORT DE TRABAJO ===== -->
     <div class="terminal-content-viewport">
@@ -134,13 +49,9 @@
             <header class="topbar-status-bar" role="region" aria-label="Barra ejecutiva de configuración">
                 <div class="topbar-context-box">
                     <span class="topbar-beacon-dot" aria-hidden="true"></span>
-                    <span class="topbar-context-title">Centro de Control &amp; Configuración</span>
+                    <span class="topbar-context-title">Mi negocio y gastos fijos</span>
                 </div>
-                <div class="topbar-status-actions">
-                    <div class="app-header__acciones">
-                        <span class="app-header__negocio" id="cfg-topbar-negocio" title="Identidad del Negocio">Mi Negocio</span>
-                    </div>
-                </div>
+                <div class="topbar-status-actions"></div>
             </header>
 
             <!-- ===== CONTENIDO PRINCIPAL ===== -->
@@ -303,13 +214,19 @@
                             <div class="config-field">
                                 <label for="cfg-input-lotes-mes">Lotes totales estimados de producción al mes</label>
                                 <input type="number" id="cfg-input-lotes-mes" class="config-input" min="1" max="10000" step="5" value="100">
+                                <div class="lotes-presets-row" role="group" aria-label="Atajos de lotes mensuales">
+                                    <button type="button" class="lote-preset-btn" data-lotes-preset="30">30 tandas (1/día)</button>
+                                    <button type="button" class="lote-preset-btn" data-lotes-preset="60">60 tandas (2/día)</button>
+                                    <button type="button" class="lote-preset-btn" data-lotes-preset="100">100 tandas (3–4/día)</button>
+                                    <button type="button" class="lote-preset-btn" data-lotes-preset="200">200 tandas (Producción alta)</button>
+                                </div>
                                 <span class="config-field-hint">¿Cuántas horneadas o tandas produces al mes? (Ej: 100 tandas = ~4 al día).</span>
                             </div>
 
                             <!-- CAJA DE IMPACTO EN VIVO -->
                             <div class="config-prorrateo-box">
                                 <div class="config-prorrateo-box__header">
-                                    <span>Liquidación de cuotas en vivo</span>
+                                    <span>Resumen de cuotas por lote en vivo</span>
                                     <small id="kpi-cfg-fijos-mes" style="color:#A3D9C9; font-weight:700;">$0 / mes</small>
                                 </div>
                                 <div class="config-prorrateo-kpi-grid">
@@ -334,14 +251,14 @@
                     </section>
 
                     <!-- TARJETA 5: POLÍTICAS DE PRICING PREDETERMINADAS -->
-                    <section class="config-card" aria-label="Políticas de precios">
+                    <section class="config-card" id="seccion-precios" aria-label="Políticas de precios">
                         <div class="config-card__header">
                             <div class="config-card__icon-wrap">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
                             </div>
                             <div class="config-card__title-box">
-                                <h2>Políticas de Precios Predeterminadas</h2>
-                                <p>Valores sugeridos al crear recetas nuevas para ahorrar tiempo</p>
+                                <h2>Políticas de Precios e Impuestos</h2>
+                                <p>Valores sugeridos al crear recetas nuevas y comisiones de venta</p>
                             </div>
                         </div>
 
@@ -367,6 +284,20 @@
                                     <option value="3.5">×3.5 (Pastelería fina o eventos)</option>
                                 </select>
                             </div>
+
+                            <div class="config-field">
+                                <label for="cfg-input-delivery-pct">Comisión Apps de Delivery (%)</label>
+                                <input type="number" id="cfg-input-delivery-pct" class="config-input" min="0" max="50" step="1" value="25">
+                                <span class="config-field-hint">Porcentaje promedio que cobran plataformas como Rappi o DiDi Food (estándar 25%).</span>
+                            </div>
+
+                            <label class="config-check-card" for="cfg-check-impoconsumo">
+                                <input type="checkbox" id="cfg-check-impoconsumo">
+                                <div class="config-check-card__texto">
+                                    <strong>Aplico Impoconsumo (8%) en mis ventas</strong>
+                                    <span>Actívalo si eres responsable del Impuesto Nacional al Consumo para incluirlo por defecto en el simulador.</span>
+                                </div>
+                            </label>
                         </div>
                     </section>
 
@@ -415,16 +346,16 @@
 </div>
 
 <!-- Scripts de la Aplicación -->
-<script src="../assets/js/models.js?v=26"></script>
-<script src="../assets/js/store.js?v=26"></script>
-<script src="../assets/js/theme.js"></script>
-<script src="../assets/js/app-shell.js?v=26"></script>
-<script src="../assets/js/configuracion.js?v=26"></script>
-<script src="../assets/js/asesor/asesor-parser.js?v=26"></script>
-<script src="../assets/js/asesor/asesor-finanzas.js?v=26"></script>
-<script src="../assets/js/asesor/asesor-ui.js?v=26"></script>
-<script src="../assets/js/asesor/asesor-comandos.js?v=26"></script>
-<script src="../assets/js/asesor/asesor-flujo.js?v=26"></script>
-<script src="../assets/js/asesor-agente.js?v=26"></script>
+<script src="../assets/js/models.js?v=31"></script>
+<script src="../assets/js/store.js?v=31"></script>
+<script src="../assets/js/theme.js?v=31"></script>
+<script src="../assets/js/app-shell.js?v=31"></script>
+<script src="../assets/js/configuracion.js?v=31"></script>
+<script src="../assets/js/asesor/asesor-parser.js?v=31"></script>
+<script src="../assets/js/asesor/asesor-finanzas.js?v=31"></script>
+<script src="../assets/js/asesor/asesor-ui.js?v=31"></script>
+<script src="../assets/js/asesor/asesor-comandos.js?v=31"></script>
+<script src="../assets/js/asesor/asesor-flujo.js?v=31"></script>
+<script src="../assets/js/asesor-agente.js?v=31"></script>
 </body>
 </html>

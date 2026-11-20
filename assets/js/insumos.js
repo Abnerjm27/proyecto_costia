@@ -261,8 +261,25 @@ class InsumosController {
             if (insumos.length === 0) {
                 elCaro.textContent = 'Sin registros';
             } else {
-                const masCaro = insumos.reduce((max, i) => (i.precio > max.precio ? i : max), insumos[0]);
-                elCaro.textContent = `${masCaro.nombre} (${Store.fmt(masCaro.precio)}/${masCaro.unidad})`;
+                const obtenerNormalizado = (ins) => {
+                    const u = (ins.unidad || '').toLowerCase();
+                    if (u === 'kg') return { valor: ins.precio, etiqueta: '/kg' };
+                    if (u === 'g') return { valor: ins.precio * 1000, etiqueta: '/kg' };
+                    if (u === 'arroba') return { valor: ins.precio / 12.5, etiqueta: '/kg' };
+                    if (u === 'tonelada') return { valor: ins.precio / 1000, etiqueta: '/kg' };
+                    if (u === 'l') return { valor: ins.precio, etiqueta: '/l' };
+                    if (u === 'ml') return { valor: ins.precio * 1000, etiqueta: '/l' };
+                    if (u === 'taza') return { valor: ins.precio * (1000 / 240), etiqueta: '/l' };
+                    if (u === 'cucharada') return { valor: ins.precio * (1000 / 15), etiqueta: '/l' };
+                    if (u === 'cucharadita') return { valor: ins.precio * (1000 / 5), etiqueta: '/l' };
+                    return { valor: ins.precio, etiqueta: `/${ins.unidad}` };
+                };
+
+                const masCaro = insumos.reduce((max, i) => {
+                    return obtenerNormalizado(i).valor > obtenerNormalizado(max).valor ? i : max;
+                }, insumos[0]);
+                const norm = obtenerNormalizado(masCaro);
+                elCaro.textContent = `${masCaro.nombre} (${Store.fmt(Math.round(norm.valor))}${norm.etiqueta})`;
             }
         }
 
@@ -483,7 +500,7 @@ class InsumosController {
         const btnSubmit = document.querySelector('.modal__btn-guardar');
         if (btnSubmit) {
             btnSubmit.disabled = true;
-            btnSubmit.textContent = 'Guardando en OrderBook...';
+            btnSubmit.textContent = 'Guardando insumo...';
         }
 
         try {

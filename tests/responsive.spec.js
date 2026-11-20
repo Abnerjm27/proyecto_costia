@@ -85,6 +85,12 @@ test.describe('Costia — Verificación de Responsividad y Shell Móvil', () => 
         expect(initialBox.y).toBe(0);
         expect(initialBox.height).toBe(800);
 
+        // El botón Cerrar Sesión debe estar visible dentro del viewport sin requerir scroll
+        const logoutLink = page.locator('.sidebar-logout-link');
+        await expect(logoutLink).toBeVisible();
+        const logoutBox = await logoutLink.boundingBox();
+        expect(logoutBox.y + logoutBox.height).toBeLessThanOrEqual(800);
+
         // Hacer scroll de 600px en la página
         await page.evaluate(() => window.scrollBy(0, 600));
         await page.waitForTimeout(250);

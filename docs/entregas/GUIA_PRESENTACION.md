@@ -2,7 +2,7 @@
 > **Materia:** Desarrollo de Software (3° Semestre)  
 > **Proyecto:** Sistema Web de Costeo Gastronómico y Gestión de Insumos (**Costia**)  
 > **Autores:** Equipo de Desarrollo Costia  
-> **Stack:** PHP 8.2 (POO / PDO) + MySQL (InnoDB) + JavaScript (ES6 Vanilla) + HTML5/CSS3  
+> **Stack:** PHP 8.2 (POO / PDO) + MySQL (InnoDB 3FN) + JavaScript (ES6 Vanilla) + HTML5/CSS3 (**Atelier Cálido** + PWA)
 
 ---
 
@@ -13,11 +13,12 @@
 4. [Guion de Exposición Minuto a Minuto (8 a 10 min)](#4-guion-de-exposición-minuto-a-minuto)
 5. [Arquitectura Técnica y Patrones de Diseño](#5-arquitectura-técnica-y-patrones-de-diseño)
 6. [Base de Datos Relacional y Modelo 3FN](#6-base-de-datos-relacional-y-modelo-3fn)
-7. [Lógica Matemática y Gastronómica de Costeo](#7-lógica-matemática-y-gastronómica-de-costeo)
-8. [Seguridad Implementada](#8-seguridad-implementada)
+7. [Lógica Matemática, Tributaria y Gastronómica de Costeo](#7-lógica-matemática-tributaria-y-gastronómica-de-costeo)
+8. [Seguridad, Privacidad y Asesor IA](#8-seguridad-privacidad-y-asesor-ia)
 9. [Paso a Paso de la Demostración en Vivo (Live Demo)](#9-paso-a-paso-de-la-demostración-en-vivo)
 10. [Banco de Preguntas Trampa del Docente y Respuestas Modelo](#10-banco-de-preguntas-trampa-del-docente-y-respuestas-modelo)
-11. [Plan de Contingencia (¿Qué pasa si XAMPP falla?)](#11-plan-de-contingencia)
+11. [Plan de Contingencia](#11-plan-de-contingencia)
+12. [Mapa de Estudio Rápido para el Compañero (Orden de Lectura del Código)](#12-mapa-de-estudio-rápido-para-el-compañero)
 
 ---
 
@@ -26,331 +27,233 @@
 | Parámetro | Detalle |
 | :--- | :--- |
 | **Nombre del Sistema** | **Costia** |
-| **Tipo de Aplicación** | Aplicación Web SPA-híbrida con Backend RESTful y Base de Datos Relacional |
-| **Lenguaje Backend** | **PHP 8.2** orientado a objetos (clases, encapsulamiento, PDO) |
-| **Base de Datos** | **MySQL 8.0 / MariaDB** con motor **InnoDB** (soporta claves foráneas y transacciones) |
-| **Lenguaje Frontend** | **JavaScript ES6+ Vanilla** (sin frameworks pesados, usando Fetch API, POO y Web Storage) |
-| **Estilos y Maquetación** | **CSS3 Moderno** (Variables CSS, Flexbox, CSS Grid, diseño responsivo móvil/escritorio) |
-| **Seguridad** | Hashing de contraseñas con **BCRYPT** (`password_hash`), sentencias preparadas contra **Inyección SQL**, control de sesiones en servidor |
-| **Arquitectura** | **MVC (Modelo - Vista - Controlador)** desacoplado con endpoints JSON REST |
+| **Identidad Visual** | **Atelier Cálido** (*Cuaderno de Obrador Gastronómico*: pergamino `#F6F2EA`, marfil `#FDFBF7`, tinta pino `#0D241C`, verde salvia `#0F6A4A` y cobre `#A35018`, con modo oscuro cálido `#0A1410`/`#11201A`) |
+| **Lenguaje Backend** | **PHP 8.2** orientado a objetos (clases, encapsulamiento, PDO) + API REST JSON |
+| **Base de Datos** | **MySQL 8.0 / MariaDB** con motor **InnoDB** (claves foráneas y transacciones ACID) |
+| **Frontend** | **JavaScript ES6+ Vanilla** (POO, Fetch API, `StoreService` híbrido, PWA vía `sw.js`) |
+| **Estilos y Maquetación** | **CSS3 Modular** (Variables CSS, Grid/Flexbox, Ledger Bars, `@media print`, WCAG AA claro/oscuro, sin desbordamiento desde `360px`) |
+| **Asesor IA** | Integración local con **Ollama (`qwen2.5:3b`)** + motor determinista modular offline en JavaScript (`assets/js/asesor/`) |
+| **Calidad Verificada** | **Playwright E2E** (17 suites automatizadas: cálculo, UX, seguridad, responsive, modo oscuro y CRUD) |
 
 ---
 
 ## 2. El Problema que Resuelve (Justificación de Negocio)
 
-En gastronomía (pastelerías, cafeterías, restaurantes, emprendimientos de comida):
-1. **El 80% de los emprendimientos costea "al ojo" o con tablas de Excel desordenadas.**  
-   Compran harina en sacos de 25 kg o 50 kg, pero en las recetas usan 250 gramos. El cálculo manual del costo exacto de cada gramo suele tener errores.
-2. **Ignoran la MERMA:**  
-   Al hornear una torta, la masa pierde agua por evaporación (merma). Al limpiar una fruta, se pierde la cáscara. Si el negocio no calcula el porcentaje de merma, está regalando producto y perdiendo dinero sin saberlo.
-3. **No contemplan el EMPAQUE ni la MANO DE OBRA:**  
-   Una torta no se entrega en la mano: lleva caja de cartón, base rígida, papel encerado y cinta. Ese costo debe sumarse automáticamente al costo de producción.
-4. **Confunden "Markup" con "Margen Comercial":**  
-   Creer que sumarle el 30% al costo es tener un margen de ganancia del 30% es el error contable más común en gastronomía. Costia permite elegir la fórmula exacta para evitar pérdidas.
+En negocios gastronómicos (panaderías, pastelerías, cafeterías, talleres de cocina):
+1. **Costeo "al ojo" y unidades mezcladas:** Compran harina por bulto o kilo (`$3.200/kg`), pero las recetas usan gramos (`500 g`) o pizcas. El error de unidad destruye los márgenes. Costia sugiere unidades inteligentes (`kg` → `g`, `l` → `ml`) y lanza una alerta visual interactiva si alguien digita cantidades desproporcionadas (por ejemplo `200 kg` en vez de `200 g`).
+2. **Olvidan la merma, empaque, nómina y arriendo:** En horneado o cocción la masa pierde peso (**merma**); cada producto lleva caja o bolsa (**empaque**), tiempo de equipo (**mano de obra**) y cuota de local/servicios (**gastos fijos** prorrateados por lotes mensuales).
+3. **Confusión entre Markup vs. Margen Comercial:** Sumar 40% al costo no da 40% de ganancia sobre la venta real. Costia modela ambos y muestra la diferencia en vivo.
+4. **Pérdida silenciosa en Apps de Delivery e Impoconsumo:** Vender al mismo precio en mostrador que en plataformas que cobran ~25% de comisión hace que el negocio trabaje a pérdida. El Simulador de Inicio compara **Mostrador (0%) vs. Delivery (25%)** e integra **Impoconsumo (8%)** cuando aplica al régimen del negocio.
 
 ---
 
 ## 3. Repartición de Roles para la Exposición
 
-Para que la presentación fluya de manera profesional y equitativa:
+### 👤 Integrante A: "Negocio, Frontend, UX y Demostración en Vivo"
+* Introduce el problema gastronómico real y el diseño **Atelier Cálido**.
+* Conduce la demo en vivo:
+  1. Mesa de costeo en la landing (`index.html`).
+  2. **Inicio (`dashboard.html`):** Simulador Mostrador vs. Delivery, estrés por alza de insumos y precio directo inverso.
+  3. **Insumos (`insumos.html`) y Nueva Receta (`crear-producto.html`):** Wizard de 3 pasos, alerta de unidad gigante y prorrateo de gastos.
+  4. **Fichas PDF (`ficha-tecnica.html`) y Mi Negocio (`configuracion.html`):** Impresión estandarizada y cálculo de nómina por lote.
 
-### 👤 Integrante A: "Enfoque de Negocio, Frontend y Demostración en Vivo"
-* **Se encarga de:**
-  - Introducir el problema gastronómico real y el objetivo de Costia.
-  - Mostrar la interfaz gráfica, experiencia de usuario (UX) y usabilidad.
-  - Operar la demostración en vivo (crear insumos, simular receta en vivo, mostrar tarjeta sticky interactiva).
-  - Explicar la matemática gastronómica (conversión de unidades, merma, empaque y margen).
-
-### 👤 Integrante B: "Enfoque de Arquitectura Técnica, Backend, Base de Datos y Seguridad"
-* **Se encarga de:**
-  - Explicar la arquitectura de software: **MVC**, patrón **Singleton** de base de datos y diseño POO en PHP.
-  - Explicar el modelo relacional en MySQL: Normalización en **3FN**, relación **Muchos a Muchos (N:M)** mediante `receta_items`.
-  - Explicar las **Transacciones ACID** (`beginTransaction`, `commit`, `rollBack`) que garantizan que una receta no quede incompleta.
-  - Explicar la seguridad: BCRYPT, Sentencias preparadas contra SQL Injection y el mecanismo híbrido (`StoreService` con fallback local).
+### 👤 Integrante B: "Arquitectura, Backend PHP, MySQL, Seguridad e IA"
+* Explica el patrón **MVC desacoplado**, el **Singleton PDO** (`Database.php`) con auto-migración de columnas y la sincronización híbrida (`StoreService`).
+* Explica el esquema relacional en **3FN**, la relación $N:M$ en `receta_items` y las **Transacciones ACID** en `ProductoController.php` y `demo.php`.
+* Detalla las capas de **seguridad y privacidad** (BCRYPT, PDO preparado, cookies `HttpOnly`/`SameSite=Lax`, rate limiting en login, anti-IDOR, Habeas Data Ley 1581 y Ley 1480) y la arquitectura del **Asesor IA** con guardrails contra *prompt injection*.
 
 ---
 
 ## 4. Guion de Exposición Minuto a Minuto (8 a 10 min)
 
-### Minuto 0:00 - 1:30 | Introducción y Planteamiento del Problema (Integrante A)
-> *"Buenos días profesor(a) y compañeros. Hoy les presentamos **Costia**, un sistema web para el costeo gastronómico inteligente y la gestión de recetas.  
-> En el sector gastronómico, más del 70% de los pequeños negocios quiebran en su primer año por no saber fijar sus precios reales: no toman en cuenta la merma de cocción, no integran los costos de empaque, y pierden mucho tiempo convirtiendo unidades de compra (kilos, litros) a unidades de receta (gramos, cucharaditas).  
-> Costia nace para resolver esto con una herramienta moderna, rápida y matemáticamente exacta."*
+### Minuto 0:00 – 1:30 | Problema y Enfoque Visual (Integrante A)
+> *"Hoy presentamos **Costia**, una plataforma diseñada bajo un lenguaje visual cálido de obrador artesanal ('Atelier Cálido') combinada con precisión financiera. En gastronomía, vender mucho no sirve si no sabes cuánto cuesta cada unidad considerando merma, empaque, arriendo, nómina y comisiones de domicilio."*
 
-### Minuto 1:30 - 3:30 | Arquitectura del Sistema y Tecnologías (Integrante B)
-> *"Para construir Costia elegimos una arquitectura limpia basada en el patrón **MVC (Modelo - Vista - Controlador)**:  
-> - En el **Backend**, utilizamos **PHP 8.2** con Programación Orientada a Objetos pura. Cada entidad del dominio (`Usuario`, `Insumo`, `Producto`, `RecetaItem`) tiene su propia clase modelo y su controlador REST que responde en formato JSON.  
-> - La persistencia se realiza en **MySQL** bajo el motor **InnoDB**, garantizando soporte para claves foráneas y transacciones ACID.  
-> - En el **Frontend**, implementamos una interfaz interactiva con **JavaScript moderno ES6**, comunicada mediante **Fetch API** y un servicio centralizado (`StoreService`) que además cuenta con resiliencia offline.  
-> - En cuanto a seguridad, todas las contraseñas se almacenan mediante el algoritmo criptográfico **BCRYPT**, y todas las consultas a la base de datos utilizan **Sentencias Preparadas con PDO**, mitigando al 100% ataques de inyección SQL."*
+### Minuto 1:30 – 3:30 | Arquitectura MVC, Híbrida y Base de Datos (Integrante B)
+> *"Costia usa **MVC desacoplado**: un frontend ligero en Vanilla JS ES6+ con diseño modular y PWA (`sw.js`), comunicado vía Fetch API con una API REST en **PHP 8.2**. La persistencia usa **MySQL InnoDB** en **3ra Forma Normal** con conexión **Singleton PDO** (`Database.php`). Si el servidor o la base de datos no están disponibles, `StoreService` conmuta de forma transparente a `localStorage` para garantizar continuidad operativa."*
 
-### Minuto 3:30 - 6:30 | Demostración Práctica en Vivo (Integrante A navega / Ambos comentan)
-* **Paso 1 (Autenticación):** Entran con `demo@costia.com` / `admin123`. Explicar que el sistema valida la sesión con `$_SESSION['usuario_id']` en el servidor.
-* **Paso 2 (Gestión de Insumos y Conversión):** Mostrar el módulo de insumos.
-  > *"Aquí registramos 'Harina de Trigo': compramos un bulto de 5 kg por $15.000. El sistema calcula automáticamente que cada gramo cuesta $3."*
-* **Paso 3 (Crear Producto con Costeo Avanzado):** Ir a *Crear Producto* y seleccionar una "Torta Húmeda de Chocolate":
-  - Agregar ingredientes en gramos y unidades.
-  - Activar el campo **% de Merma (10%)**: Mostrar cómo el costo de ingredientes sube automáticamente debido al desperdicio o evaporación en horno.
-  - Agregar **Costo de Empaque ($2.500)** y **Mano de Obra ($4.000)**.
-  - Mostrar la **Tarjeta Flotante en tiempo real**: Se actualiza al instante sin recargar la página.
-  - Cambiar el selector de margen: mostrar la diferencia entre *Markup (sobre costo)* y *Margen Comercial (sobre venta)*.
-* **Paso 4 (Guardado e Integridad):** Hacer clic en *Guardar Producto*. Ir a la lista de productos y abrir el modal "Ver Receta".
+### Minuto 3:30 – 6:30 | Demo Completa en Vivo (Integrante A)
+1. **Inicio (`dashboard.html`):** Elegir `Pan artesanal`, mostrar el Ledger Bar de KPIs, probar el slider de alza de insumos y alternar entre **Mostrador (0%)** y **Delivery (25%)** para ver el precio equivalente que protege el margen.
+2. **Insumos (`insumos.html`) y Nueva Receta (`crear-producto.html`):**
+   - Mostrar la tabla de 10 insumos con variaciones históricas (`+6.7% Alza`).
+   - Entrar al **Wizard de 3 pasos**, agregar Harina (ver que sugiere `g`), simular el error `200 kg` para activar la alerta y corregir en 1 clic, avanzar al Paso 2 (cuota proporcional de gastos fijos) y Paso 3 (liquidación final e Impoconsumo 8%).
+3. **Mi Negocio (`configuracion.html`) y Fichas Técnicas (`ficha-tecnica.html`):**
+   - Ajustar número de operarios o lotes al mes en Mi Negocio mostrando el recálculo instantáneo guardado en MySQL (`configuracion.php`), descargar respaldo JSON o abrir una ficha técnica lista para imprimir/PDF.
+4. **Asesor IA:** Abrir el drawer superior (`Asesor IA`) y pedirle *"Harina de trigo subió a 3800"* o consultar qué receta recalcular.
 
-### Minuto 6:30 - 8:00 | Base de Datos, Transacciones y Protección en Cascada (Integrante B)
-> *"Detrás de ese botón de guardar que acaba de presionar mi compañero, el backend ejecutó una **Transacción Atómica (ACID)**. Primero inserta el producto; si eso es exitoso, recorre los insumos e inserta en la tabla intermedia `receta_items`. Si por alguna razón la conexión se cae a la mitad, se ejecuta un `rollBack()` para que la base de datos nunca quede corrupta.  
-> Además, implementamos integridad referencial estricta: si intentamos eliminar un insumo que actualmente forma parte de la receta de un producto activo, el sistema bloquea la eliminación con una excepción HTTP 400 amigable, protegiendo las recetas del negocio."*
+### Minuto 6:30 – 8:30 | Transacciones ACID, Seguridad y Guardrails IA (Integrante B)
+> *"Al guardar una receta o restaurar el catálogo demo, el backend ejecuta transacciones ACID (`beginTransaction`, `commit`, `rollBack`). Cada endpoint valida sesión PHP con cookies `HttpOnly`, verifica propiedad por `usuario_id` (anti-IDOR), aplica rate limiting contra fuerza bruta en login, cumple Ley 1581 de Habeas Data (exportación JSON y eliminación en cascada en `eliminar-cuenta.php`), y blinda el Asesor IA en `asesor.php` contra prompt injection y CORS no autorizados."*
 
-### Minuto 8:00 - 9:30 | Conclusiones y Preguntas (Ambos)
-> *"En conclusión, Costia no solo es un gestor de datos, sino una herramienta financiera para el sector gastronómico que combina buenas prácticas de ingeniería de software: POO, MVC, transacciones seguras y alta usabilidad. Quedamos a su disposición para cualquier pregunta."*
+### Minuto 8:30 – 9:30 | Calidad Automatizada y Cierre (Ambos)
+> *"Todo el flujo está respaldado por una batería de pruebas E2E con **Playwright** que valida cálculos, seguridad, responsividad móvil sin desbordamiento horizontal y accesibilidad WCAG AA claro/oscuro."*
 
 ---
 
 ## 5. Arquitectura Técnica y Patrones de Diseño
 
 ```
-                 ARQUITECTURA DEL SISTEMA COSTIA (MVC)
- ┌─────────────────────────────────────────────────────────────────┐
- │                            VISTA                                │
- │   HTML5 Semántico + CSS3 Responsive + JavaScript ES6 Vanilla    │
- │   - paginas/insumos.html       - assets/js/insumos.js           │
- │   - paginas/crear-producto.html- assets/js/crear-producto.js    │
- │   - paginas/productos.html     - assets/js/productos.js         │
- └───────────────────────────────┬─────────────────────────────────┘
-                                 │ Peticiones Asíncronas (Fetch JSON)
+                   ARQUITECTURA DEL SISTEMA COSTIA
+ ┌───────────────────────────────────────────────────────────────────┐
+ │                         CAPA DE VISTA / UI                        │
+ │   HTML5 Semántico + CSS3 Modular Atelier Cálido + PWA (sw.js)     │
+ │   - index.html (Landing + mesa interactiva)                       │
+ │   - paginas/dashboard.html   (Simulador Mostrador vs Delivery)    │
+ │   - paginas/insumos.html     (Materias primas y variaciones)      │
+ │   - paginas/productos.html   (Catálogo y duplicación)             │
+ │   - paginas/crear-producto.html (Wizard 3 pasos + liquidación)    │
+ │   - paginas/ficha-tecnica.html  (Fichas imprimibles / PDF)        │
+ │   - paginas/configuracion.html  (Mi Negocio + respaldo/olvido)    │
+ └───────────────────────────────┬───────────────────────────────────┘
+                                 │ Controladores JS POO + Fetch JSON
                                  ▼
- ┌─────────────────────────────────────────────────────────────────┐
- │                         CONTROLADOR                             │
- │   Endpoints RESTful en PHP que procesan las peticiones          │
- │   - backend/api/insumos.php    -> InsumoController.php          │
- │   - backend/api/productos.php  -> ProductoController.php        │
- │   - backend/auth/login.php     -> AuthController.php            │
- └───────────────────────────────┬─────────────────────────────────┘
-                                 │ Invoca lógica y operaciones CRUD
+ ┌───────────────────────────────────────────────────────────────────┐
+ │                    SERVICIO HÍBRIDO (StoreService)                │
+ │   assets/js/store.js + models.js + theme.js + asesor/*            │
+ │   - Con sesión MySQL: sincroniza insumos, productos y config      │
+ │   - Sin sesión / offline: opera sobre localStorage transparente   │
+ └───────────────────────────────┬───────────────────────────────────┘
+                                 │ REST API JSON (/backend/api/*)
                                  ▼
- ┌─────────────────────────────────────────────────────────────────┐
- │                           MODELO                                │
- │   Clases POO que encapsulan datos y consultas preparadas PDO    │
- │   - backend/models/Insumo.php                                   │
- │   - backend/models/Producto.php                                 │
- │   - backend/models/RecetaItem.php                               │
- │   - backend/models/Usuario.php                                  │
- └───────────────────────────────┬─────────────────────────────────┘
-                                 │ Conexión mediante Singleton PDO
+ ┌───────────────────────────────────────────────────────────────────┐
+ │                 CAPA CONTROLADOR Y SEGURIDAD (PHP 8)              │
+ │   - backend/config/Session.php     (HttpOnly, SameSite, Headers)  │
+ │   - backend/controllers/AuthController.php                        │
+ │   - backend/controllers/InsumoController.php                      │
+ │   - backend/controllers/ProductoController.php                    │
+ │   - backend/api/configuracion.php | demo.php | eliminar-cuenta.php│
+ │   - backend/api/asesor.php (Puente Ollama + Guardrails)           │
+ └───────────────────────────────┬───────────────────────────────────┘
+                                 │ Modelos PDO + Singleton Database
                                  ▼
- ┌─────────────────────────────────────────────────────────────────┐
- │                        BASE DE DATOS                            │
- │   MySQL 8.0 / InnoDB (Claves Foráneas, Índices, Transacciones)  │
- │   Tablas: usuarios, insumos, productos, receta_items            │
- └─────────────────────────────────────────────────────────────────┘
+ ┌───────────────────────────────────────────────────────────────────┐
+ │                       BASE DE DATOS (MySQL)                       │
+ │   InnoDB 3FN: usuarios (incluye config_gastos y Habeas Data),     │
+ │   insumos, productos, receta_items                                │
+ └───────────────────────────────────────────────────────────────────┘
 ```
 
-### Patrones Utilizados:
-1. **MVC (Modelo - Vista - Controlador):**
-   - **Modelo:** Representa la estructura de datos y las consultas a la base de datos (`Insumo.php`, `Producto.php`).
-   - **Vista:** Los archivos HTML y componentes visuales en `paginas/`.
-   - **Controlador:** Recibe las peticiones HTTP, valida la sesión, procesa los datos y devuelve respuestas estandarizadas en JSON (`InsumoController.php`, `ProductoController.php`).
-
-2. **Patrón Singleton (Conexión a Base de Datos):**
-   - Ubicado en `backend/config/Database.php`.
-   - Garantiza que durante el ciclo de vida de una petición HTTP sólo exista **una única instancia** de la conexión PDO abierta, ahorrando memoria y conexiones en el servidor MySQL.
-   - Código representativo:
-     ```php
-     private static ?Database $instance = null;
-     public static function getInstance(): Database {
-         if (self::$instance === null) {
-             self::$instance = new Database();
-         }
-         return self::$instance;
-     }
-     ```
-
-3. **Arquitectura Híbrida Resiliente (StoreService):**
-   - Implementado en `assets/js/store.js`.
-   - Al cargar la página, `StoreService` consulta `/backend/auth/session.php`.
-   - Si el usuario está autenticado, opera contra los endpoints de la API REST MySQL.
-   - Si no hay servidor o la conexión falla, conmuta automáticamente a `localStorage`. Esto garantiza que **la aplicación nunca se quede congelada** en una presentación o ante caídas de red.
+### Patrones principales del código:
+1. **MVC Desacoplado:** Vistas HTML/CSS + JS de vista hablan vía JSON con controladores PHP sin mezclar HTML dentro del backend.
+2. **Singleton (`backend/config/Database.php`):** `Database::getConnection()` mantiene una sola instancia `PDO` por petición y ejecuta `asegurarEsquema()` para crear/migrar tablas automáticamente.
+3. **Estrategia Híbrida (`assets/js/store.js`):** `StoreService` centraliza el estado y sincroniza con `/backend/api/insumos.php`, `/backend/api/productos.php` y `/backend/api/configuracion.php` cuando hay sesión activa.
+4. **Arquitectura Modular del Asesor (`assets/js/asesor/`):** Dividido por responsabilidad única (`asesor-parser.js`, `asesor-finanzas.js`, `asesor-comandos.js`, `asesor-flujo.js`, `asesor-ui.js` y `asesor-agente.js`).
 
 ---
 
 ## 6. Base de Datos Relacional y Modelo 3FN
 
-### Modelo Entidad - Relación:
-* `usuarios`: Almacena las cuentas registradas (`id`, `nombre`, `email`, `password_hash`, `creado_en`).
-* `insumos`: Materias primas de cada usuario (`id`, `usuario_id`, `nombre`, `unidad_base`, `costo_compra`, `cantidad_compra`, `costo_unitario_calculado`).
-* `productos`: Recetas creadas (`id`, `usuario_id`, `nombre`, `categoria`, `porcentaje_merma`, `costo_empaque`, `costo_mano_obra`, `tipo_margen`, `margen_ganancia`, `precio_sugerido`).
-* `receta_items`: **Tabla Intermedia** que resuelve la relación Muchos a Muchos ($N:M$) entre productos e insumos (`id`, `producto_id`, `insumo_id`, `cantidad_usada`, `unidad_usada`, `costo_calculado`).
+Definida en [`database/database.sql`](../../database/database.sql) y auto-verificada en [`Database.php`](../../backend/config/Database.php):
 
-### ¿Por qué está en 3ra Forma Normal (3FN)?
-1. **1FN:** Todos los atributos son atómicos (no hay listas separadas por comas dentro de una columna; cada ingrediente de una receta es una fila separada en `receta_items`).
-2. **2FN:** Todos los atributos que no forman parte de la clave primaria dependen por completo de la clave primaria.
-3. **3FN:** No existen dependencias transitivas entre campos no clave. Por ejemplo, el nombre del insumo no se duplica en `receta_items`, sólo se guarda el `insumo_id`.
+* **`usuarios`**: `id`, `negocio`, `config_gastos` (JSON con arriendo, recibos, nómina, lotes mensuales, comisión delivery e Impoconsumo), `email`, `password` (BCRYPT), `acepto_terminos`, `acepto_privacidad`, `ip_registro`, `fecha_aceptacion`, `created_at`.
+* **`insumos`**: `id`, `usuario_id` (FK a `usuarios`), `nombre`, `unidad`, `precio`, `created_at`, `updated_at`.
+* **`productos`**: `id`, `usuario_id` (FK a `usuarios`), `nombre`, `modo` (`margen` o `multiplicador`), `valor_modo`, `tipo_margen` (`costo` o `venta`), `unidades_producidas`, `costo_empaque`, `porcentaje_merma`, `costo_mano_obra`, `precio_venta_anterior`, `costo_snapshot`, `created_at`, `updated_at`.
+* **`receta_items`**: **Tabla intermedia $N:M$** con `id`, `producto_id` (`ON DELETE CASCADE`), `insumo_id` (`ON DELETE RESTRICT` para proteger integridad), `cantidad` (`DECIMAL(12,4)`), `unidad_receta`.
 
-### Transacciones Atómicas (ACID) en `ProductoController.php`:
-Guardar un producto requiere dos pasos: insertar el encabezado del producto y luego insertar cada uno de sus ingredientes en `receta_items`.
-```php
-$this->db->beginTransaction(); // Iniciamos la transacción
-try {
-    $productoId = $this->productoModel->crear($datosProducto);
-    foreach ($items as $item) {
-        $this->recetaItemModel->crear($productoId, $item);
-    }
-    $this->db->commit(); // Confirmamos solo si todo salió bien
-} catch (Exception $e) {
-    $this->db->rollBack(); // Deshacemos todo si algo falló
-    throw $e;
-}
-```
-*Si fallara el ingrediente #3, la base de datos revierte el producto completo para evitar que queden "productos vacíos o huérfanos" en el sistema.*
+### Datos demo alineados:
+Tanto `database/database.sql`, como `backend/api/demo.php`, `AuthController::sembrarDatosIniciales()` y `StoreService` offline comparten exactamente los mismos **10 insumos** y **7 recetas iniciales** (Pan artesanal, Torta de chocolate, Galletas de avena, Croissant de mantequilla, Pan de queso campesino, Capuchino artesanal 12 oz y Brownie de chocolate).
 
 ---
 
-## 7. Lógica Matemática y Gastronómica de Costeo
+## 7. Lógica Matemática, Tributaria y Gastronómica de Costeo
 
-Este es uno de los puntos fuertes que más impresionará al jurado.
+### 1. Conversión Universal (`UnidadConverter` en `assets/js/models.js`)
+Normaliza unidades de compra a porción mínima de receta:
+* Masa: `kg`, `g`, `lb`, `oz`, `arroba`, `ton`, `pizca`.
+* Volumen: `l`, `ml`, `taza`, `cda`, `cdta`.
 
-### 1. Conversión Universal de Unidades (`UnidadConverter` en `models.js`):
-Los insumos se compran en una unidad (ej. Kilos) pero se usan en otra (ej. Gramos o Cucharaditas).
-El sistema normaliza a una **unidad base canónica**:
-- Masa: $1\text{ kg} = 1000\text{ g}$, $1\text{ lb} = 500\text{ g}$, $1\text{ oz} = 28.35\text{ g}$.
-- Volumen: $1\text{ L} = 1000\text{ ml}$, $1\text{ taza} = 250\text{ ml}$, $1\text{ cda} = 15\text{ ml}$, $1\text{ cdta} = 5\text{ ml}$.
+### 2. Costo Real Unitario (con Merma, Empaque y Prorrateo de Gastos Fijos)
+$$\text{Costo Insumos con Merma} = \text{Costo Ingredientes Crudos} \times \left(1 + \frac{\text{Merma \%}}{100}\right)$$
+$$\text{Cuota Fijos / Lote} = \frac{\text{Arriendo} + \text{Servicios} + (\text{Operarios} \times \text{Salario})}{\text{Lotes Estimados al Mes}}$$
+$$\text{Costo Unitario Real} = \frac{\text{Costo Insumos con Merma} + \text{Mano de Obra Directa / Cuota Fijos}}{\text{Unidades Producidas}} + \text{Empaque / ud}$$
 
-$$\text{Costo Ingrediente} = \text{Cantidad Usada (convertida a base)} \times \text{Costo Unitario Base}$$
+### 3. Markup vs. Margen Comercial sobre Venta
+* **Markup (sobre costo):** $\text{Precio} = \text{Costo Unitario} \times \text{Multiplicador}$ (o $\text{Costo} \times (1 + m)$).
+* **Margen Bruto Comercial (sobre precio de venta):**
+$$\text{Precio Mostrador} = \frac{\text{Costo Unitario}}{1 - \left(\frac{\text{Margen \%}}{100}\right)}$$
 
----
-
-### 2. Factor de Merma (Desperdicio o Evaporación):
-Si una receta suma $\$10.000$ en ingredientes crudos, pero tiene un **10% de merma** por cocción:
-$$\text{Costo Ingredientes con Merma} = \frac{\text{Costo Ingredientes Crudos}}{1 - \left(\frac{\text{Merma \%}}{100}\right)} = \frac{10.000}{1 - 0.10} = \frac{10.000}{0.90} = \$11.111,11$$
-*(O según el método multiplicativo: $\text{Costo} \times (1 + \text{Merma \%}) = \$11.000$)*.
-
----
-
-### 3. Costo Total de Producción:
-$$\text{Costo Total} = \text{Costo Ingredientes con Merma} + \text{Costo Empaque} + \text{Costo Mano de Obra}$$
+### 4. Equivalencia Delivery e Impoconsumo
+* **Comisión Delivery (ej. $25\%$):** Ajusta el precio para conservar exactamente la misma ganancia neta tras descontar la comisión de la app:
+$$\text{Precio Delivery} = \frac{\text{Costo Unitario}}{1 - \text{Margen} - \text{Comisión App}}$$
+* **Impoconsumo ($8\%$ sobre precio base):** Si el negocio declara Impoconsumo en **Mi Negocio** o en el simulador, se adiciona sobre el precio de venta neto antes de mostrar el PVP final.
 
 ---
 
-### 4. Markup vs. Margen Comercial (Diferencia Fundamental):
-Costia le permite al usuario elegir qué método financiero aplicar:
+## 8. Seguridad, Privacidad y Asesor IA
 
-#### Método A: Markup (Margen sobre Costo)
-Suma un porcentaje directamente al costo de producirlo.
-$$\text{Precio} = \text{Costo Total} \times \left(1 + \frac{\text{Margen \%}}{100}\right)$$
-*Ejemplo:* Si el costo es $\$10.000$ y pides 30% de markup:  
-$$\text{Precio} = 10.000 \times 1.30 = \$13.000$$
-
-#### Método B: Margen Comercial (Margen sobre Precio de Venta) — *El estándar contable*
-Garantiza que del dinero total que paga el cliente, el porcentaje elegido sea ganancia neta.
-$$\text{Precio} = \frac{\text{Costo Total}}{1 - \left(\frac{\text{Margen \%}}{100}\right)}$$
-*Ejemplo:* Si el costo es $\$10.000$ y quieres un margen comercial del 30%:  
-$$\text{Precio} = \frac{10.000}{1 - 0.30} = \frac{10.000}{0.70} = \$14.285,71$$
-*Si vendes a $\$14.285$, el 30% exacto de ese dinero ($\$4.285$) es tu ganancia.*  
-**¡Explicar esta diferencia al profesor demuestra madurez contable y de análisis de requisitos!**
-
----
-
-## 8. Seguridad Implementada
-
-| Amenaza | Medida Implementada en Costia |
+| Vector / Norma | Implementación Real en el Código |
 | :--- | :--- |
-| **Inyección SQL** | Uso de **Sentencias Preparadas con PDO** en todos los modelos. Los parámetros se envían separados de la consulta SQL (`$stmt->execute([':id' => $id])`), impidiendo que un atacante inyecte código malicioso. |
-| **Robo de Contraseñas** | Encriptación unidireccional con **BCRYPT** usando `password_hash($pass, PASSWORD_BCRYPT)`. Nunca se guarda una contraseña en texto plano. La autenticación se verifica con `password_verify()`. |
-| **Acceso no Autorizado** | Control de sesiones mediante `session_start()` en PHP. Cada endpoint valida la existencia de `$_SESSION['usuario_id']`. Si no existe sesión, devuelve código **HTTP 401 Unauthorized**. |
-| **Aislamiento Multiusuario** | Todas las consultas a insumos y productos filtran obligatoriamente por `WHERE usuario_id = :usuario_id`. Un usuario jamás puede ver ni modificar los datos de otro usuario. |
-| **Integridad de Datos** | Clave foránea en `receta_items` referenciando `insumos(id)` con regla de restricción. El backend impide borrar insumos vinculados a recetas existentes (Error 400). |
+| **Inyección SQL** | Sentencias preparadas PDO (`PDO::ATTR_EMULATE_PREPARES => false`) en todos los modelos y controladores. |
+| **Contraseñas** | Hash adaptativo `PASSWORD_BCRYPT` y verificación con `password_verify()` (`Usuario.php`, `AuthController.php`). |
+| **Fuerza bruta (Login)** | Rate limiting por IP en archivo temporal con ventana de bloqueo (`verificarRateLimit()` en `AuthController.php`). |
+| **XSS** | `StoreService.escapeHtml()` en renders dinámicos del DOM y sanitización en servidor. |
+| **IDOR / BOLA** | Validación estricta de propiedad de cuenta por `usuario_id` en insumos, recetas y productos (`ProductoController.php`, prueba `SEC-002`). |
+| **CSRF destructivo & Cookies** | Métodos `POST` exclusivos para mutaciones destructivas (`demo.php`, `eliminar-cuenta.php`), `GET` rechazado con HTTP `405`. Cookies `HttpOnly`, `SameSite=Lax` y cabeceras `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff` en `Session.php`. |
+| **Habeas Data & Consumidor** | Políticas dedicadas ([`privacidad.html`](../../paginas/privacidad.html), [`terminos.html`](../../paginas/terminos.html)), registro de aceptación e IP al registrarse, **exportación JSON** en `store.js` y **Derecho al Olvido** en cascada en [`eliminar-cuenta.php`](../../backend/api/eliminar-cuenta.php). |
+| **Guardrails Asesor IA** | [`backend/api/asesor.php`](../../backend/api/asesor.php) valida origen CORS local y filtra intentos de *prompt injection*, *jailbreak* o comandos fuera de dominio mediante `esSolicitudNoSoportada()`. |
 
 ---
 
 ## 9. Paso a Paso de la Demostración en Vivo
 
-Sigan esta secuencia exacta en la pantalla del computador del proyector:
-
-1. **Abrir el Navegador:** Ir a `http://localhost/proyecto_costia/`.
-2. **Iniciar Sesión:**
-   - Correo: `demo@costia.com`
-   - Clave: `admin123`
-   - *Comentario del presentador:* "Ingresamos al dashboard donde se visualiza el resumen de insumos registrados y el catálogo de productos."
-3. **Módulo de Insumos (`Insumos` en el menú):**
-   - Mostrar cómo los insumos muestran su costo unitario calculado por gramo o mililitro.
-   - Mostrar el botón **+ Nuevo Insumo**: registrar rápidamente "Vainilla": 1 botella de 100 ml por $8.000.
-   - Mostrar cómo calcula automáticamente $80 por ml.
-4. **Módulo Crear Producto (`+ Nuevo Producto`):**
-   - Nombre: `Pie de Limón Premium`.
-   - Categoría: `Postres`.
-   - Agregar 3 ingredientes usando el autocompletado:
-     - Harina: 300 g.
-     - Azúcar: 150 g.
-     - Huevos: 3 unidades.
-   - Mostrar cómo en el panel lateral derecho (tarjeta sticky) el costo va subiendo en tiempo real.
-   - **Ingresar Costos Adicionales:**
-     - Merma: `8%`.
-     - Empaque: `$1.800` (caja + domo).
-     - Mano de obra: `$3.000`.
-   - Cambiar entre "Markup" y "Margen Comercial": señalar cómo cambia el precio de venta recomendado.
-   - Clic en **Guardar Producto**.
-5. **Módulo Productos:**
-   - Buscar el recién creado `Pie de Limón Premium`.
-   - Clic en **Ver Receta**: se despliega el modal con la tabla de ingredientes y los porcentajes de incidencia de costo.
-   - Mostrar el botón **Duplicar Receta**: permite crear una variante (ej: "Pie de Limón Familiar") sin tener que reescribir todos los ingredientes.
-6. **Prueba de Resistencia (Intento de Borrado):**
-   - Ir a Insumos e intentar eliminar la "Harina de Trigo".
-   - El sistema mostrará la alerta: *"No se puede eliminar el insumo porque está en uso en 2 productos"*.
-   - Explicar: *"Esto demuestra la integridad referencial y las validaciones de negocio en el backend"*.
+1. **Arranque:** Tener MySQL iniciado en XAMPP (o servidor embebido `php -S 127.0.0.1:8085`). Entrar a `/index.html`.
+2. **Landing (`index.html`):** Jugar 10 segundos con las recetas y el slider de la **Ficha Técnica Interactiva**. Clic en **Iniciar sesión**.
+3. **Login (`paginas/login.html`):** Usar `demo@costia.com` / `admin123`.
+4. **Inicio / Simulador (`paginas/dashboard.html`):** Cambiar de `Pan artesanal` a `Torta de chocolate`, alternar **Mostrador (0%)** vs **Delivery (25%)**, activar **Impoconsumo (8%)**, mover el slider de alza de insumos y clicar **Aplicar precio a receta**.
+5. **Insumos (`paginas/insumos.html`):** Mostrar la tabla de costos, filtrar por unidad y abrir `+ Nuevo insumo` o editar un precio para explicar el impacto en recetas.
+6. **Nueva Receta (`paginas/crear-producto.html`):** Probar el Wizard de 3 pasos, activar la alerta de cantidad gigante (`200 kg` -> clic en corregir a `g`), pasar a gastos proporcionales y guardar.
+7. **Mi Negocio (`paginas/configuracion.html`):** Cambiar número de trabajadores (ej. `3` operarios), mostrar el recálculo instantáneo de nómina por lote y pulsar **Guardar todos los cambios** (se guarda en MySQL vía `configuracion.php`).
+8. **Fichas Técnicas (`paginas/ficha-tecnica.html`):** Abrir una ficha individual y previsualizar su versión de impresión / PDF.
+9. **Asesor IA:** Abrir el chat del Asesor en la barra superior y escribir `"sube el azúcar a 3500 el kilo"` para ver la detección y recalculo en vivo.
 
 ---
 
 ## 10. Banco de Preguntas Trampa del Docente y Respuestas Modelo
 
-### Pregunta 1: *"¿Por qué utilizaron PDO en lugar de MySQLi?"*
-* **Respuesta:**  
-  *"Elegimos **PDO (PHP Data Objects)** porque es la interfaz moderna estándar orientada a objetos en PHP. A diferencia de MySQLi, PDO permite cambiar el motor de base de datos (por ejemplo a PostgreSQL o SQLite) modificando solo la cadena DSN, sin reescribir todo el código. Además, ofrece un manejo robusto de excepciones con `PDOException` y vinculación limpia de parámetros preparados."*
+### 1. *"¿Por qué utilizaron PDO en lugar de MySQLi?"*
+PDO ofrece una interfaz orientada a objetos unificada, soporte real de sentencias preparadas nativas (`ATTR_EMULATE_PREPARES => false`), manejo limpio de excepciones (`PDOException`) y portabilidad entre motores cambiando únicamente el DSN.
 
-### Pregunta 2: *"¿Dónde está la Tercera Forma Normal (3FN) en la base de datos?"*
-* **Respuesta:**  
-  *"Se aprecia claramente en la tabla intermedia `receta_items`. En lugar de almacenar el nombre o el precio de compra del insumo dentro de la receta, solo almacenamos el `insumo_id` y la cantidad utilizada. De esta forma, si el proveedor sube el precio de la harina, se actualiza en un solo lugar (`insumos`) sin inconsistencias ni redundancias en los productos."*
+### 2. *"¿Dónde está aplicada la Tercera Forma Normal (3FN)?"*
+En la descomposición de `receta_items`: los productos no guardan listas de ingredientes ni repiten nombres o precios de insumos. Sólo referencian `producto_id` e `insumo_id` como claves foráneas. Un cambio en el precio de un insumo actualiza el cálculo en todas las recetas sin redundancia.
 
-### Pregunta 3: *"¿Qué sucede si dos usuarios usan el sistema a la vez?"*
-* **Respuesta:**  
-  *"El sistema es multi-inquilino a nivel de datos. Cada registro en las tablas `insumos` y `productos` tiene una clave foránea `usuario_id`. Cuando el controlador hace una consulta, la sesión PHP inyecta el `usuario_id` autenticado. Un usuario nunca podrá leer ni escribir datos de otro usuario."*
+### 3. *"¿Cómo garantizan transacciones atómicas al crear o actualizar recetas?"*
+`ProductoController.php` envuelve la inserción/edición en `$db->beginTransaction()`, luego guarda todos los `receta_items` y solo ejecuta `$db->commit()` si todo fue exitoso; ante cualquier excepción ejecuta `$db->rollBack()`.
 
-### Pregunta 4: *"¿Cómo aseguran que no queden datos a medias si se corta la conexión al guardar una receta?"*
-* **Respuesta:**  
-  *"En `ProductoController.php` encapsulamos el guardado dentro de una **Transacción PDO** con `beginTransaction()`. Si la inserción del producto es exitosa y todos los `receta_items` se insertan correctamente, se ejecuta `commit()`. Si cualquiera de las sentencias falla, el bloque `catch` ejecuta `rollBack()`, devolviendo la base de datos a su estado anterior y evitando registros huérfanos."*
+### 4. *"¿Cómo evitan que un usuario borre datos de otro mediante peticiones HTTP manipuladas?"*
+Primero, todas las consultas de lectura, edición y borrado filtran por `$usuarioId` leído directamente de `$_SESSION['usuario_id']` (nunca del JSON enviado por el cliente). Segundo, al crear recetas verificamos que cada `insumoId` pertenezca al mismo usuario (mitigación IDOR/BOLA, validada en `tests/security.spec.js`).
 
-### Pregunta 5: *"¿Por qué usan Vanilla JavaScript en lugar de React, Angular o Vue?"*
-* **Respuesta:**  
-  *"Decidimos usar JavaScript moderno ES6 nativo para demostrar el dominio profundo de los fundamentos web: manipulación directa del DOM, consumo asíncrono con `async/await` y Fetch API, y Programación Orientada a Objetos en frontend sin la sobrecarga ni la complejidad de librerías externas o pasos de compilación. Esto hace que Costia cargue en milisegundos y sea liviana."*
+### 5. *"¿La configuración del negocio (arriendo, nómina, delivery) también persiste en MySQL?"*
+Sí. Se almacena en la columna `config_gastos` y `negocio` de la tabla `usuarios` mediante el endpoint `backend/api/configuracion.php`, sincronizado bidireccionalmente desde `StoreService`.
 
-### Pregunta 6: *"¿Qué es BCRYPT y por qué no usaron MD5 o SHA256 para las contraseñas?"*
-* **Respuesta:**  
-  *"MD5 y SHA-256 son algoritmos de hash rápidos diseñados para verificar integridad de archivos, no contraseñas; hoy en día se vulneran fácilmente mediante tablas arcoíris y ataques de fuerza bruta en tarjetas gráficas. BCRYPT es una función hash adaptativa lenta que incluye automáticamente un 'salt' (sal criptográfica) aleatorio y un costo de cómputo configurable (`cost`), lo que hace inviables los ataques de fuerza bruta."*
+### 6. *"¿Qué pasa si Ollama no está encendido durante una demostración?"*
+El frontend consulta `/backend/api/asesor.php?ping=1`; si Ollama no responde, `asesor-agente.js` utiliza automáticamente el analizador léxico/financiero local (`asesor-parser.js`, `asesor-finanzas.js`, `asesor-comandos.js`) sin interrumpir la experiencia.
 
 ---
 
 ## 11. Plan de Contingencia
 
-> 💡 **Si ocurre algún imprevisto durante la sustentación:**
-
-* **Caso 1: "Se me olvidó la contraseña del usuario demo":**  
-  - Correo: `demo@costia.com`
-  - Contraseña: `admin123`  
-  - *(También pueden registrar cualquier nuevo usuario en la pantalla de registro en 5 segundos).*
-
-* **Caso 2: "MySQL de XAMPP no inicia o está en rojo (Puerto 3306 ocupado)":**  
-  - En XAMPP Control Panel, cambiar el puerto a `3307` o detener cualquier otro servicio de MySQL / MariaDB local.
-  - O mejor aún: Costia incluye **resiliencia offline**. Si no hay conexión con MySQL, `StoreService` conmuta automáticamente a `localStorage`, lo que permite navegar y demostrar la funcionalidad completa sin que el profesor note una caída del servidor.
-
-* **Caso 3: "La base de datos está vacía":**  
-  - Abrir `phpMyAdmin` (`http://localhost/phpmyadmin/`).
-  - Seleccionar la base de datos `costia_db` y pestaña "Importar".
-  - Seleccionar el archivo `database/database.sql` del proyecto y hacer clic en Ejecutar. Ya viene con datos de prueba listos.
+* **Credenciales demo:** `demo@costia.com` / `admin123` (o crear usuario nuevo desde `registro.html`).
+* **Sin XAMPP / Apache configurado:** Ejecutar `php -S 127.0.0.1:8085` en la raíz del proyecto.
+* **Puerto 3306 de MySQL ocupado o MySQL caído:** Costia conmuta automáticamente a `localStorage` con los mismos 10 insumos y 7 recetas demo precargados.
+* **Base de datos desincronizada:** Reimportar `database/database.sql` o iniciar sesión y pulsar **Restaurar Datos de Demostración** en `Mi Negocio` (`configuracion.html`).
 
 ---
 
-### 🌟 Recomendación Final para el Equipo:
-Tengan abierta una pestaña con el sistema en ejecución y otra con el editor de código (VS Code) abierto en:
-1. `backend/controllers/ProductoController.php` (para mostrar la transacción con `beginTransaction`).
-2. `backend/config/Database.php` (para mostrar el patrón Singleton).
-3. `database/database.sql` (para mostrar las tablas y claves foráneas `FOREIGN KEY`).
+## 12. Mapa de Estudio Rápido para el Compañero
 
-**¡Muchos éxitos en la sustentación! Tienen un proyecto sólido, moderno y con nivel superior a la media de 3er semestre.**
+Lee estos archivos en orden para dominar todo el proyecto en ~30 minutos:
+
+1. **Capa de Datos (5 min):**
+   - `database/database.sql` — Tablas, llaves foráneas `ON DELETE CASCADE/RESTRICT` y semilla demo.
+   - `backend/config/Database.php` — Patrón Singleton PDO y migración automática `asegurarEsquema()`.
+2. **Backend y Seguridad (10 min):**
+   - `backend/config/Session.php` — Sesión segura y cabeceras HTTP.
+   - `backend/controllers/AuthController.php` — Registro con siembra inicial, login BCRYPT y rate limiting.
+   - `backend/controllers/InsumoController.php` y `ProductoController.php` — Validación multi-inquilino y transacciones ACID.
+   - `backend/api/configuracion.php` y `eliminar-cuenta.php` — Persistencia de configuración y Derecho al Olvido.
+3. **Motor Matemático y Sincronización Frontend (10 min):**
+   - `assets/js/models.js` — Clases `Insumo`, `Producto`, `ItemReceta` y `UnidadConverter`.
+   - `assets/js/store.js` — `StoreService` (cómo habla con `/backend/api/*` y hace fallback a `localStorage`).
+   - `assets/js/dashboard.js` y `assets/js/crear-producto.js` — Lógica del Simulador y del Wizard de 3 pasos.
+4. **Asesor IA y Pruebas E2E (5 min):**
+   - `assets/js/asesor-agente.js` + `backend/api/asesor.php` — Flujo conversacional y guardrails.
+   - `tests/security.spec.js` y `tests/ux-transformation.spec.js` — Cómo se prueban seguridad y flujos automáticamente.

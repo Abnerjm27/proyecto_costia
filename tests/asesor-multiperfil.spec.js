@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Costia — Asesor IA Multi-Agente & Simulación Multi-Perfil (ECC Test-Driven Spec)', () => {
+  test.describe.configure({ mode: 'serial', timeout: 60000 });
 
   test.beforeEach(async ({ page }) => {
     // Abrir la terminal de costeo donde el Asesor IA interactúa en vivo con el formulario
@@ -24,11 +25,11 @@ test.describe('Costia — Asesor IA Multi-Agente & Simulación Multi-Perfil (ECC
     await input.fill(texto);
     await btnEnviar.click();
 
-    // Esperar a que el usuario aparezca y el agente responda (desaparece el indicador 'escribiendo')
-    await page.waitForTimeout(350);
-    const ultimoMensajeAgente = page.locator('#asesor-mensajes .asesor-msg--agente').last();
+    // Esperar a que termine el indicador 'escribiendo' y aparezca la burbuja real de respuesta
+    await expect(page.locator('#asesor-mensajes .asesor-msg--typing')).toHaveCount(0, { timeout: 15000 });
+    const ultimoMensajeAgente = page.locator('#asesor-mensajes .asesor-msg--agente:not(.asesor-msg--typing)').last();
     await expect(ultimoMensajeAgente).toBeVisible({ timeout: 6000 });
-    return await ultimoMensajeAgente.innerText();
+    return (await ultimoMensajeAgente.innerText()).trim();
   }
 
   // =========================================================================

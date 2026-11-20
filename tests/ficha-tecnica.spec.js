@@ -45,8 +45,8 @@ test.describe('Costia — Ficha Técnica de Costeo y Catálogo', () => {
     // Sidebar terminal de navegación presente
     await expect(page.locator('#terminal-sidebar')).toBeVisible();
 
-    // Enlace activo a Fichas de Impresión
-    const linkActivo = page.locator('#subnav-productos a[href="ficha-tecnica.html"].activo');
+    // Enlace activo a Fichas PDF
+    const linkActivo = page.locator('.sidebar-nav-list a[href="ficha-tecnica.html"].activo');
     await expect(linkActivo).toBeVisible();
 
     // Catálogo organizado visible

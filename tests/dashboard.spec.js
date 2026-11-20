@@ -5,19 +5,20 @@ test.describe('Costia — Dashboard Financiero & Simulador de Pricing', () => {
     await page.goto('/paginas/dashboard.html');
   });
 
-  test('debe cargar el Dashboard Financiero con su topbar ticker y estación de pricing', async ({ page }) => {
-    await expect(page).toHaveTitle(/Dashboard Financiero/i);
-    await expect(page.locator('.estacion-titulo')).toContainText('Simulador de Pricing');
+  test('debe cargar el Inicio con resumen de negocio y el simulador de precios', async ({ page }) => {
+    await expect(page).toHaveTitle(/Inicio y Simulador/i);
+    await expect(page.locator('.contenido__titulo')).toContainText('Resumen de tu negocio');
+    await expect(page.locator('.estacion-titulo')).toContainText('Simulador de precios y rentabilidad');
 
-    // Verificar que el sidebar marca Dashboard como activo
+    // Verificar que el sidebar marca Inicio como activo
     const linkDashboard = page.locator('.sidebar-nav-list a[href="dashboard.html"]');
     await expect(linkDashboard).toHaveClass(/activo/);
 
-    // Verificar selector de productos en el encabezado
+    // Verificar selector de productos en la barra local del simulador
     const select = page.locator('#select-producto-activo');
     await expect(select).toBeVisible();
 
-    // Ticker superior con métricas
+    // Métricas en vivo
     await expect(page.locator('#ticker-costo-val')).toBeVisible();
     await expect(page.locator('#ticker-precio-val')).toBeVisible();
     await expect(page.locator('#ticker-alerta-badge')).toBeVisible();
@@ -90,5 +91,26 @@ test.describe('Costia — Dashboard Financiero & Simulador de Pricing', () => {
     await inputBuscar.fill('');
     const allOptions = select.locator('option');
     expect(await allOptions.count()).toBeGreaterThanOrEqual(count);
+  });
+
+  test('debe simular alza de insumos, equivalencia Mostrador vs Delivery y precio directo inverso', async ({ page }) => {
+    // 1. Insight de equivalencia Mostrador vs Delivery visible
+    await expect(page.locator('#chart-insight-bar')).toContainText(/Delivery \(25%\)/i);
+
+    // 2. Fila de merma, empaque y gastos en Estructura de Insumos
+    await expect(page.locator('#lista-insumos-body')).toContainText(/Merma, empaque y gastos/i);
+
+    // 3. Simular alza de +20% en insumos y verificar que sube el costo directo
+    const costoInicial = await page.locator('#calc-costo-directo').innerText();
+    await page.locator('#slider-inflacion-insumos').fill('20');
+    await page.locator('#slider-inflacion-insumos').dispatchEvent('input');
+    await expect(page.locator('#inflacion-simulada-val')).toHaveText('+20%');
+    const costoSubido = await page.locator('#calc-costo-directo').innerText();
+    expect(costoSubido).not.toBe(costoInicial);
+
+    // 4. Modo inverso: ingresar precio directo y verificar que calcula margen real
+    await page.locator('#input-precio-manual-sim').fill('1200');
+    await expect(page.locator('#calc-target-margin-display')).toContainText(/Real:/i);
+    await expect(page.locator('#calc-precio-sugerido')).toContainText('1.200');
   });
 });

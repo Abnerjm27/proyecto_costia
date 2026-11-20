@@ -5,10 +5,28 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const formRegistro = document.getElementById('form-registro');
+    const errorBanner = document.getElementById('auth-error-banner');
     if (!formRegistro) return;
+
+    function mostrarErrorAuth(msg) {
+        if (!errorBanner) return;
+        errorBanner.textContent = msg;
+        errorBanner.hidden = false;
+    }
+
+    function ocultarErrorAuth() {
+        if (!errorBanner) return;
+        errorBanner.textContent = '';
+        errorBanner.hidden = true;
+    }
+
+    formRegistro.querySelectorAll('input').forEach(inp => {
+        inp.addEventListener('input', ocultarErrorAuth);
+    });
 
     formRegistro.addEventListener('submit', async (e) => {
         e.preventDefault();
+        ocultarErrorAuth();
 
         const form = e.target;
         const btn = form.querySelector('button[type="submit"]');
@@ -40,12 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (window.Store) {
                     Store.toastDiferido(`¡Bienvenido a Costia, ${data.usuario.negocio}!`);
                 }
-                window.location.href = 'productos.html';
+                window.location.href = 'dashboard.html';
             } else {
-                alert(data.mensaje || 'Error al registrar usuario');
+                mostrarErrorAuth(data.mensaje || 'No se pudo completar el registro. Verifica tus datos e inténtalo de nuevo.');
             }
         } catch (err) {
-            alert('No se pudo conectar con el servidor local. Asegúrate de tener XAMPP con Apache y MySQL encendidos.');
+            mostrarErrorAuth('No se pudo conectar con el servidor local. Asegúrate de tener XAMPP con Apache y MySQL encendidos.');
         } finally {
             btn.disabled = false;
             btn.textContent = 'Crear cuenta gratis';

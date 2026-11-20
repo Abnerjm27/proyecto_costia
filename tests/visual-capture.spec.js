@@ -1,9 +1,11 @@
 import { test } from '@playwright/test';
+import fs from 'fs';
 import path from 'path';
 
 test('Capturar pantallas completas de validación visual', async ({ page }) => {
     test.setTimeout(45000);
-    const artifactDir = 'C:/Users/abner/.gemini/antigravity/brain/17c7b45b-a242-4611-9dd8-c079375806d4';
+    const artifactDir = path.resolve(process.cwd(), 'test-results/visual');
+    fs.mkdirSync(artifactDir, { recursive: true });
 
     await page.setViewportSize({ width: 1440, height: 900 });
 
@@ -70,13 +72,13 @@ test('Capturar pantallas completas de validación visual', async ({ page }) => {
     await page.waitForLoadState('networkidle');
     await page.screenshot({ path: path.join(artifactDir, 'check_ficha_tecnica.png'), fullPage: false });
 
-    // 7. Submenú Configuración unificado y Modal elegante de confirmación de restauración
-    const cfgToggle = page.locator('#sidebar-config-toggle');
-    if (await cfgToggle.isVisible()) {
-        await cfgToggle.click();
-        await page.waitForTimeout(300);
+    // 7. Enlace directo a Mi Negocio (Configuración) y Modal elegante de confirmación
+    const linkConfig = page.locator('#link-sidebar-config-page');
+    if (await linkConfig.isVisible()) {
         await page.locator('#terminal-sidebar').screenshot({ path: path.join(artifactDir, 'check_sidebar_config_subnav.png') });
-        const btnDemo = page.locator('#link-sidebar-restaurar-demo');
+        await linkConfig.click();
+        await page.waitForLoadState('networkidle');
+        const btnDemo = page.locator('#btn-cfg-restaurar-demo');
         if (await btnDemo.isVisible()) {
             await btnDemo.click();
             await page.waitForTimeout(400);

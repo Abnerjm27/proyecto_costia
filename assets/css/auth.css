@@ -23,10 +23,10 @@ body {
 /* --- Tarjeta del formulario --- */
 .auth-card {
     position: relative;
-    background: #FFFFFF;
+    background: #FDFBF7;
     border: 1px solid var(--linea);
     border-radius: 16px;
-    box-shadow: 0 12px 32px -8px rgba(7, 31, 23, 0.08);
+    box-shadow: 0 12px 32px -8px rgba(13, 36, 28, 0.08);
     padding: 36px;
     width: 100%;
     max-width: 420px;
@@ -104,6 +104,26 @@ body {
     height: 1px;
     background: var(--linea);
     margin-bottom: 20px;
+}
+
+/* --- Alerta inline de validación / error --- */
+.auth-error-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #991B1B;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.auth-error-banner[hidden] {
+    display: none !important;
 }
 
 /* --- Grupos de campo (label + input) --- */
@@ -247,7 +267,7 @@ body {
 }
 
 .auth-demo a:hover {
-    background: #D7E7E0;
+    background: #E4DCCA;
     transform: translateY(-1px);
 }
 
@@ -261,6 +281,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 6px;
+}
+
 /* --- Checkbox de Términos y Privacidad --- */
 .campo-checkbox {
     display: flex;

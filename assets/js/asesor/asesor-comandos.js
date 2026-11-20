@@ -527,7 +527,7 @@ class AsesorComandos {
                 const bajo = analizados[analizados.length - 1];
                 agente.agregarMensajeAgente(`
                     <strong>Análisis de Rentabilidad en Vivo:</strong><br><br>
-                    • <strong>Producto más rentable:</strong> ${top.nombre} (Margen ROI: <strong>+${top.margenPct}%</strong>, ganancia neta: <strong>+${Store.fmt(top.ganancia)}/ud</strong>).<br>
+                    • <strong>Producto más rentable:</strong> ${top.nombre} (Margen: <strong>+${top.margenPct}%</strong>, ganancia neta: <strong>+${Store.fmt(top.ganancia)}/ud</strong>).<br>
                     ${analizados.length > 1 ? `• <strong>Menor margen:</strong> ${bajo.nombre} (+${bajo.margenPct}% margen).<br>` : ''}
                     • <strong>Promedio de ganancia:</strong> +${Store.fmt(analizados.reduce((acc, p) => acc + p.ganancia, 0) / analizados.length)} / unidad.<br>
                     <div class="asesor-sugerencias-fila">
@@ -649,13 +649,17 @@ class AsesorComandos {
                 `);
                 break;
 
-            case 'fichas_delivery':
+            case 'fichas_delivery': {
+                const cfgDel = typeof Store !== 'undefined' && typeof Store.obtenerConfigGastos === 'function' ? Store.obtenerConfigGastos() : {};
+                const pctDel = cfgDel.comisionDeliveryPct ?? 25;
+                const ejemplo = Math.round(10000 / (1 - pctDel / 100));
                 agente.agregarMensajeAgente(`
                     <strong>Precio Recomendado para Plataformas (Rappi / DiDi):</strong><br>
-                    Las apps de delivery cobran entre 22% y 25% de comisión. Para no perder tu margen de mostrador, el precio en app se calcula dividiendo tu precio de mostrador entre <code>(1 - comisión)</code>.<br>
-                    Por ejemplo, con 25% de comisión: un producto de $10.000 mostrador debe venderse en <strong>$13.333</strong> en la app.
+                    Tu comisión de apps configurada es <strong>${pctDel}%</strong>. Para no perder tu margen de mostrador, el precio en app se calcula dividiendo tu precio de mostrador entre <code>(1 - comisión)</code>.<br>
+                    Por ejemplo, con ${pctDel}% de comisión: un producto de $10.000 mostrador debe venderse en <strong>${Store.fmt(ejemplo)}</strong> en la app.
                 `);
                 break;
+            }
 
             default:
                 break;
