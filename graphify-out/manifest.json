@@ -1,8 +1,8 @@
 {
   "assets/js/crear-producto.js": {
-    "mtime": 1795120072.3473406,
-    "seen": 1795131030.5842633,
-    "ast_hash": "9a6a443370c6e89999736380bcf3b420",
+    "mtime": 1795471716.4039342,
+    "seen": 1795471765.8294477,
+    "ast_hash": "9f111afa6ba4a4fb815cbf78bfc0520f",
     "semantic_hash": ""
   },
   "assets/js/insumos.js": {
@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "assets/js/productos.js": {
-    "mtime": 1795121395.6271622,
-    "seen": 1795131030.585265,
-    "ast_hash": "aa3930bfeff00ed4e71defdc436abe66",
+    "mtime": 1795457413.894563,
+    "seen": 1795457446.8042483,
+    "ast_hash": "007b4f852f22d9e7253ea864e2671ad5",
     "semantic_hash": ""
   },
   "assets/js/registro.js": {
@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   "assets/js/store.js": {
-    "mtime": 1795200990.0017178,
-    "seen": 1795201508.7887237,
-    "ast_hash": "0e78c70c478690c8d64e2286852dc53a",
+    "mtime": 1795459744.895321,
+    "seen": 1795459779.2183099,
+    "ast_hash": "725182d9ae2eed4a50366a82b3b8c2c0",
     "semantic_hash": ""
   },
   "backend/api/demo.php": {
@@ -150,15 +150,15 @@
     "semantic_hash": ""
   },
   "paginas/crear-producto.html": {
-    "mtime": 1795134349.9558916,
-    "seen": 1795148063.929043,
-    "ast_hash": "7fe26f647186782ecf7bce8bfb3ab82b",
+    "mtime": 1795472017.7871087,
+    "seen": 1795472026.1734915,
+    "ast_hash": "feb844561b6ccbf63fea985b54ce2a94",
     "semantic_hash": ""
   },
   "paginas/insumos.html": {
-    "mtime": 1795134349.952286,
-    "seen": 1795148063.929043,
-    "ast_hash": "6831ba916cf662335166408d00ce5e58",
+    "mtime": 1795471637.0447342,
+    "seen": 1795471765.8721828,
+    "ast_hash": "90139aa4e1c07c6e8f0f46f468672170",
     "semantic_hash": ""
   },
   "paginas/login.html": {
@@ -168,9 +168,9 @@
     "semantic_hash": ""
   },
   "paginas/productos.html": {
-    "mtime": 1795134349.9502468,
-    "seen": 1795148063.929043,
-    "ast_hash": "773c23f3aa965626a701f7939cad5204",
+    "mtime": 1795471103.138684,
+    "seen": 1795471167.8782976,
+    "ast_hash": "7f3c76d7f743d12986a85e494f82a910",
     "semantic_hash": ""
   },
   "paginas/registro.html": {
@@ -288,9 +288,9 @@
     "semantic_hash": ""
   },
   "assets/js/asesor-agente.js": {
-    "mtime": 1795119146.7829907,
-    "seen": 1795131030.5807755,
-    "ast_hash": "161c1b6a66dc584c2702eace1e178eda",
+    "mtime": 1795455789.2262464,
+    "seen": 1795455815.9800873,
+    "ast_hash": "babe24305aa6d7ccbe9018d4dca1055d",
     "semantic_hash": ""
   },
   "backend/api/asesor.php": {
@@ -312,15 +312,15 @@
     "semantic_hash": ""
   },
   "paginas/ficha-tecnica.html": {
-    "mtime": 1795134349.9584644,
-    "seen": 1795148063.929043,
-    "ast_hash": "3f8909235dfea4aa99187c942999bf45",
+    "mtime": 1795471105.490243,
+    "seen": 1795471167.8762975,
+    "ast_hash": "ada6df6071d3708171259a3f213a1871",
     "semantic_hash": ""
   },
   "assets/js/asesor/asesor-finanzas.js": {
-    "mtime": 1793756727.2880085,
-    "seen": 1793759537.2335877,
-    "ast_hash": "d25169ba36d0b6c5041592525cf7c248",
+    "mtime": 1795460258.6916122,
+    "seen": 1795460366.035601,
+    "ast_hash": "6835886ac0023b5c806c15eb19c5f666",
     "semantic_hash": ""
   },
   "assets/js/asesor/asesor-parser.js": {
@@ -408,9 +408,9 @@
     "semantic_hash": ""
   },
   "tests/crear-producto.spec.js": {
-    "mtime": 1794854920.573813,
-    "seen": 1794854959.9004672,
-    "ast_hash": "7e54798ff2c39264de17161299ba1bbf",
+    "mtime": 1795471738.2080994,
+    "seen": 1795471765.8561685,
+    "ast_hash": "660a0ebc73d1ba47515e3f32d6e2970d",
     "semantic_hash": ""
   },
   "tests/ficha-tecnica.spec.js": {
@@ -492,9 +492,9 @@
     "semantic_hash": ""
   },
   "assets/js/app-shell.js": {
-    "mtime": 1795119055.5583508,
-    "seen": 1795131030.5807755,
-    "ast_hash": "4e40cb27b43c717cb39352f51e3146c3",
+    "mtime": 1795471782.7944868,
+    "seen": 1795471819.3445187,
+    "ast_hash": "ae7f3d9e03c40b593835144c0891d9e0",
     "semantic_hash": ""
   },
   "tests/responsive.spec.js": {
@@ -504,9 +504,9 @@
     "semantic_hash": ""
   },
   "assets/js/dashboard.js": {
-    "mtime": 1795121393.4669778,
-    "seen": 1795131030.5842633,
-    "ast_hash": "2b0d932deb13aeebb29504bcf2d8ee9c",
+    "mtime": 1795469655.104093,
+    "seen": 1795469682.6253848,
+    "ast_hash": "ce3ce64ace081c1a88ab876864ade9d6",
     "semantic_hash": ""
   },
   "tests/dashboard.spec.js": {
@@ -516,15 +516,15 @@
     "semantic_hash": ""
   },
   "paginas/dashboard.html": {
-    "mtime": 1795147410.8425274,
-    "seen": 1795148063.929043,
-    "ast_hash": "3c8266779c60d3a66e351050c1d38672",
+    "mtime": 1795471098.4750824,
+    "seen": 1795471167.8752987,
+    "ast_hash": "92d91df75a0f75c2a96836120754ad49",
     "semantic_hash": ""
   },
   "assets/js/asesor/asesor-comandos.js": {
-    "mtime": 1795119061.0013733,
-    "seen": 1795131030.5807755,
-    "ast_hash": "d55c6a450a360eccd95dee5868e1046d",
+    "mtime": 1795460260.4477885,
+    "seen": 1795460366.035601,
+    "ast_hash": "5dd14800a3c176231d5b04cecf740053",
     "semantic_hash": ""
   },
   "assets/js/asesor/asesor-flujo.js": {
@@ -534,9 +534,9 @@
     "semantic_hash": ""
   },
   "tests/asesor-omnipresente.spec.js": {
-    "mtime": 1794286915.9041743,
-    "seen": 1794288787.5195444,
-    "ast_hash": "a40761a99a8eba0eb23536a3c5ad4fe6",
+    "mtime": 1795471721.1789422,
+    "seen": 1795471765.8541956,
+    "ast_hash": "281c467072efa03eaa45d47735b18ec9",
     "semantic_hash": ""
   },
   "tests/gastos-trabajadores.spec.js": {
@@ -564,9 +564,9 @@
     "semantic_hash": ""
   },
   "paginas/configuracion.html": {
-    "mtime": 1795134349.9720478,
-    "seen": 1795148063.929043,
-    "ast_hash": "171c1bdd3db91d412257deb98d74b819",
+    "mtime": 1795471126.2042964,
+    "seen": 1795471167.8742812,
+    "ast_hash": "819b9bb367e9d2bc3ec7009be90bc7d9",
     "semantic_hash": ""
   },
   "tests/audit-zones.spec.js": {
@@ -597,6 +597,18 @@
     "mtime": 1795200903.9274387,
     "seen": 1795201508.7900274,
     "ast_hash": "14ef3e196eba1d91dc83fcc0f930ec6f",
+    "semantic_hash": ""
+  },
+  "assets/js/equilibrio.js": {
+    "mtime": 1795470386.3061254,
+    "seen": 1795470394.4709718,
+    "ast_hash": "28928a48d7e7218953e046c200002926",
+    "semantic_hash": ""
+  },
+  "paginas/equilibrio.html": {
+    "mtime": 1795471100.9396744,
+    "seen": 1795471167.8752987,
+    "ast_hash": "848b2217abc030af4d5c9f241eb27c91",
     "semantic_hash": ""
   },
   "package-lock.json": {

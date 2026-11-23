@@ -168,6 +168,97 @@ class AsesorFinanzas {
     }
 
     /**
+     * Calcula el Punto de Equilibrio combinado (multiproducto) para todo el catálogo
+     */
+    static calcularPuntoEquilibrioMultiproducto(productos = [], insumos = [], gastosFijosMensuales = 0, pesosPorProducto = null) {
+        if (!gastosFijosMensuales || gastosFijosMensuales <= 0) {
+            return { tieneFijos: false, sinProductos: false, detalle: [] };
+        }
+
+        const evaluados = (Array.isArray(productos) ? productos : []).map(p => {
+            const costoUnidad = typeof p.calcularCostoUnidad === 'function' ? p.calcularCostoUnidad(insumos) : 0;
+            const precioVenta = typeof p.calcularPrecioVenta === 'function' ? p.calcularPrecioVenta(insumos) : 0;
+            const gananciaUnitaria = precioVenta - costoUnidad;
+            return {
+                id: p.id,
+                nombre: p.nombre,
+                costoUnidad,
+                precioVenta,
+                gananciaUnitaria,
+                rentable: precioVenta > 0 && gananciaUnitaria > 0
+            };
+        });
+
+        const rentables = evaluados.filter(e => e.rentable);
+        if (rentables.length === 0) {
+            return { tieneFijos: true, sinProductos: true, gastosFijos: gastosFijosMensuales, detalle: evaluados };
+        }
+
+        let totalPeso = 0;
+        const conPeso = rentables.map(item => {
+            const pesoRaw = pesosPorProducto && pesosPorProducto[item.id] !== undefined
+                ? Number(pesosPorProducto[item.id])
+                : 1;
+            const peso = (!isNaN(pesoRaw) && pesoRaw >= 0) ? pesoRaw : 1;
+            totalPeso += peso;
+            return { ...item, peso };
+        });
+
+        // Si el usuario dejó todos los pesos en 0, usar distribución equitativa
+        if (totalPeso <= 0) {
+            totalPeso = conPeso.length;
+            conPeso.forEach(item => { item.peso = 1; });
+        }
+
+        let gananciaPonderada = 0;
+        let precioPonderado = 0;
+        conPeso.forEach(item => {
+            const prop = item.peso / totalPeso;
+            gananciaPonderada += prop * item.gananciaUnitaria;
+            precioPonderado += prop * item.precioVenta;
+        });
+
+        if (gananciaPonderada <= 0) {
+            return { tieneFijos: true, sinProductos: true, gastosFijos: gastosFijosMensuales, detalle: evaluados };
+        }
+
+        const unidadesTotalesMes = Math.ceil(gastosFijosMensuales / gananciaPonderada);
+        const unidadesTotalesDia = Number((unidadesTotalesMes / 30).toFixed(1));
+        const ventaMensualMeta = Math.round(unidadesTotalesMes * precioPonderado);
+        const ventaDiariaMeta = Math.round(ventaMensualMeta / 30);
+        const margenPonderadoPct = precioPonderado > 0 ? (gananciaPonderada / precioPonderado) * 100 : 0;
+
+        const detalle = conPeso.map(item => {
+            const prop = item.peso / totalPeso;
+            const participacionPct = Number((prop * 100).toFixed(1));
+            const unidadesMes = item.peso > 0 ? Math.ceil(unidadesTotalesMes * prop) : 0;
+            const unidadesDia = Number((unidadesMes / 30).toFixed(1));
+            const ingresoMes = Math.round(unidadesMes * item.precioVenta);
+            return {
+                ...item,
+                participacionPct,
+                unidadesMes,
+                unidadesDia,
+                ingresoMes
+            };
+        });
+
+        return {
+            tieneFijos: true,
+            sinProductos: false,
+            gastosFijos: gastosFijosMensuales,
+            gananciaPonderada,
+            precioPonderado,
+            margenPonderadoPct,
+            unidadesTotalesMes,
+            unidadesTotalesDia,
+            ventaMensualMeta,
+            ventaDiariaMeta,
+            detalle
+        };
+    }
+
+    /**
      * Calcula el precio de venta para aplicaciones de delivery preservando la ganancia
      */
     static calcularPrecioAppDelivery(precioRecomendado, comisionPct = 25) {

@@ -305,6 +305,7 @@ class DashboardWorkstationController {
         this.actualizarOrderBook(productos, insumos);
         this.renderizarCurva(productos, insumos);
         this.actualizarConsolaPricing(productos, insumos);
+        this.renderizarEquilibrioGlobal(productos, insumos);
     }
 
     actualizarSelectorProductos(productos) {
@@ -356,6 +357,7 @@ class DashboardWorkstationController {
         this.actualizarOrderBook(productos, insumos);
         this.renderizarCurva(productos, insumos);
         this.actualizarConsolaPricing(productos, insumos);
+        this.renderizarEquilibrioGlobal(productos, insumos);
     }
 
     actualizarTicker(productos, insumos) {
@@ -846,6 +848,138 @@ class DashboardWorkstationController {
         }
 
         this.actualizarVista();
+    }
+
+    // ─── Punto de Equilibrio Global (Todos los Productos) ───────────────
+
+    cargarMixEquilibrio() {
+        try {
+            const raw = localStorage.getItem('costia_mix_equilibrio');
+            return raw ? JSON.parse(raw) : {};
+        } catch (_) {
+            return {};
+        }
+    }
+
+    guardarMixEquilibrio(mix) {
+        try {
+            localStorage.setItem('costia_mix_equilibrio', JSON.stringify(mix || {}));
+        } catch (_) {}
+    }
+
+    vincularEventosEquilibrioGlobal() {
+        if (this._beGlobalVinculado) return;
+        this._beGlobalVinculado = true;
+
+        const tbody = document.getElementById('be-global-tbody');
+        tbody?.addEventListener('input', (e) => {
+            const inp = e.target.closest('.be-mix-input');
+            if (!inp) return;
+            const id = Number(inp.dataset.id);
+            const val = Math.max(0, parseFloat(inp.value) || 0);
+            const mix = this.cargarMixEquilibrio();
+            mix[id] = val;
+            this.guardarMixEquilibrio(mix);
+            this.actualizarCalculoEquilibrioEnVivo(Store.cargarProductos(), Store.cargarInsumos(), mix);
+        });
+
+        tbody?.addEventListener('click', (e) => {
+            const stepBtn = e.target.closest('.be-mix-step');
+            if (!stepBtn) return;
+            const id = Number(stepBtn.dataset.id);
+            const delta = Number(stepBtn.dataset.step) || 0;
+            const inp = tbody.querySelector(`.be-mix-input[data-id="${id}"]`);
+            if (!inp) return;
+            const actual = Math.max(0, parseFloat(inp.value) || 0);
+            const nuevo = Math.max(0, actual + delta);
+            inp.value = String(nuevo);
+            const mix = this.cargarMixEquilibrio();
+            mix[id] = nuevo;
+            this.guardarMixEquilibrio(mix);
+            this.actualizarCalculoEquilibrioEnVivo(Store.cargarProductos(), Store.cargarInsumos(), mix);
+        });
+
+        document.getElementById('btn-reset-mix-equilibrio')?.addEventListener('click', () => {
+            try { localStorage.removeItem('costia_mix_equilibrio'); } catch (_) {}
+            this.renderizarEquilibrioGlobal(Store.cargarProductos(), Store.cargarInsumos());
+            if (typeof Store.toast === 'function') {
+                Store.toast('Mix de punto de equilibrio restablecido a partes iguales', 'info');
+            }
+        });
+    }
+
+    obtenerFijosEquilibrio() {
+        const cfg = (typeof Store !== 'undefined' && typeof Store.cargarConfigGastos === 'function'
+            ? Store.cargarConfigGastos()
+            : null) || this.obtenerConfigNegocio();
+        return (Number(cfg.arriendoMensual) || 0) + (Number(cfg.recibosMensuales) || 0);
+    }
+
+    actualizarCalculoEquilibrioEnVivo(productos, insumos, mix) {
+        const fijos = this.obtenerFijosEquilibrio();
+        const multi = typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularPuntoEquilibrioMultiproducto === 'function'
+            ? AsesorFinanzas.calcularPuntoEquilibrioMultiproducto(productos, insumos, fijos, mix)
+            : null;
+
+        if (!multi || !multi.tieneFijos || multi.sinProductos) return;
+
+        const setTxt = (id, txt) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = txt;
+        };
+        setTxt('be-global-fijos-val', `${Store.fmt(fijos)} / mes`);
+        setTxt('be-global-margen', `Margen promedio: ${multi.margenPonderadoPct.toFixed(1)}%`);
+        setTxt('be-global-venta-mes', Store.fmt(multi.ventaMensualMeta));
+        setTxt('be-global-venta-dia', `~${Store.fmt(multi.ventaDiariaMeta)} al día`);
+        setTxt('be-global-uds-mes', `${multi.unidadesTotalesMes} uds / mes`);
+        setTxt('be-global-uds-dia', `~${multi.unidadesTotalesDia} uds al día`);
+
+        const resumenEl = document.getElementById('be-global-resumen-vivo');
+        if (resumenEl) {
+            resumenEl.innerHTML = `Con esta mezcla, vendiendo <strong>${multi.unidadesTotalesMes} productos al mes</strong> (~<strong>${multi.unidadesTotalesDia} al día</strong>) cubres el 100% de tus gastos fijos. A partir de ahí, todo es ganancia libre.`;
+        }
+
+        multi.detalle.forEach((d) => {
+            const row = document.querySelector(`#be-global-tbody tr[data-id="${d.id}"]`);
+            if (!row) return;
+            const pctEl = row.querySelector('.be-mix-pct');
+            const mesEl = row.querySelector('.be-meta-mes');
+            const diaEl = row.querySelector('.be-meta-dia');
+            if (pctEl) pctEl.textContent = `${d.participacionPct}%`;
+            if (mesEl) mesEl.textContent = `${d.unidadesMes} uds`;
+            if (diaEl) diaEl.textContent = `${d.unidadesDia} uds`;
+        });
+    }
+
+    renderizarEquilibrioGlobal(productos, insumos) {
+        const emptyBox = document.getElementById('be-global-empty');
+        const contBox = document.getElementById('be-global-contenido');
+        if (!emptyBox || !contBox) return;
+
+        const fijos = this.obtenerFijosEquilibrio();
+        const mix = this.cargarMixEquilibrio();
+
+        if (fijos <= 0) {
+            emptyBox.hidden = false;
+            contBox.hidden = true;
+            emptyBox.innerHTML = `Aún no tienes gastos fijos mensuales configurados (arriendo y servicios). <a href="configuracion.html">Configúralos en Mi Negocio</a> para calcular el punto de equilibrio global.`;
+            return;
+        }
+
+        const multi = typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularPuntoEquilibrioMultiproducto === 'function'
+            ? AsesorFinanzas.calcularPuntoEquilibrioMultiproducto(productos, insumos, fijos, mix)
+            : null;
+
+        if (!multi || multi.sinProductos) {
+            emptyBox.hidden = false;
+            contBox.hidden = true;
+            emptyBox.innerHTML = `Necesitas al menos un producto con ganancia neta positiva para calcular el punto de equilibrio combinado. <a href="crear-producto.html">Crea una receta</a>.`;
+            return;
+        }
+
+        emptyBox.hidden = true;
+        contBox.hidden = false;
+        this.actualizarCalculoEquilibrioEnVivo(productos, insumos, mix);
     }
 }
 

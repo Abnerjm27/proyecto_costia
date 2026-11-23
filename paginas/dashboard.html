@@ -378,6 +378,45 @@
                 </div>
             </section>
 
+            <section class="terminal-panel breakeven-global-section" id="seccion-equilibrio-global" aria-label="Resumen de punto de equilibrio global">
+                <div class="be-global-header">
+                    <div>
+                        <h2 class="be-global-title">¿Cuánto debo vender para cubrir arriendo y servicios?</h2>
+                        <p class="be-global-subtitle" id="be-global-subtitulo">
+                            Resumen combinado de <strong>todos tus productos</strong> según tus ventas estimadas al mes.
+                        </p>
+                    </div>
+                    <a href="equilibrio.html" class="dashboard-catalog-banner__link">
+                        <span>Ajustar por producto</span>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+
+                <div class="be-global-empty" id="be-global-empty" hidden></div>
+
+                <div id="be-global-contenido">
+                    <div class="be-global-kpis">
+                        <div class="be-global-kpi-card">
+                            <span class="be-global-kpi-label">Gastos fijos a cubrir</span>
+                            <strong class="be-global-kpi-val mono-val tabular-nums" id="be-global-fijos-val">$0 / mes</strong>
+                            <small class="be-global-kpi-sub tabular-nums" id="be-global-margen">Margen promedio: 0%</small>
+                        </div>
+                        <div class="be-global-kpi-card be-global-kpi-card--hero">
+                            <span class="be-global-kpi-label">Ventas mínimas para no perder</span>
+                            <strong class="be-global-kpi-val mono-val tabular-nums" id="be-global-venta-mes">$0</strong>
+                            <small class="be-global-kpi-sub tabular-nums" id="be-global-venta-dia">~$0 al día</small>
+                        </div>
+                        <div class="be-global-kpi-card">
+                            <span class="be-global-kpi-label">Total productos a vender</span>
+                            <strong class="be-global-kpi-val mono-val tabular-nums" id="be-global-uds-mes">0 uds / mes</strong>
+                            <small class="be-global-kpi-sub tabular-nums" id="be-global-uds-dia">~0 uds al día</small>
+                        </div>
+                    </div>
+
+                    <p class="be-global-resumen-vivo" id="be-global-resumen-vivo" style="margin-bottom:0;"></p>
+                </div>
+            </section>
+
             <footer class="dashboard-catalog-banner" aria-label="Acceso rápido al catálogo de recetas">
                 <p class="dashboard-catalog-banner__texto">¿Necesitas editar ingredientes, duplicar recetas o revisar tu portafolio completo?</p>
                 <a href="productos.html" class="dashboard-catalog-banner__link">
@@ -394,12 +433,7 @@
 <script src="../assets/js/store.js?v=31"></script>
 <script src="../assets/js/theme.js?v=31"></script>
 <script src="../assets/js/app-shell.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-parser.js?v=31"></script>
 <script src="../assets/js/asesor/asesor-finanzas.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-ui.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-comandos.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-flujo.js?v=31"></script>
-<script src="../assets/js/asesor-agente.js?v=31"></script>
 <script src="../assets/js/dashboard.js?v=31"></script>
 </body>
 </html>

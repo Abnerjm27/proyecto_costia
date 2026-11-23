@@ -74,6 +74,15 @@
                     <!-- ===== COLUMNA IZQUIERDA: Formulario Wizard 3 Pasos ===== -->
                     <div class="crear-form">
 
+                        <!-- Banner de borrador guardado automáticamente -->
+                        <div class="borrador-banner" id="banner-borrador-producto" hidden role="status" aria-live="polite">
+                            <div class="borrador-banner__info">
+                                <span class="borrador-banner__badge">Borrador</span>
+                                <span class="borrador-banner__texto">Tienes un producto sin terminar guardado automáticamente.</span>
+                            </div>
+                            <button type="button" class="borrador-banner__btn" id="btn-descartar-borrador">Descartar borrador</button>
+                        </div>
+
                         <!-- Barra Stepper de 3 Pasos -->
                         <nav class="wizard-stepper-box" aria-label="Pasos para crear el producto">
                             <div class="wizard-stepper" id="wizard-stepper" role="tablist">
@@ -131,6 +140,22 @@
                             </div>
                         </nav>
 
+                        <!-- Barra interactiva de métricas en vivo en todos los pasos -->
+                        <div class="wizard-live-strip" id="wizard-live-strip" aria-live="polite">
+                            <div class="wizard-live-item">
+                                <span class="wizard-live-label">Costo / ud</span>
+                                <strong class="wizard-live-val tabular-nums" id="live-costo-ud">$0</strong>
+                            </div>
+                            <div class="wizard-live-item wizard-live-item--accent">
+                                <span class="wizard-live-label">Precio sugerido</span>
+                                <strong class="wizard-live-val tabular-nums" id="live-precio-ud">$0</strong>
+                            </div>
+                            <div class="wizard-live-item">
+                                <span class="wizard-live-label">Ganancia / ud</span>
+                                <strong class="wizard-live-val tabular-nums" id="live-ganancia-ud">+$0</strong>
+                            </div>
+                        </div>
+
                         <!-- ===== PASO 1: REGISTRAR INSUMOS ===== -->
                         <div class="wizard-paso-panel activo" id="paso-1-insumos" data-paso-panel="1" role="tabpanel" aria-labelledby="tab-paso-1">
 
@@ -162,6 +187,15 @@
                                     <span class="bn-badge-order-book">Paso 1 de 3</span>
                                 </div>
 
+                                <!-- Selector rápido e interactivo de insumos -->
+                                <div class="insumos-rapidos-box" id="insumos-rapidos-box">
+                                    <div class="insumos-rapidos-header">
+                                        <span class="insumos-rapidos-titulo">Añadir rápido con 1 clic:</span>
+                                        <input type="search" id="buscar-insumo-rapido" class="insumos-rapidos-search" placeholder="Filtrar despensa..." aria-label="Filtrar insumos rápidos" autocomplete="off">
+                                    </div>
+                                    <div class="insumos-rapidos-chips" id="insumos-rapidos-chips"></div>
+                                </div>
+
                                 <div class="receta-tabla-wrap">
                                 <table class="receta-tabla">
                                     <thead>
@@ -188,13 +222,20 @@
                                 <div class="receta-footer">
                                     <div class="receta-footer__campo">
                                         <label for="unidades-producidas">Unidades que produce esta receta</label>
-                                        <input
-                                            type="number"
-                                            id="unidades-producidas"
-                                            value="1"
-                                            min="1"
-                                            step="1"
-                                        >
+                                        <div class="unidades-presets-wrap">
+                                            <input
+                                                type="number"
+                                                id="unidades-producidas"
+                                                value="1"
+                                                min="1"
+                                                step="1"
+                                            >
+                                            <div class="unidades-presets-pills" role="group" aria-label="Cantidades frecuentes">
+                                                <button type="button" class="costos-preset-btn unidad-preset-btn" data-unidades="6">6 uds</button>
+                                                <button type="button" class="costos-preset-btn unidad-preset-btn" data-unidades="12">12 uds</button>
+                                                <button type="button" class="costos-preset-btn unidad-preset-btn" data-unidades="24">24 uds</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="costo-unidad-display">
                                         <span class="costo-unidad-display__etiqueta">Costo base por unidad</span>
@@ -716,71 +757,6 @@
                 <!-- fin crear-layout -->
 
             </main>
-
-            <!-- ===== DRAWER LATERAL: CHAT AGENTE ASESOR IA ===== -->
-            <div class="asesor-modal-backdrop" id="modal-asesor-costia" role="dialog" aria-modal="true" aria-labelledby="asesor-modal-titulo">
-                <div class="asesor-drawer">
-                    <header class="asesor-drawer__header">
-                        <div class="asesor-drawer__identidad">
-                            <img src="../assets/img/costia-icon-green.png" alt="Costia IA" class="asesor-drawer__logo">
-                            <div>
-                                <h3 id="asesor-modal-titulo">Agente Costia IA</h3>
-                                <span class="asesor-drawer__sub" id="asesor-modo-badge">Agente Entrenado Activo</span>
-                            </div>
-                        </div>
-                        <div class="asesor-drawer__acciones">
-                            <button type="button" class="asesor-btn-header" id="btn-config-gastos-asesor" title="Ver y editar gastos fijos guardados (arriendo y servicios)">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="svg-icono-inline"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                                <span>Gastos fijos</span>
-                            </button>
-                            <button type="button" class="asesor-btn-header" id="btn-config-ia-asesor" title="Ver estado de IA Local (Ollama)">IA Local</button>
-                            <button type="button" class="asesor-btn-header" id="btn-reiniciar-asesor" title="Nueva conversación">Reiniciar</button>
-                            <button type="button" class="asesor-btn-cerrar" id="btn-cerrar-asesor" aria-label="Cerrar chat">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                            </button>
-                        </div>
-                    </header>
-
-                    <!-- Barra de datos que el agente va armando a medida que conversan -->
-                    <div class="asesor-progreso-bar" id="asesor-progreso-chips"></div>
-
-                    <!-- Conversación libre -->
-                    <div class="asesor-drawer__cuerpo" id="asesor-mensajes"></div>
-
-                    <!-- Entrada libre de chat + Micrófono por voz -->
-                    <footer class="asesor-drawer__footer">
-                        <div class="asesor-voz-estado" id="asesor-voz-estado">
-                            <span class="asesor-voz-onda"></span>
-                            <span id="asesor-voz-texto">Escuchando... habla con naturalidad</span>
-                        </div>
-                        <form class="asesor-chat-form" id="form-chat-asesor">
-                            <button
-                                type="button"
-                                class="asesor-btn-voz"
-                                id="btn-voz-asesor"
-                                title="Hablar por micrófono (enviar audio/voz)"
-                                aria-label="Dictar por voz"
-                            >
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                                    <line x1="12" x2="12" y1="19" y2="22"/>
-                                </svg>
-                            </button>
-                            <input
-                                type="text"
-                                id="input-chat-asesor"
-                                placeholder="Escribe o pulsa el micrófono para hablar..."
-                                autocomplete="off"
-                            >
-                            <button type="submit" class="asesor-chat-enviar" aria-label="Enviar mensaje">
-                                <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                                <span>Enviar</span>
-                            </button>
-                        </form>
-                    </footer>
-                </div>
-            </div>
         </div>
         <!-- fin .app -->
     </div>
@@ -789,17 +765,11 @@
 </div>
 <!-- fin .terminal-shell-container -->
 
-<!-- Modelos POO, almacenamiento, shell, controlador y Agente Asesor -->
+<!-- Modelos POO, almacenamiento, shell y controlador -->
 <script src="../assets/js/models.js?v=31"></script>
 <script src="../assets/js/store.js?v=31"></script>
 <script src="../assets/js/theme.js?v=31"></script>
 <script src="../assets/js/app-shell.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-parser.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-finanzas.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-ui.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-comandos.js?v=31"></script>
-<script src="../assets/js/asesor/asesor-flujo.js?v=31"></script>
-<script src="../assets/js/asesor-agente.js?v=31"></script>
 <script src="../assets/js/crear-producto.js?v=31"></script>
 </body>
 </html>

@@ -1,17 +1,17 @@
-# Graph Report - proyecto_costia  (2026-11-20)
+# Graph Report - proyecto_costia  (2026-11-23)
 
 ## Corpus Check
-- 70 files · ~89,130 words
+- 71 files · ~92,131 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 13 file(s) not represented in the graph (top: .css 11, .example 1, (none) 1)
 
 ## Summary
-- 617 nodes · 971 edges · 53 communities (18 shown, 35 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 37 edges (avg confidence: 0.91)
+- 650 nodes · 1078 edges · 54 communities (17 shown, 37 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 37 edges (avg confidence: 0.91)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `88471b59`
+- Built from commit: `5b00709f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -40,8 +40,9 @@
 - 3. Diseño por Bloque
 - Reglas Globales Estrictas para el Subagente Flash (`impeccable detect` = 0 alertas)
 - @playwright/test
-- FichaTecnicaControlador
+- EquilibrioGlobalController
 - sw.js
+- README.md
 - ThemeManager
 - AppShell
 - .ejecutarAccionChip
@@ -49,7 +50,7 @@
 - AsesorFlujo
 - RecetaItem
 - package.json
-- README.md
+- ConfiguracionController
 - scripts
 - audit-responsive-full.spec.js
 - asesor-multiperfil.spec.js
@@ -59,15 +60,15 @@
 - dashboard.spec.js
 
 ## God Nodes (most connected - your core abstractions)
-1. `AsesorCostiaAgent` - 52 edges
-2. `StoreService` - 50 edges
-3. `CrearProductoController` - 30 edges
-4. `DashboardWorkstationController` - 23 edges
+1. `StoreService` - 52 edges
+2. `AsesorCostiaAgent` - 52 edges
+3. `CrearProductoController` - 39 edges
+4. `DashboardWorkstationController` - 29 edges
 5. `InsumosController` - 22 edges
 6. `@playwright/test` - 20 edges
 7. `AsesorParser` - 18 edges
 8. `Producto` - 17 edges
-9. `🎓 COSTIA — Guía de Estudio y Defensa de Proyecto` - 14 edges
+9. `ProductosWorkstationController` - 15 edges
 10. `Usuario` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -79,25 +80,25 @@
   docs/entregas/GUIA_PRESENTACION.md → assets/js/store.js
 - `Minuto 1:30 – 3:30 | Arquitectura MVC, Híbrida y Base de Datos (Integrante B)` --references--> `StoreService`  [INFERRED]
   docs/entregas/GUIA_PRESENTACION.md → assets/js/store.js
-- `12. Mapa de Estudio Rápido para el Compañero` --references--> `StoreService`  [INFERRED]
-  docs/entregas/GUIA_PRESENTACION.md → assets/js/store.js
+- `1. Conversión Universal (`UnidadConverter` en `assets/js/models.js`)` --references--> `UnidadConverter`  [INFERRED]
+  docs/entregas/GUIA_PRESENTACION.md → assets/js/models.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (53 total, 35 thin omitted)
+## Communities (54 total, 37 thin omitted)
 
 ### Community 1 - "Producto"
 Cohesion: 0.09
-Nodes (11): Insumo, ItemReceta, Producto, UnidadConverter, 12. Mapa de Estudio Rápido para el Compañero, 1. Conversión Universal (`UnidadConverter` en `assets/js/models.js`), 2. Costo Real Unitario (con Merma, Empaque y Prorrateo de Gastos Fijos), 3. Markup vs. Margen Comercial sobre Venta (+3 more)
+Nodes (12): Insumo, ItemReceta, Producto, UnidadConverter, 12. Mapa de Estudio Rápido para el Compañero, 🏗 Arquitectura del Software, 🤖 Asesor Financiero IA (Híbrido: Ollama + Motor Determinista), Costia — Sistema de Costeo Gastronómico y Fijación de Precios de Venta (+4 more)
 
 ### Community 2 - "InsumoController"
-Cohesion: 0.07
-Nodes (13): Database, InsumoController, ProductoController, Patrones principales del código:, 🏗 Arquitectura del Software, 🤖 Asesor Financiero IA (Híbrido: Ollama + Motor Determinista), Costia — Sistema de Costeo Gastronómico y Fijación de Precios de Venta, 🚀 Ejecución Rápida (+5 more)
+Cohesion: 0.09
+Nodes (7): Database, InsumoController, ProductoController, Patrones principales del código:, 🚀 Ejecución Rápida, Modo 1: Arrancar en 1 comando sin configurar Apache, Modo 2: Apache + MySQL (XAMPP / Laragon)
 
 ### Community 4 - "Usuario"
-Cohesion: 0.12
-Nodes (5): AuthController, Usuario, 6. Base de Datos Relacional y Modelo 3FN, 8. Seguridad, Privacidad y Asesor IA, Datos demo alineados:
+Cohesion: 0.11
+Nodes (6): Session, AuthController, Usuario, 6. Base de Datos Relacional y Modelo 3FN, 8. Seguridad, Privacidad y Asesor IA, Datos demo alineados:
 
 ### Community 9 - "manifest.json"
 Cohesion: 0.18
@@ -108,8 +109,8 @@ Cohesion: 0.15
 Nodes (11): formatoPesos(), inicializarMesaCosteo(), recalcular(), RECETAS_DEMO, Global Constraints, Rediseño Editorial de `index.html` ("Atelier Gastronómico") Implementation Plan, Review Focus, Task 1: Reestructurar el HTML semántico de `index.html` en 4 Actos Destilados (+3 more)
 
 ### Community 25 - "🎓 COSTIA — Guía de Estudio y Defensa de Proyecto"
-Cohesion: 0.09
-Nodes (23): 10. Banco de Preguntas Trampa del Docente y Respuestas Modelo, 11. Plan de Contingencia, 1. Ficha Técnica del Proyecto, 1. *"¿Por qué utilizaron PDO en lugar de MySQLi?"*, 2. *"¿Dónde está aplicada la Tercera Forma Normal (3FN)?"*, 2. El Problema que Resuelve (Justificación de Negocio), 3. *"¿Cómo garantizan transacciones atómicas al crear o actualizar recetas?"*, 3. Repartición de Roles para la Exposición (+15 more)
+Cohesion: 0.07
+Nodes (28): 10. Banco de Preguntas Trampa del Docente y Respuestas Modelo, 11. Plan de Contingencia, 1. Conversión Universal (`UnidadConverter` en `assets/js/models.js`), 1. Ficha Técnica del Proyecto, 1. *"¿Por qué utilizaron PDO en lugar de MySQLi?"*, 2. Costo Real Unitario (con Merma, Empaque y Prorrateo de Gastos Fijos), 2. *"¿Dónde está aplicada la Tercera Forma Normal (3FN)?"*, 2. El Problema que Resuelve (Justificación de Negocio) (+20 more)
 
 ### Community 28 - "Documento de Diseño: Organización Estructural del Proyecto Costia"
 Cohesion: 0.20
@@ -143,10 +144,6 @@ Nodes (9): @playwright/test, { test, expect }, { test, expect }, { test, expect 
 Cohesion: 0.15
 Nodes (12): author, description, devDependencies, @playwright/test@^1.64.1, directories, doc, keywords, license (+4 more)
 
-### Community 46 - "README.md"
-Cohesion: 0.12
-Nodes (3): ConfiguracionController, controladorCrear, Session
-
 ### Community 47 - "scripts"
 Cohesion: 0.40
 Nodes (5): scripts, test, test:headed, test:report, test:ui
@@ -160,22 +157,22 @@ Cohesion: 0.28
 Nodes (3): { defineConfig, devices }, fs, ARTIFACT_DIR
 
 ## Knowledge Gaps
-- **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **37 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `AsesorCostiaAgent` connect `AsesorCostiaAgent` to `README.md`?**
-  _High betweenness centrality (0.072) - this node is a cross-community bridge._
+  _High betweenness centrality (0.069) - this node is a cross-community bridge._
 - **Are the 8 inferred relationships involving `StoreService` (e.g. with `12. Mapa de Estudio Rápido para el Compañero` and `1. Ficha Técnica del Proyecto`) actually correct?**
   _`StoreService` has 8 INFERRED edges - model-reasoned connections that need verification._
 - **Should `StoreService` be split into smaller, more focused modules?**
-  _Cohesion score 0.1207897793263647 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.13002114164904863 - nodes in this community are weakly interconnected._
 - **Why does `StoreService` connect `StoreService` to `Producto`, `InsumoController`, `Usuario`, `README.md`, `🎓 COSTIA — Guía de Estudio y Defensa de Proyecto`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
+  _High betweenness centrality (0.066) - this node is a cross-community bridge._
 - **Should `Producto` be split into smaller, more focused modules?**
-  _Cohesion score 0.08901515151515152 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0855614973262032 - nodes in this community are weakly interconnected._
 - **Why does `CrearProductoController` connect `CrearProductoController` to `README.md`?**
-  _High betweenness centrality (0.042) - this node is a cross-community bridge._
+  _High betweenness centrality (0.052) - this node is a cross-community bridge._
 - **Should `InsumoController` be split into smaller, more focused modules?**
-  _Cohesion score 0.07258064516129033 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09230769230769231 - nodes in this community are weakly interconnected._

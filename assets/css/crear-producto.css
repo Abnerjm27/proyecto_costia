@@ -1704,3 +1704,253 @@ body.dark-mode .btn-corregir-unidad-fila {
     color: #0A1410;
 }
 
+/* ── Banner de borrador automático ── */
+.borrador-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    background: rgba(10, 104, 71, 0.08);
+    border: 1px solid rgba(10, 104, 71, 0.22);
+    font-size: 13px;
+    color: var(--bn-text-primary, #0D1F18);
+}
+
+.borrador-banner[hidden] {
+    display: none !important;
+}
+
+.borrador-banner__info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.borrador-banner__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #0A6847;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.borrador-banner__btn {
+    min-height: 34px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(139, 38, 29, 0.28);
+    background: transparent;
+    color: #8B261D;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.borrador-banner__btn:hover {
+    background: rgba(139, 38, 29, 0.08);
+    border-color: rgba(139, 38, 29, 0.45);
+}
+
+[data-theme="dark"] .borrador-banner,
+body.dark-mode .borrador-banner {
+    background: rgba(46, 204, 113, 0.1);
+    border-color: rgba(46, 204, 113, 0.25);
+    color: #E5EFEA;
+}
+
+[data-theme="dark"] .borrador-banner__btn,
+body.dark-mode .borrador-banner__btn {
+    border-color: rgba(242, 139, 130, 0.35);
+    color: #F28B82;
+}
+
+/* ── Barra en vivo del Wizard (3 métricas siempre visibles) ── */
+.wizard-live-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 0 16px;
+}
+
+.wizard-live-item {
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: rgba(10, 104, 71, 0.05);
+    border: 1px solid rgba(10, 104, 71, 0.14);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.wizard-live-item--accent {
+    background: rgba(10, 104, 71, 0.11);
+    border-color: rgba(10, 104, 71, 0.3);
+}
+
+.wizard-live-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--bn-text-secondary, #4A5F56);
+}
+
+.wizard-live-val {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0A6847;
+}
+
+/* ── Selector rápido de insumos (1 clic) ── */
+.insumos-rapidos-box {
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(10, 104, 71, 0.04);
+    border: 1px dashed rgba(10, 104, 71, 0.22);
+}
+
+.insumos-rapidos-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.insumos-rapidos-titulo {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--bn-text-primary, #0D1F18);
+}
+
+.insumos-rapidos-search {
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(13, 36, 28, 0.16);
+    background: #FFFFFF;
+    color: var(--bn-text-primary, #0D1F18);
+    font-size: 12.5px;
+    min-width: 170px;
+}
+
+.insumos-rapidos-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.insumo-rapido-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 30px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(10, 104, 71, 0.22);
+    background: #FFFFFF;
+    color: #0D241C;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.insumo-rapido-chip:hover {
+    background: rgba(10, 104, 71, 0.09);
+    border-color: #0A6847;
+    transform: translateY(-1px);
+}
+
+.insumo-rapido-chip.activo {
+    background: #0A6847;
+    border-color: #0A6847;
+    color: #FFFFFF;
+}
+
+.insumo-rapido-chip__ico {
+    font-weight: 800;
+}
+
+.insumos-rapidos-vacio {
+    font-size: 12.5px;
+    color: var(--bn-text-secondary, #4A5F56);
+}
+
+/* ── Presets de rendimiento ── */
+.unidades-presets-wrap {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.unidades-presets-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.unidad-preset-btn.activo {
+    background: #0A6847;
+    border-color: #0A6847;
+    color: #FFFFFF;
+}
+
+[data-theme="dark"] .wizard-live-item,
+body.dark-mode .wizard-live-item {
+    background: rgba(43, 182, 126, 0.08);
+    border-color: rgba(43, 182, 126, 0.2);
+}
+
+[data-theme="dark"] .wizard-live-val,
+body.dark-mode .wizard-live-val {
+    color: #6EE7B7;
+}
+
+[data-theme="dark"] .insumos-rapidos-box,
+body.dark-mode .insumos-rapidos-box {
+    background: rgba(43, 182, 126, 0.06);
+    border-color: rgba(43, 182, 126, 0.24);
+}
+
+[data-theme="dark"] .insumos-rapidos-titulo,
+body.dark-mode .insumos-rapidos-titulo {
+    color: #F4F0E6;
+}
+
+[data-theme="dark"] .insumos-rapidos-search,
+body.dark-mode .insumos-rapidos-search,
+[data-theme="dark"] .insumo-rapido-chip,
+body.dark-mode .insumo-rapido-chip {
+    background: #10241C;
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #E5EFEA;
+}
+
+[data-theme="dark"] .insumo-rapido-chip.activo,
+body.dark-mode .insumo-rapido-chip.activo {
+    background: #2BB67E;
+    border-color: #2BB67E;
+    color: #0A1410;
+}
+
+@media (max-width: 600px) {
+    .wizard-live-strip {
+        grid-template-columns: 1fr;
+    }
+}
+

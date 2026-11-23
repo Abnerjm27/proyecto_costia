@@ -476,6 +476,250 @@ body.dark-mode .dashboard-catalog-banner__link:hover,
     color: #F4F0E6;
 }
 
+/* ── Punto de Equilibrio Global Multiproducto (Dashboard) ── */
+.breakeven-global-section {
+    margin-top: 22px;
+    padding: 20px 22px;
+    border-radius: 16px;
+}
+
+.be-global-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.be-global-title {
+    margin: 0 0 4px;
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: var(--tinta, #0D241C);
+}
+
+.be-global-subtitle {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--texto-secundario, #4A5F56);
+}
+
+.be-global-empty {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(163, 80, 24, 0.08);
+    border: 1px solid rgba(163, 80, 24, 0.25);
+    font-size: 0.88rem;
+    color: var(--tinta, #0D241C);
+}
+
+.be-global-empty[hidden],
+#be-global-contenido[hidden],
+.be-global-reset-btn[hidden] {
+    display: none !important;
+}
+
+.be-global-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.be-global-kpi-card {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(10, 104, 71, 0.05);
+    border: 1px solid rgba(10, 104, 71, 0.14);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.be-global-kpi-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--texto-secundario, #4A5F56);
+}
+
+.be-global-kpi-val {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0A6847;
+}
+
+.be-global-kpi-sub {
+    font-size: 0.78rem;
+    color: var(--texto-secundario, #4A5F56);
+}
+
+.be-global-table-wrap {
+    overflow-x: auto;
+}
+
+.be-global-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+}
+
+.be-global-table th,
+.be-global-table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid rgba(13, 36, 28, 0.08);
+    text-align: left;
+}
+
+.be-global-table th {
+    font-size: 0.73rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--texto-secundario, #4A5F56);
+}
+
+.be-global-table .num {
+    text-align: right;
+}
+
+.be-ganancia-pos {
+    color: #0A6847;
+    font-weight: 700;
+}
+
+.be-mix-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.be-mix-step {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(13, 36, 28, 0.2);
+    background: rgba(10, 104, 71, 0.06);
+    color: var(--tinta, #0D241C);
+    font-weight: 800;
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease;
+}
+
+.be-mix-step:hover {
+    background: rgba(10, 104, 71, 0.14);
+}
+
+.be-mix-input {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    box-sizing: border-box;
+    min-width: 108px;
+    width: 108px;
+    height: 32px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(13, 36, 28, 0.2);
+    background: #FFFFFF;
+    color: var(--tinta, #0D241C);
+    font-weight: 700;
+    text-align: center;
+}
+
+.be-mix-input::-webkit-outer-spin-button,
+.be-mix-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.be-global-resumen-vivo {
+    margin: 0 0 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(10, 104, 71, 0.08);
+    border-left: 3px solid #0A6847;
+    font-size: 0.86rem;
+    color: var(--tinta, #0D241C);
+}
+
+.be-global-kpi-card--hero {
+    background: rgba(10, 104, 71, 0.11);
+    border-color: rgba(10, 104, 71, 0.32);
+}
+
+.be-mix-pct {
+    min-width: 44px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #0A6847;
+}
+
+body.dark-mode .be-global-title,
+[data-theme="dark"] .be-global-title {
+    color: #F4F0E6;
+}
+
+body.dark-mode .be-global-subtitle,
+[data-theme="dark"] .be-global-subtitle,
+body.dark-mode .be-global-kpi-label,
+[data-theme="dark"] .be-global-kpi-label,
+body.dark-mode .be-global-kpi-sub,
+[data-theme="dark"] .be-global-kpi-sub,
+body.dark-mode .be-global-table th,
+[data-theme="dark"] .be-global-table th {
+    color: #A8B8B0;
+}
+
+body.dark-mode .be-global-kpi-card,
+[data-theme="dark"] .be-global-kpi-card {
+    background: rgba(43, 182, 126, 0.08);
+    border-color: rgba(43, 182, 126, 0.2);
+}
+
+body.dark-mode .be-global-kpi-val,
+[data-theme="dark"] .be-global-kpi-val,
+body.dark-mode .be-ganancia-pos,
+[data-theme="dark"] .be-ganancia-pos,
+body.dark-mode .be-mix-pct,
+[data-theme="dark"] .be-mix-pct {
+    color: #6EE7B7;
+}
+
+body.dark-mode .be-global-table td,
+[data-theme="dark"] .be-global-table td {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+    color: #E5EFEA;
+}
+
+body.dark-mode .be-mix-input,
+[data-theme="dark"] .be-mix-input {
+    background: #10241C;
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #F4F0E6;
+}
+
+body.dark-mode .be-mix-step,
+[data-theme="dark"] .be-mix-step {
+    background: rgba(43, 182, 126, 0.12);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #F4F0E6;
+}
+
+body.dark-mode .be-global-resumen-vivo,
+[data-theme="dark"] .be-global-resumen-vivo {
+    background: rgba(43, 182, 126, 0.12);
+    border-left-color: #2BB67E;
+    color: #E5EFEA;
+}
+
 .producto-card {
     background-color: #FDFBF7;
     border: 1px solid rgba(26, 30, 27, 0.11);
@@ -1773,12 +2017,37 @@ body.dark-mode .orderbook-extra-row td,
 .alerta-precio {
     display: inline-flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
-    padding: 4px 10px;
+    padding: 6px 10px;
     border-radius: 8px;
     font-size: 0.76rem;
     font-weight: 700;
     margin-top: 4px;
+}
+
+.alerta-precio__acciones {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.alerta-precio__btn-mantener {
+    min-height: 28px;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.alerta-precio__btn-mantener:hover {
+    background: rgba(13, 36, 28, 0.08);
 }
 
 .alerta-precio--sube {
@@ -1794,12 +2063,13 @@ body.dark-mode .orderbook-extra-row td,
 }
 
 .alerta-precio__btn-ok {
+    min-height: 28px;
     border: none;
     background: #0D241C;
     color: #FDFBF7;
     border-radius: 6px;
-    padding: 3px 8px;
-    font-size: 0.72rem;
+    padding: 4px 10px;
+    font-size: 0.74rem;
     font-weight: 700;
     cursor: pointer;
 }
@@ -2003,6 +2273,11 @@ body.dark-mode .alerta-precio__btn-ok,
 [data-theme="dark"] .alerta-precio__btn-ok {
     background: #2BB67E !important;
     color: #0A1410 !important;
+}
+
+body.dark-mode .alerta-precio__btn-mantener:hover,
+[data-theme="dark"] .alerta-precio__btn-mantener:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 

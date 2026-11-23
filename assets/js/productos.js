@@ -68,6 +68,8 @@ class ProductosWorkstationController {
                 this.eliminarProducto(id);
             } else if (action === 'aceptar-cambio') {
                 this.aceptarCambioPrecio(id);
+            } else if (action === 'mantener-precio') {
+                this.mantenerPrecioYRecalcularMargen(id);
             }
         });
     }
@@ -173,11 +175,13 @@ class ProductosWorkstationController {
         const unidades = producto.unidadesProducidas || 1;
         const costoUnidad = producto.calcularCostoUnidad(insumos);
         const precioVenta = producto.calcularPrecioVenta(insumos);
-        const ganancia = producto.calcularGananciaNeta(insumos);
-        const margenReal = typeof producto.calcularMargenComercialReal === 'function'
-            ? producto.calcularMargenComercialReal(insumos)
-            : 0;
         const cambio = producto.detectarCambioPrecio(insumos);
+        const tieneCambioPendiente = (cambio.estado === 'sube' || cambio.estado === 'baja') && cambio.precioAnterior > 0;
+        const precioMostrador = tieneCambioPendiente ? cambio.precioAnterior : precioVenta;
+        const ganancia = precioMostrador - costoUnidad;
+        const margenReal = precioMostrador > 0
+            ? Math.round(((precioMostrador - costoUnidad) / precioMostrador) * 100)
+            : 0;
 
         const valorFmt = Number(Number(producto.valorModo).toFixed(1));
         const modoLabel = producto.modo === 'margen'
@@ -186,7 +190,10 @@ class ProductosWorkstationController {
         const modoClass = producto.modo === 'margen' ? 'modo-margen' : 'modo-multiplicador';
 
         const chipClase = margenReal >= 25 ? 'chip-gain' : (ganancia > 0 ? 'chip-amber' : 'chip-loss');
-        const chipTexto = `Ganas ${Store.fmt(ganancia)}/ud`;
+        const gananciaFmt = ganancia < 0 ? `-${Store.fmt(Math.abs(ganancia))}` : `+${Store.fmt(ganancia)}`;
+        const chipTexto = ganancia < 0
+            ? `Pierdes ${Store.fmt(Math.abs(ganancia))}/ud`
+            : `Ganas ${Store.fmt(ganancia)}/ud`;
 
         const badgeAlza = cambio.estado === 'sube'
             ? `<span class="badge-alza-mini" title="Uno o varios insumos subieron de precio">Subió costo</span>`
@@ -224,11 +231,11 @@ class ProductosWorkstationController {
                     </div>
                     <div class="producto-card__precio-item">
                         <span class="producto-card__etiqueta-sm">Precio Mostrador</span>
-                        <strong class="producto-card__precio tabular-nums">${Store.fmt(precioVenta)}</strong>
+                        <strong class="producto-card__precio tabular-nums">${Store.fmt(precioMostrador)}</strong>
                     </div>
                     <div class="producto-card__precio-item">
                         <span class="producto-card__etiqueta-sm">Ganancia / ud</span>
-                        <strong class="producto-card__ganancia tabular-nums">+${Store.fmt(ganancia)}</strong>
+                        <strong class="producto-card__ganancia tabular-nums">${gananciaFmt}</strong>
                     </div>
                 </div>
 
@@ -310,14 +317,24 @@ class ProductosWorkstationController {
         const absDelta = Math.abs(cambio.delta);
         const dif = absDelta > 0 && absDelta < 1 ? '$' + absDelta.toFixed(2) : Store.fmt(absDelta);
         const clase = sube ? 'alerta-precio--sube' : 'alerta-precio--baja';
-        const texto = sube ? `Subió ${dif} (+${pct}%) por insumos` : `Bajó ${dif} (−${pct}%) por insumos`;
+        const precioNuevoFmt = Store.fmt(cambio.precioActual);
+        const precioAntesFmt = Store.fmt(cambio.precioAnterior);
+        const texto = sube
+            ? `Subió ${dif} (+${pct}%) · Sugerido: ${precioNuevoFmt}`
+            : `Bajó ${dif} (−${pct}%) · Sugerido: ${precioNuevoFmt}`;
+        const labelAplicar = sube ? `Subir a ${precioNuevoFmt}` : `Bajar a ${precioNuevoFmt}`;
 
         return `
-            <div class="alerta-precio ${clase}" title="Antes: ${Store.fmt(cambio.precioAnterior)} → Ahora: ${Store.fmt(cambio.precioActual)}">
+            <div class="alerta-precio ${clase}" title="Precio anterior: ${precioAntesFmt} → Nuevo sugerido: ${precioNuevoFmt}">
                 <span class="alerta-precio__texto">${texto}</span>
-                <button type="button" class="alerta-precio__ok alerta-precio__btn-ok" data-action="aceptar-cambio" data-id="${productoId}" title="Confirmar nuevo precio de referencia">
-                    Confirmar
-                </button>
+                <span class="alerta-precio__acciones">
+                    <button type="button" class="alerta-precio__ok alerta-precio__btn-ok" data-action="aceptar-cambio" data-id="${productoId}" title="Actualizar Precio Mostrador a ${precioNuevoFmt}">
+                        ${labelAplicar}
+                    </button>
+                    <button type="button" class="alerta-precio__btn-mantener" data-action="mantener-precio" data-id="${productoId}" title="Mantener ${precioAntesFmt} y recalcular el nuevo margen">
+                        Mantener ${precioAntesFmt}
+                    </button>
+                </span>
             </div>`;
     }
 
@@ -383,6 +400,21 @@ class ProductosWorkstationController {
         this.actualizarVista();
         if (typeof Store.toast === 'function') {
             Store.toast('Precio actualizado y alerta confirmada');
+        }
+    }
+
+    async mantenerPrecioYRecalcularMargen(id) {
+        const res = await Store.mantenerPrecioRecalcularMargenAsync(id);
+        this.actualizarVista();
+        if (typeof Store.toast === 'function') {
+            if (res && res.success) {
+                const detalle = res.modo === 'multiplicador'
+                    ? `Nuevo multiplicador: ×${Number(res.nuevoValorModo.toFixed(2))} (Margen real: ${res.margenReal}%)`
+                    : `Nuevo margen: ${Number(res.nuevoValorModo.toFixed(1))}% (Margen real: ${res.margenReal}%)`;
+                Store.toast(`Precio mantenido en ${Store.fmt(res.precioMantenido)}. ${detalle}`);
+            } else {
+                Store.toast((res && res.mensaje) || 'No se pudo mantener el precio anterior.', 'error');
+            }
         }
     }
 }

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia — Punto de Equilibrio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=31">
+    <link rel="stylesheet" href="../assets/css/terminal-theme.css?v=31">
+    <link rel="stylesheet" href="../assets/css/app-shell.css?v=31">
+    <link rel="stylesheet" href="../assets/css/app.css?v=31">
+    <link rel="stylesheet" href="../assets/css/productos.css?v=31">
+    <link rel="icon" href="../assets/img/costia-icon-green.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+</head>
+<body class="costia-workstation-body">
+
+<a href="#contenido-principal" class="costia-skip-link">Saltar al contenido principal</a>
+
+<header class="costia-mobile-bar" role="banner">
+    <a href="dashboard.html" class="costia-mobile-brand">
+        <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="costia-mobile-brand-logo">
+        <span class="costia-mobile-brand-title">Costia</span>
+    </a>
+    <button type="button" class="costia-mobile-toggle" id="btn-mobile-sidebar-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="terminal-sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+</header>
+<div class="costia-drawer-backdrop" id="costia-drawer-backdrop" aria-hidden="true"></div>
+
+<div class="terminal-shell-container">
+    <aside class="terminal-sidebar" id="terminal-sidebar" aria-label="Navegación principal de Costia"></aside>
+
+    <div class="terminal-content-viewport">
+        <header class="topbar-status-bar" role="region" aria-label="Barra ejecutiva de resumen">
+            <div class="topbar-context-box">
+                <span class="topbar-beacon-dot" aria-hidden="true"></span>
+                <span class="topbar-context-title">Punto de equilibrio global</span>
+            </div>
+
+            <div class="topbar-status-actions">
+                <a href="configuracion.html" class="btn-secundario btn-sm topbar-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Gastos fijos</span>
+                </a>
+                <a href="productos.html" class="btn-secundario btn-sm topbar-btn">
+                    <span>Ver Mis Recetas</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="terminal-main-stage" id="contenido-principal">
+            <div class="contenido__encabezado">
+                <div>
+                    <h1 class="contenido__titulo">¿Cuánto debo vender para cubrir arriendo y servicios?</h1>
+                    <p class="contenido__subtitulo">
+                        Escribe cuántas unidades estimas vender al mes de cada producto (ej: <strong>150</strong> panes, <strong>50</strong> tortas). Costia calcula la meta exacta para no perder dinero.
+                    </p>
+                </div>
+            </div>
+
+            <section class="terminal-panel breakeven-global-section" id="seccion-equilibrio-global" aria-label="Punto de equilibrio global de todos los productos">
+                <div class="be-global-empty" id="be-global-empty" hidden></div>
+
+                <div id="be-global-contenido">
+                    <div class="be-global-kpis">
+                        <div class="be-global-kpi-card">
+                            <span class="be-global-kpi-label">Gastos fijos a cubrir</span>
+                            <strong class="be-global-kpi-val mono-val tabular-nums" id="be-global-fijos-val">$0 / mes</strong>
+                            <small class="be-global-kpi-sub tabular-nums" id="be-global-margen">Margen promedio: 0%</small>
+                        </div>
+                        <div class="be-global-kpi-card be-global-kpi-card--hero">
+                            <span class="be-global-kpi-label">Ventas mínimas para no perder</span>
+                            <strong class="be-global-kpi-val mono-val tabular-nums" id="be-global-venta-mes">$0</strong>
+                            <small class="be-global-kpi-sub tabular-nums" id="be-global-venta-dia">~$0 al día</small>
+                        </div>
+                        <div class="be-global-kpi-card">
+                            <span class="be-global-kpi-label">Total productos a vender</span>
+                            <strong class="be-global-kpi-val mono-val tabular-nums" id="be-global-uds-mes">0 uds / mes</strong>
+                            <small class="be-global-kpi-sub tabular-nums" id="be-global-uds-dia">~0 uds al día</small>
+                        </div>
+                    </div>
+
+                    <p class="be-global-resumen-vivo" id="be-global-resumen-vivo"></p>
+
+                    <div class="barra-herramientas" style="margin-bottom: 14px;">
+                        <div class="buscador">
+                            <img src="../assets/img/search.svg" class="buscador__icono" width="16" height="16" alt="" aria-hidden="true">
+                            <input type="search" id="buscar-equilibrio-producto" class="buscador__input" placeholder="Buscar producto en la lista..." aria-label="Buscar producto en punto de equilibrio" autocomplete="off">
+                        </div>
+                        <button type="button" class="btn-secundario btn-sm" id="btn-reset-mix-equilibrio">
+                            Restablecer estimación igual
+                        </button>
+                    </div>
+
+                    <div class="be-global-table-wrap">
+                        <table class="be-global-table" aria-label="Meta de ventas por producto para punto de equilibrio">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th class="num">Precio</th>
+                                    <th class="num">Ganancia / ud</th>
+                                    <th class="num">Ventas estimadas / mes</th>
+                                    <th class="num">Meta equilibrio / mes</th>
+                                    <th class="num">Al día</th>
+                                </tr>
+                            </thead>
+                            <tbody id="be-global-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/models.js?v=31"></script>
+<script src="../assets/js/store.js?v=31"></script>
+<script src="../assets/js/theme.js?v=31"></script>
+<script src="../assets/js/app-shell.js?v=31"></script>
+<script src="../assets/js/asesor/asesor-finanzas.js?v=31"></script>
+<script src="../assets/js/equilibrio.js?v=31"></script>
+</body>
+</html>

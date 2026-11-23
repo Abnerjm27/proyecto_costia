@@ -38,6 +38,12 @@ class AppShell {
             icon: '<svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
         },
         {
+            key: 'equilibrio',
+            href: 'equilibrio.html',
+            label: 'Equilibrio',
+            icon: '<svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M3 14l2-7 2 7a2 2 0 0 1-4 0z"/><path d="M17 14l2-7 2 7a2 2 0 0 1-4 0z"/></svg>'
+        },
+        {
             key: 'configuracion',
             href: 'configuracion.html',
             id: 'link-sidebar-config-page',
@@ -75,6 +81,7 @@ class AppShell {
         if (path.includes('productos.html')) return 'productos';
         if (path.includes('crear-producto.html')) return 'crear-producto';
         if (path.includes('ficha-tecnica.html') || path.includes('ficha-preview.html')) return 'ficha-tecnica';
+        if (path.includes('equilibrio.html')) return 'equilibrio';
         if (path.includes('configuracion.html')) return 'configuracion';
         return 'dashboard';
     }
@@ -93,7 +100,9 @@ class AppShell {
             const currentAttr = esActivo ? ' aria-current="page"' : '';
             const badgeAlzas = item.key === 'insumos'
                 ? '<span class="sidebar-nav-badge" id="sidebar-badge-alzas" hidden></span>'
-                : '';
+                : (item.key === 'productos'
+                    ? '<span class="sidebar-nav-badge" id="sidebar-badge-recetas" hidden></span>'
+                    : '');
 
             return `
                 <li>
@@ -125,13 +134,6 @@ class AppShell {
                 </ul>
 
                 <div class="sidebar-footer-box">
-                    <a href="#modal-asesor-costia" class="sidebar-item-link" id="link-sidebar-asesor">
-                        <span class="sidebar-icon-label">
-                            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            <span>Asesor IA</span>
-                        </span>
-                        <span class="sidebar-status-online" title="Asesor IA en línea"></span>
-                    </a>
                     <button type="button" class="sidebar-item-link terminal-theme-switch" id="btn-toggle-tema" aria-label="Cambiar tema de la aplicación">
                         <span class="sidebar-icon-label">
                             <svg class="sidebar-icon tema-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -156,22 +158,36 @@ class AppShell {
         }
     }
 
+    _aplicarBadge(id, cantidad, singular, plural) {
+        const badge = document.getElementById(id);
+        if (!badge) return;
+        if (cantidad > 0) {
+            const texto = `${cantidad} ${cantidad === 1 ? singular : plural}`;
+            badge.textContent = String(cantidad);
+            badge.title = texto;
+            badge.setAttribute('aria-label', texto);
+            badge.hidden = false;
+        } else {
+            badge.removeAttribute('aria-label');
+            badge.hidden = true;
+        }
+    }
+
     actualizarBadgeAlzas() {
-        const badge = document.getElementById('sidebar-badge-alzas');
-        if (!badge || typeof Store === 'undefined') return;
+        if (typeof Store === 'undefined') return;
         const insumos = Store.cargarInsumos();
         const conAlza = insumos.filter(i => {
             const v = typeof i.obtenerVariacion === 'function' ? i.obtenerVariacion() : null;
             return v && v.estado === 'sube';
         }).length;
+        this._aplicarBadge('sidebar-badge-alzas', conAlza, 'insumo subió de precio', 'insumos subieron de precio');
 
-        if (conAlza > 0) {
-            badge.textContent = String(conAlza);
-            badge.title = `${conAlza} ${conAlza === 1 ? 'insumo subió' : 'insumos subieron'} de precio`;
-            badge.hidden = false;
-        } else {
-            badge.hidden = true;
-        }
+        const productos = Store.cargarProductos();
+        const recetasConAlza = productos.filter(p => {
+            const c = typeof p.detectarCambioPrecio === 'function' ? p.detectarCambioPrecio(insumos) : null;
+            return c && c.estado === 'sube';
+        }).length;
+        this._aplicarBadge('sidebar-badge-recetas', recetasConAlza, 'receta subió de precio', 'recetas subieron de precio');
     }
 
     vincularEventos() {

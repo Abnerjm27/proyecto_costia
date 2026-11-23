@@ -241,6 +241,7 @@ class StoreService {
             insumos.push(new Insumo({ id: nuevoId, nombre, unidad, precio }));
         }
         this.guardarInsumosLocal(insumos);
+        this.notificarActualizacion();
         return { success: true, mensaje: id ? `Insumo "${nombre}" actualizado` : `Insumo "${nombre}" agregado` };
     }
 
@@ -292,6 +293,7 @@ class StoreService {
 
         const insumos = this.cargarInsumos().filter(i => i.id !== id);
         this.guardarInsumosLocal(insumos);
+        this.notificarActualizacion();
         return { success: true, mensaje: 'Insumo eliminado con éxito.' };
     }
 
@@ -361,9 +363,11 @@ class StoreService {
                     costoEmpaque: datosProducto.costoEmpaque || 0,
                     porcentajeMerma: datosProducto.porcentajeMerma || 0,
                     costoManoObra: datosProducto.costoManoObra || 0,
-                    receta: datosProducto.receta.map(r => new ItemReceta(r)),
-                    precioVentaAnterior: productos[idx].calcularPrecioVenta(this.cargarInsumos())
+                    receta: datosProducto.receta.map(r => new ItemReceta(r))
                 });
+                productos[idx].precioVentaAnterior = (datosProducto.precioVentaAnterior !== undefined && datosProducto.precioVentaAnterior !== null)
+                    ? Number(datosProducto.precioVentaAnterior)
+                    : productos[idx].calcularPrecioVenta(this.cargarInsumos());
             }
         } else {
             const nuevoId = productos.length > 0 ? Math.max(...productos.map(p => p.id)) + 1 : 1;
@@ -387,6 +391,7 @@ class StoreService {
         }
 
         this.guardarProductosLocal(productos);
+        this.notificarActualizacion();
         return { success: true, mensaje: 'Producto guardado con éxito' };
     }
 
@@ -408,6 +413,7 @@ class StoreService {
 
         const productos = this.cargarProductos().filter(p => p.id !== id);
         this.guardarProductosLocal(productos);
+        this.notificarActualizacion();
         return { success: true, mensaje: 'Producto eliminado' };
     }
 
@@ -437,6 +443,83 @@ class StoreService {
 
         prod.precioVentaAnterior = nuevoPrecio;
         this.guardarProductosLocal(productos);
+        this._sellarInsumosSinAlertasPendientes((prod.receta || []).map(r => r.insumoId));
+        this.notificarActualizacion();
+    }
+
+    async mantenerPrecioRecalcularMargenAsync(id) {
+        const insumos   = this.cargarInsumos();
+        const productos = this.cargarProductos();
+        const prod      = productos.find(p => p.id === id);
+        if (!prod) return { success: false, mensaje: 'Producto no encontrado.' };
+
+        const precioObjetivo = prod.precioVentaAnterior;
+        const costoUnidad    = prod.calcularCostoUnidad(insumos);
+
+        if (precioObjetivo === null || isNaN(precioObjetivo) || precioObjetivo <= 0) {
+            return { success: false, mensaje: 'No hay un precio anterior válido para mantener.' };
+        }
+        if (costoUnidad >= precioObjetivo) {
+            return {
+                success: false,
+                mensaje: `No es posible mantener ${this.fmt(precioObjetivo)} porque el costo actual (${this.fmt(costoUnidad)}) iguala o supera ese precio.`
+            };
+        }
+
+        let nuevoValorModo;
+        if (prod.modo === 'multiplicador') {
+            nuevoValorModo = costoUnidad > 0
+                ? Math.round((precioObjetivo / costoUnidad) * 10000) / 10000
+                : prod.valorModo;
+        } else if (prod.tipoMargen === 'venta') {
+            nuevoValorModo = Math.round((((precioObjetivo - costoUnidad) / precioObjetivo) * 100) * 10000) / 10000;
+        } else {
+            nuevoValorModo = costoUnidad > 0
+                ? Math.round((((precioObjetivo - costoUnidad) / costoUnidad) * 100) * 10000) / 10000
+                : prod.valorModo;
+        }
+
+        if (!(nuevoValorModo > 0)) {
+            return { success: false, mensaje: 'El margen resultante no es positivo. Ajusta el precio o edita la receta.' };
+        }
+
+        const prodActualizado = new Producto({
+            ...prod.toJSON(),
+            valorModo: nuevoValorModo
+        });
+        const precioVentaExacto = prodActualizado.calcularPrecioVenta(insumos);
+
+        const res = await this.guardarProductoAsync({
+            id:                  prod.id,
+            nombre:              prod.nombre,
+            modo:                prod.modo,
+            valorModo:           nuevoValorModo,
+            tipoMargen:          prod.tipoMargen || 'venta',
+            unidadesProducidas:  prod.unidadesProducidas,
+            costoEmpaque:        prod.costoEmpaque || 0,
+            porcentajeMerma:     prod.porcentajeMerma || 0,
+            costoManoObra:       prod.costoManoObra || 0,
+            precioVentaAnterior: precioVentaExacto,
+            receta: (prod.receta || []).map(r => ({
+                insumoId:     r.insumoId,
+                cantidad:     r.cantidad,
+                unidadReceta: r.unidadReceta
+            }))
+        });
+
+        if (!res.success) return res;
+
+        this._sellarInsumosSinAlertasPendientes((prod.receta || []).map(r => r.insumoId));
+        this.notificarActualizacion();
+
+        const margenReal = Math.round(((precioObjetivo - costoUnidad) / precioObjetivo) * 100);
+        return {
+            success: true,
+            precioMantenido: precioObjetivo,
+            nuevoValorModo,
+            modo: prod.modo,
+            margenReal
+        };
     }
 
     // ─── Negocio y Configuración de Gastos Fijos ──────────────────
@@ -912,11 +995,45 @@ class StoreService {
         return prod.detectarCambioPrecio(listaInsumos);
     }
 
+    _sellarInsumosSinAlertasPendientes(insumoIdsFiltro = null) {
+        const insumos = this.cargarInsumos();
+        const productos = this.cargarProductos();
+        const idsPendientes = new Set();
+
+        productos.forEach(p => {
+            const c = typeof p.detectarCambioPrecio === 'function' ? p.detectarCambioPrecio(insumos) : null;
+            if (c && (c.estado === 'sube' || c.estado === 'baja')) {
+                (p.receta || []).forEach(r => idsPendientes.add(Number(r.insumoId)));
+            }
+        });
+
+        const filtroSet = Array.isArray(insumoIdsFiltro)
+            ? new Set(insumoIdsFiltro.map(Number))
+            : null;
+
+        let huboCambio = false;
+        insumos.forEach(ins => {
+            if (filtroSet && !filtroSet.has(Number(ins.id))) return;
+            if (idsPendientes.has(Number(ins.id))) return;
+            if (typeof ins.obtenerVariacion === 'function' && ins.obtenerVariacion() !== null) {
+                ins.precioAnterior = ins.precio;
+                huboCambio = true;
+            }
+        });
+
+        if (huboCambio) {
+            this.guardarInsumosLocal(insumos);
+        }
+    }
+
     sellarPrecios() {
         const insumos = this.cargarInsumos();
         const productos = this.cargarProductos();
         productos.forEach(p => { p.precioVentaAnterior = p.calcularPrecioVenta(insumos); });
+        insumos.forEach(i => { i.precioAnterior = i.precio; });
         this.guardarProductosLocal(productos);
+        this.guardarInsumosLocal(insumos);
+        this.notificarActualizacion();
     }
 
     // ─── Notificaciones Toast ─────────────────────────────────────
@@ -926,20 +1043,23 @@ class StoreService {
         if (!contenedor) {
             contenedor = document.createElement('div');
             contenedor.id = 'toast-contenedor';
-            contenedor.className = 'toast-contenedor';
+            contenedor.className = 'toast-container';
+            contenedor.setAttribute('aria-live', 'polite');
+            contenedor.setAttribute('aria-atomic', 'false');
             document.body.appendChild(contenedor);
         }
         const el = document.createElement('div');
         el.className = `toast toast--${tipo}`;
+        el.setAttribute('role', tipo === 'error' ? 'alert' : 'status');
         const icono = tipo === 'error'
             ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
             : (tipo === 'info'
                 ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
                 : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>');
-        el.innerHTML = `<span class="toast-ico" aria-hidden="true">${icono}</span><span>${mensaje}</span>`;
+        el.innerHTML = `<span class="toast__icono" aria-hidden="true">${icono}</span><span>${mensaje}</span>`;
         contenedor.appendChild(el);
         setTimeout(() => {
-            el.classList.add('toast--salida');
+            el.classList.add('toast--saliendo');
             setTimeout(() => el.remove(), 250);
         }, 3200);
     }

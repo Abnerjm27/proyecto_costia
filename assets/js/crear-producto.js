@@ -20,31 +20,30 @@ class CrearProductoController {
         this.pasoActual                  = 1;
         this.porcentajeGastoProporcional = 25;
         this.recomendacionModoActual     = null;
+        this._cargandoBorrador           = false;
     }
 
     iniciar() {
         this.configurarEventosGenerales();
+        this.renderizarChipsInsumosRapidos();
         const editando = this.cargarProductoSiEsEdicion();
         if (!editando) {
             this.precargarDefaultsNegocio();
-            this.agregarFila(); // fila inicial
-            this.actualizarResumen();
+            const borradorRestaurado = this.restaurarBorrador();
+            if (!borradorRestaurado) {
+                this.agregarFila(); // fila inicial
+                this.actualizarResumen();
+            }
         }
 
         // Si MySQL responde con sincronización posterior, recargar si es edición
         Store.alActualizar(() => {
             this.actualizarOpcionesInsumos();
+            this.renderizarChipsInsumosRapidos();
             if (this.productoEditandoId) {
                 this.cargarProductoSiEsEdicion();
             }
         });
-
-        // Inicializar Agente Asesor de Costos Ocultos y Precio Justo
-        if (window.AsesorCostiaAgent) {
-            this.asesorAgente = new AsesorCostiaAgent(this);
-            window.asesorAgente = this.asesorAgente;
-            this.asesorAgente.iniciar();
-        }
     }
 
     precargarDefaultsNegocio() {
@@ -73,7 +72,32 @@ class CrearProductoController {
         // 1. Receta y cantidades
         document.getElementById('producto-nombre')?.addEventListener('input', () => this.actualizarResumen());
         document.getElementById('btn-agregar')?.addEventListener('click', () => this.agregarFila());
-        document.getElementById('unidades-producidas')?.addEventListener('input', () => this.actualizarResumen());
+        document.getElementById('unidades-producidas')?.addEventListener('input', () => {
+            this.actualizarPresetsUnidades();
+            this.actualizarResumen();
+        });
+        document.querySelectorAll('.unidad-preset-btn[data-unidades]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const inp = document.getElementById('unidades-producidas');
+                if (inp) {
+                    inp.value = btn.dataset.unidades;
+                    this.actualizarPresetsUnidades();
+                    this.actualizarResumen();
+                }
+            });
+        });
+
+        const inputFiltroRapido = document.getElementById('buscar-insumo-rapido');
+        inputFiltroRapido?.addEventListener('input', (e) => {
+            this.renderizarChipsInsumosRapidos(e.target.value || '');
+        });
+
+        document.getElementById('insumos-rapidos-chips')?.addEventListener('click', (e) => {
+            const chip = e.target.closest('.insumo-rapido-chip[data-insumo-id]');
+            if (!chip) return;
+            const insumoId = parseInt(chip.dataset.insumoId, 10);
+            if (insumoId) this.agregarInsumoRapido(insumoId);
+        });
 
         // 1b. Navegación y herramientas del Wizard de 3 pasos
         this.configurarEventosWizard();
@@ -99,17 +123,12 @@ class CrearProductoController {
             window.location.href = 'configuracion.html#seccion-precios';
         });
 
-        // 6. Botón Asesor IA
-        document.getElementById('btn-fab-asesor')?.addEventListener('click', () => {
-            if (window.asesorAgente && typeof window.asesorAgente.abrirChat === 'function') {
-                window.asesorAgente.abrirChat();
-            }
-        });
-
-        // 7. Botón de guardado
+        // 6. Botón de guardado y borrador
         document.querySelectorAll('.btn-guardar').forEach(btn => {
             btn.addEventListener('click', () => this.guardarProducto());
         });
+        document.getElementById('btn-descartar-borrador')?.addEventListener('click', () => this.descartarBorrador());
+        window.addEventListener('beforeunload', () => this.guardarBorrador());
 
         // 8. Delegación de eventos en la tabla de receta (#receta-cuerpo)
         const cuerpo = document.getElementById('receta-cuerpo');
@@ -623,6 +642,89 @@ class CrearProductoController {
         return Store.cargarInsumos();
     }
 
+    actualizarPresetsUnidades() {
+        const val = parseInt(document.getElementById('unidades-producidas')?.value, 10) || 1;
+        document.querySelectorAll('.unidad-preset-btn[data-unidades]').forEach(btn => {
+            btn.classList.toggle('activo', parseInt(btn.dataset.unidades, 10) === val);
+        });
+    }
+
+    renderizarChipsInsumosRapidos(filtro = '') {
+        const cont = document.getElementById('insumos-rapidos-chips');
+        if (!cont) return;
+        const q = String(filtro || '').trim().toLowerCase();
+        const insumos = this.obtenerInsumos();
+        const usados = new Set(
+            Array.from(document.querySelectorAll('#receta-cuerpo .fila-insumo'))
+                .map(sel => parseInt(sel.value, 10))
+                .filter(Boolean)
+        );
+
+        const filtrados = insumos.filter(i => !q || i.nombre.toLowerCase().includes(q));
+        if (filtrados.length === 0) {
+            cont.innerHTML = `<span class="insumos-rapidos-vacio">No hay insumos que coincidan con "${Store.escapeHtml(filtro)}".</span>`;
+            return;
+        }
+
+        cont.innerHTML = filtrados.slice(0, 16).map(i => {
+            const yaEnReceta = usados.has(i.id);
+            return `
+                <button type="button" class="insumo-rapido-chip${yaEnReceta ? ' activo' : ''}" data-insumo-id="${i.id}" title="${yaEnReceta ? 'Ya está en tu receta (clic para editar cantidad)' : `Agregar ${Store.escapeHtml(i.nombre)} a la receta`}">
+                    <span class="insumo-rapido-chip__ico" aria-hidden="true">${yaEnReceta ? '✓' : '+'}</span>
+                    <span>${Store.escapeHtml(i.nombre)}</span>
+                </button>
+            `;
+        }).join('');
+    }
+
+    agregarInsumoRapido(insumoId) {
+        const filas = Array.from(document.querySelectorAll('#receta-cuerpo .receta-fila'));
+        const filaExistente = filas.find(f => parseInt(f.querySelector('.fila-insumo')?.value, 10) === insumoId);
+        if (filaExistente) {
+            const cantInput = filaExistente.querySelector('.fila-cantidad');
+            if (cantInput) {
+                cantInput.focus();
+                cantInput.select();
+            }
+            return;
+        }
+
+        const filaVacia = filas.find(f => !f.querySelector('.fila-insumo')?.value);
+        if (filaVacia) {
+            const sel = filaVacia.querySelector('.fila-insumo');
+            const id = parseInt(filaVacia.dataset.id, 10);
+            if (sel) {
+                sel.value = String(insumoId);
+                this.alCambiarInsumo(sel, id);
+                this.actualizarResumen();
+                const cantInput = filaVacia.querySelector('.fila-cantidad');
+                if (cantInput) {
+                    cantInput.focus();
+                    cantInput.select();
+                }
+                return;
+            }
+        }
+
+        this.agregarFila();
+        const nuevasFilas = Array.from(document.querySelectorAll('#receta-cuerpo .receta-fila'));
+        const ultima = nuevasFilas[nuevasFilas.length - 1];
+        if (ultima) {
+            const sel = ultima.querySelector('.fila-insumo');
+            const id = parseInt(ultima.dataset.id, 10);
+            if (sel) {
+                sel.value = String(insumoId);
+                this.alCambiarInsumo(sel, id);
+                this.actualizarResumen();
+                const cantInput = ultima.querySelector('.fila-cantidad');
+                if (cantInput) {
+                    cantInput.focus();
+                    cantInput.select();
+                }
+            }
+        }
+    }
+
     actualizarOpcionesInsumos() {
         const insumos = this.obtenerInsumos();
         document.querySelectorAll('.receta-fila').forEach(fila => {
@@ -832,7 +934,12 @@ class CrearProductoController {
         };
 
         setTxt('costo-unidad',            Store.fmt(costoUnidad));
+        setTxt('live-costo-ud',           Store.fmt(costoUnidad));
+        setTxt('live-precio-ud',          Store.fmt(precioVenta));
+        setTxt('live-ganancia-ud',        `+${Store.fmt(gananciaUnidad)}`);
         setTxt('res-costo-ingredientes',  Store.fmt(costoIngredientes));
+        this.actualizarPresetsUnidades();
+        this.renderizarChipsInsumosRapidos(document.getElementById('buscar-insumo-rapido')?.value || '');
 
         // Filas condicionales en el resumen
         const fMerma = document.getElementById('res-fila-merma');
@@ -955,6 +1062,178 @@ class CrearProductoController {
             merma,
             insumos
         });
+
+        this.guardarBorrador();
+    }
+
+    // ─── Borrador automático de producto nuevo ────────────────────
+
+    obtenerClaveBorrador() {
+        const uid = (typeof Store !== 'undefined' && Store.usuario && Store.usuario.id)
+            ? Store.usuario.id
+            : 'local';
+        return `costia_borrador_producto_${uid}`;
+    }
+
+    obtenerEstadoBorrador() {
+        const filas = [];
+        document.querySelectorAll('.receta-fila').forEach(fila => {
+            const insumoId     = parseInt(fila.querySelector('.fila-insumo')?.value, 10) || null;
+            const cantidadRaw  = fila.querySelector('.fila-cantidad')?.value;
+            const cantidad     = cantidadRaw !== '' && cantidadRaw !== undefined ? parseFloat(cantidadRaw) : 1;
+            const unidadReceta = fila.querySelector('.fila-unidad-receta')?.value || '';
+            if (insumoId) {
+                filas.push({ insumoId, cantidad: isNaN(cantidad) ? 1 : cantidad, unidadReceta });
+            }
+        });
+
+        const nombre            = document.getElementById('producto-nombre')?.value || '';
+        const unidades          = document.getElementById('unidades-producidas')?.value || '1';
+        const porcentajeMerma   = document.getElementById('porcentaje-merma')?.value || '0';
+        const costoEmpaque      = document.getElementById('costo-empaque')?.value || '0';
+        const costoManoObra     = document.getElementById('costo-mano-obra')?.value || '0';
+        const tipoMargen        = document.getElementById('tipo-margen')?.value || 'venta';
+        const inputMargen       = document.getElementById('input-margen')?.value || '30';
+        const inputMultiplicador = document.getElementById('input-multiplicador')?.value || '2.5';
+
+        const tieneContenido = nombre.trim().length > 0
+            || filas.length > 0
+            || (parseFloat(porcentajeMerma) || 0) > 0
+            || (parseFloat(costoEmpaque) || 0) > 0
+            || (parseFloat(costoManoObra) || 0) > 0
+            || (parseInt(unidades, 10) || 1) !== 1
+            || this.pasoActual > 1;
+
+        if (!tieneContenido) return null;
+
+        return {
+            nombre,
+            unidades,
+            porcentajeMerma,
+            costoEmpaque,
+            costoManoObra,
+            modoPrecio: this.modoPrecio,
+            tipoMargen,
+            inputMargen,
+            inputMultiplicador,
+            pasoActual: this.pasoActual,
+            receta: filas,
+            actualizadoEn: Date.now()
+        };
+    }
+
+    guardarBorrador() {
+        if (this.productoEditandoId || this._cargandoBorrador) return;
+        try {
+            const clave = this.obtenerClaveBorrador();
+            const estado = this.obtenerEstadoBorrador();
+            if (estado) {
+                localStorage.setItem(clave, JSON.stringify(estado));
+            } else {
+                localStorage.removeItem(clave);
+            }
+        } catch (e) {
+            // Ignorar errores de cuota o almacenamiento privado
+        }
+    }
+
+    limpiarBorrador() {
+        try {
+            localStorage.removeItem(this.obtenerClaveBorrador());
+        } catch (e) {}
+        const banner = document.getElementById('banner-borrador-producto');
+        if (banner) banner.hidden = true;
+    }
+
+    restaurarBorrador() {
+        let borrador = null;
+        try {
+            const raw = localStorage.getItem(this.obtenerClaveBorrador());
+            if (!raw) return false;
+            borrador = JSON.parse(raw);
+        } catch (e) {
+            return false;
+        }
+        if (!borrador || typeof borrador !== 'object') return false;
+
+        this._cargandoBorrador = true;
+        try {
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined && val !== null) el.value = val;
+            };
+
+            setVal('producto-nombre', borrador.nombre || '');
+            setVal('unidades-producidas', borrador.unidades || '1');
+            setVal('porcentaje-merma', borrador.porcentajeMerma ?? '0');
+            setVal('costo-empaque', borrador.costoEmpaque ?? '0');
+            setVal('costo-mano-obra', borrador.costoManoObra ?? '0');
+            setVal('tipo-margen', borrador.tipoMargen || 'venta');
+
+            if (borrador.modoPrecio === 'multiplicador') {
+                this.cambiarModo('multiplicador');
+                setVal('input-multiplicador', borrador.inputMultiplicador || '2.5');
+            } else {
+                this.cambiarModo('margen');
+                const m = borrador.inputMargen || '30';
+                setVal('input-margen', m);
+                setVal('slider-margen', Math.min(200, parseFloat(m) || 30));
+            }
+
+            const cuerpo = document.getElementById('receta-cuerpo');
+            if (cuerpo) cuerpo.innerHTML = '';
+
+            const insumosDisponibles = new Set(this.obtenerInsumos().map(i => i.id));
+            const filasValidas = Array.isArray(borrador.receta)
+                ? borrador.receta.filter(r => r && insumosDisponibles.has(r.insumoId))
+                : [];
+
+            if (filasValidas.length > 0) {
+                filasValidas.forEach(item => this.agregarFila(item));
+            } else {
+                this.agregarFila();
+            }
+
+            if (borrador.pasoActual && borrador.pasoActual > 1) {
+                this.irAPaso(borrador.pasoActual, { forzar: true });
+            } else {
+                this.actualizarResumen();
+            }
+
+            const banner = document.getElementById('banner-borrador-producto');
+            if (banner) banner.hidden = false;
+            return true;
+        } finally {
+            this._cargandoBorrador = false;
+        }
+    }
+
+    descartarBorrador() {
+        this._cargandoBorrador = true;
+        try {
+            this.limpiarBorrador();
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val;
+            };
+            setVal('producto-nombre', '');
+            setVal('unidades-producidas', '1');
+            setVal('porcentaje-merma', '0');
+            setVal('costo-empaque', '0');
+            setVal('costo-mano-obra', '0');
+            this.cambiarModo('margen');
+            this.precargarDefaultsNegocio();
+
+            const cuerpo = document.getElementById('receta-cuerpo');
+            if (cuerpo) cuerpo.innerHTML = '';
+            this.agregarFila();
+            this.irAPaso(1, { forzar: true });
+            if (typeof Store !== 'undefined' && typeof Store.toast === 'function') {
+                Store.toast('Borrador descartado', 'info');
+            }
+        } finally {
+            this._cargandoBorrador = false;
+        }
     }
 
     // ─── Guardar Producto en MySQL y Store ─────────────────────────
@@ -1026,6 +1305,9 @@ class CrearProductoController {
 
             const res = await Store.guardarProductoAsync(datosProducto);
             if (res.success) {
+                if (!this.productoEditandoId) {
+                    this.limpiarBorrador();
+                }
                 Store.toastDiferido(this.productoEditandoId ? `Producto "${nombre}" actualizado con éxito` : `Producto "${nombre}" creado con éxito`);
                 window.location.href = 'productos.html';
             } else {

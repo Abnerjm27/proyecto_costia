@@ -369,7 +369,7 @@ class AsesorCostiaAgent {
             this.etapaActual = 'dashboard_global';
             this.actualizarBarraProgreso();
             const prods = typeof Store !== 'undefined' ? Store.cargarProductos() : [];
-            const cfg = typeof Store !== 'undefined' ? Store.cargarConfigGastos() : {};
+            const cfg = (typeof Store !== 'undefined' ? Store.cargarConfigGastos() : {}) || {};
             const totalFijos = (cfg.arriendoMensual || 0) + (cfg.recibosMensuales || 0);
             this.agregarMensajeAgente(`
                 ¡Hola! Soy tu <strong>Asesor IA Financiero</strong> de Costia.<br>

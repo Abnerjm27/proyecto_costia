@@ -155,11 +155,12 @@ select:focus-visible {
    NOTIFICACIONES TOAST FLOTANTES
    ============================================================ */
 
-.toast-container {
+.toast-container,
+.toast-contenedor {
     position: fixed;
     top: 72px;
     right: 20px;
-    z-index: 9999;
+    z-index: 100001;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -195,7 +196,8 @@ select:focus-visible {
     background: #051610;
 }
 
-.toast__icono {
+.toast__icono,
+.toast-ico {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -207,7 +209,8 @@ select:focus-visible {
     flex-shrink: 0;
 }
 
-.toast--saliendo {
+.toast--saliendo,
+.toast--salida {
     animation: toastSalida 240ms ease forwards;
 }
 

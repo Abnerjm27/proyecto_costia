@@ -557,7 +557,7 @@ class AsesorComandos {
             case 'dashboard_breakeven':
             case 'productos_breakeven':
             case 'fichas_breakeven': {
-                const gastos = typeof Store !== 'undefined' ? Store.cargarConfigGastos() : {};
+                const gastos = (typeof Store !== 'undefined' ? Store.cargarConfigGastos() : {}) || {};
                 const fijos = (gastos.arriendoMensual || 0) + (gastos.recibosMensuales || 0);
                 const prods = typeof Store !== 'undefined' ? Store.cargarProductos() : [];
                 const insumos = typeof Store !== 'undefined' ? Store.cargarInsumos() : [];
@@ -570,16 +570,38 @@ class AsesorComandos {
                     return;
                 }
 
-                let textoBE = `<strong>Punto de Equilibrio Operativo (${Store.fmt(fijos)}/mes fijos):</strong><br><br>`;
-                prods.slice(0, 3).forEach(p => {
-                    const ganancia = p.calcularGananciaNeta(insumos);
-                    if (ganancia > 0) {
-                        const udsMes = Math.ceil(fijos / ganancia);
-                        const udsDia = (udsMes / 30).toFixed(1);
-                        textoBE += `• <strong>${p.nombre}:</strong> vender <strong>${udsMes} uds/mes</strong> (~${udsDia} uds/día).<br>`;
-                    }
-                });
-                textoBE += `<br>A partir de esas ventas, todo ingreso adicional es ganancia pura de bolsillo.`;
+                let mixGuardado = null;
+                try {
+                    const rawMix = localStorage.getItem('costia_mix_equilibrio');
+                    if (rawMix) mixGuardado = JSON.parse(rawMix);
+                } catch (_) {}
+
+                const multi = typeof AsesorFinanzas !== 'undefined' && typeof AsesorFinanzas.calcularPuntoEquilibrioMultiproducto === 'function'
+                    ? AsesorFinanzas.calcularPuntoEquilibrioMultiproducto(prods, insumos, fijos, mixGuardado)
+                    : null;
+
+                if (!multi || multi.sinProductos) {
+                    agente.agregarMensajeAgente(`
+                        <strong>Punto de Equilibrio Operativo (${Store.fmt(fijos)}/mes fijos):</strong><br><br>
+                        Aún no tienes productos con ganancia neta positiva para calcular el equilibrio combinado. Crea una receta en <strong>Nueva Receta</strong> o ajusta su margen de venta.
+                    `);
+                    return;
+                }
+
+                const itemsBE = multi.detalle
+                    .filter(d => d.unidadesMes > 0)
+                    .map(d => `• <strong>${d.nombre}</strong> (${d.participacionPct}%): <strong>${d.unidadesMes} uds/mes</strong> (~${d.unidadesDia} uds/día).<br>`);
+
+                const textoBE = `
+                    <strong>Punto de Equilibrio Global — Todos los Productos (${Store.fmt(fijos)}/mes fijos):</strong><br><br>
+                    <div style="background:#eef8f3;border:1px solid #10b981;border-radius:10px;padding:10px 14px;margin-bottom:10px;font-size:13.5px;color:#0b3d2e;">
+                        <strong>Meta combinada:</strong> vender <strong>${multi.unidadesTotalesMes} uds/mes</strong> (~${multi.unidadesTotalesDia} uds/día)<br>
+                        <strong>Facturación mínima:</strong> <strong>${Store.fmt(multi.ventaMensualMeta)}/mes</strong> (~${Store.fmt(multi.ventaDiariaMeta)}/día) · Margen ponderado: <strong>${multi.margenPonderadoPct.toFixed(1)}%</strong>
+                    </div>
+                    <strong>Reparto estimado en tu mezcla actual:</strong><br>
+                    ${itemsBE.join('')}<br>
+                    <small>A partir de esa meta combinada, todo ingreso adicional es ganancia neta para tu negocio.</small>
+                `;
                 agente.agregarMensajeAgente(textoBE);
                 break;
             }
