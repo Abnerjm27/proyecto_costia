@@ -1,24 +1,24 @@
-# Graph Report - proyecto_costia  (2026-11-23)
+# Graph Report - proyecto_costia  (2026-11-27)
 
 ## Corpus Check
-- 71 files · ~92,131 words
+- 78 files · ~115,716 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 13 file(s) not represented in the graph (top: .css 11, .example 1, (none) 1)
+- Unclassified: 14 file(s) not represented in the graph (top: .css 12, .example 1, (none) 1)
 
 ## Summary
-- 650 nodes · 1078 edges · 54 communities (17 shown, 37 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 37 edges (avg confidence: 0.91)
+- 788 nodes · 1399 edges · 64 communities (23 shown, 41 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 46 edges (avg confidence: 0.91)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5b00709f`
+- Built from commit: `96d0ba16`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - StoreService
-- Producto
-- InsumoController
+- UnidadConverter
+- OfertaController
 - CrearProductoController
 - Usuario
 - Producto
@@ -27,11 +27,11 @@
 - Insumo
 - manifest.json
 - AsesorCostiaAgent
-- security.spec.js
+- OfertasCierreController
 - Review Focus
 - AsesorParser
 - AsesorUI
-- 🎓 COSTIA — Guía de Estudio y Defensa de Proyecto
+- .getConnection
 - AsesorFinanzas
 - Documento de Diseño: Organización Estructural del Proyecto Costia
 - Review Focus
@@ -42,6 +42,7 @@
 - @playwright/test
 - EquilibrioGlobalController
 - sw.js
+- VitrinaPublicaController
 - README.md
 - ThemeManager
 - AppShell
@@ -50,28 +51,37 @@
 - AsesorFlujo
 - RecetaItem
 - package.json
-- ConfiguracionController
 - scripts
 - audit-responsive-full.spec.js
 - asesor-multiperfil.spec.js
 - ux-transformation.spec.js
 - playwright.config.js
-- crear-producto.spec.js
-- dashboard.spec.js
+- auth.spec.js
+- ficha-tecnica.spec.js
+- productos.spec.js
+- responsive.spec.js
+- 🎓 COSTIA — Guía de Estudio y Defensa de Proyecto
+- models.js
+- Producto
+- Costia — Guía Completa de Estudio, Arquitectura, Librerías y Pitch con Datos Verificados
+- Costia — Sistema de Costeo Gastronómico y Fijación de Precios de Venta
+- 6. Pitch de Presentación con Datos Verificados
 
 ## God Nodes (most connected - your core abstractions)
-1. `StoreService` - 52 edges
-2. `AsesorCostiaAgent` - 52 edges
-3. `CrearProductoController` - 39 edges
-4. `DashboardWorkstationController` - 29 edges
-5. `InsumosController` - 22 edges
-6. `@playwright/test` - 20 edges
-7. `AsesorParser` - 18 edges
-8. `Producto` - 17 edges
-9. `ProductosWorkstationController` - 15 edges
-10. `Usuario` - 14 edges
+1. `StoreService` - 54 edges
+2. `CrearProductoController` - 52 edges
+3. `AsesorCostiaAgent` - 52 edges
+4. `OfertasCierreController` - 38 edges
+5. `DashboardWorkstationController` - 35 edges
+6. `VitrinaPublicaController` - 25 edges
+7. `InsumosController` - 23 edges
+8. `@playwright/test` - 21 edges
+9. `AsesorParser` - 18 edges
+10. `Producto` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `7. Preguntas Frecuentes del Jurado y Respuestas Modelo` --references--> `StoreService`  [INFERRED]
+  docs/GUIA_ESTUDIO_Y_PITCH_COSTIA.md → assets/js/store.js
 - `1. Ficha Técnica del Proyecto` --references--> `StoreService`  [INFERRED]
   docs/entregas/GUIA_PRESENTACION.md → assets/js/store.js
 - `5. *"¿La configuración del negocio (arriendo, nómina, delivery) también persiste en MySQL?"*` --references--> `StoreService`  [INFERRED]
@@ -80,21 +90,19 @@
   docs/entregas/GUIA_PRESENTACION.md → assets/js/store.js
 - `Minuto 1:30 – 3:30 | Arquitectura MVC, Híbrida y Base de Datos (Integrante B)` --references--> `StoreService`  [INFERRED]
   docs/entregas/GUIA_PRESENTACION.md → assets/js/store.js
-- `1. Conversión Universal (`UnidadConverter` en `assets/js/models.js`)` --references--> `UnidadConverter`  [INFERRED]
-  docs/entregas/GUIA_PRESENTACION.md → assets/js/models.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (54 total, 37 thin omitted)
+## Communities (64 total, 41 thin omitted)
 
-### Community 1 - "Producto"
-Cohesion: 0.09
-Nodes (12): Insumo, ItemReceta, Producto, UnidadConverter, 12. Mapa de Estudio Rápido para el Compañero, 🏗 Arquitectura del Software, 🤖 Asesor Financiero IA (Híbrido: Ollama + Motor Determinista), Costia — Sistema de Costeo Gastronómico y Fijación de Precios de Venta (+4 more)
+### Community 1 - "UnidadConverter"
+Cohesion: 0.15
+Nodes (9): ItemReceta, UnidadConverter, 12. Mapa de Estudio Rápido para el Compañero, 1. Conversión Universal (`UnidadConverter` en `assets/js/models.js`), 2. Costo Real Unitario (con Merma, Empaque y Prorrateo de Gastos Fijos), 3. Markup vs. Margen Comercial sobre Venta, 4. Equivalencia Delivery e Impoconsumo, 7. Lógica Matemática, Tributaria y Gastronómica de Costeo (+1 more)
 
-### Community 2 - "InsumoController"
-Cohesion: 0.09
-Nodes (7): Database, InsumoController, ProductoController, Patrones principales del código:, 🚀 Ejecución Rápida, Modo 1: Arrancar en 1 comando sin configurar Apache, Modo 2: Apache + MySQL (XAMPP / Laragon)
+### Community 2 - "OfertaController"
+Cohesion: 0.19
+Nodes (3): {closure#1}(), {closure#2}(), OfertaController
 
 ### Community 4 - "Usuario"
 Cohesion: 0.11
@@ -108,9 +116,9 @@ Nodes (10): background_color, description, display, icons, name, orientation, sc
 Cohesion: 0.15
 Nodes (11): formatoPesos(), inicializarMesaCosteo(), recalcular(), RECETAS_DEMO, Global Constraints, Rediseño Editorial de `index.html` ("Atelier Gastronómico") Implementation Plan, Review Focus, Task 1: Reestructurar el HTML semántico de `index.html` en 4 Actos Destilados (+3 more)
 
-### Community 25 - "🎓 COSTIA — Guía de Estudio y Defensa de Proyecto"
-Cohesion: 0.07
-Nodes (28): 10. Banco de Preguntas Trampa del Docente y Respuestas Modelo, 11. Plan de Contingencia, 1. Conversión Universal (`UnidadConverter` en `assets/js/models.js`), 1. Ficha Técnica del Proyecto, 1. *"¿Por qué utilizaron PDO en lugar de MySQLi?"*, 2. Costo Real Unitario (con Merma, Empaque y Prorrateo de Gastos Fijos), 2. *"¿Dónde está aplicada la Tercera Forma Normal (3FN)?"*, 2. El Problema que Resuelve (Justificación de Negocio) (+20 more)
+### Community 25 - ".getConnection"
+Cohesion: 0.09
+Nodes (7): Database, InsumoController, ProductoController, Patrones principales del código:, 🚀 Ejecución Rápida, Modo 1: Arrancar en 1 comando sin configurar Apache, Modo 2: Apache + MySQL (XAMPP / Laragon)
 
 ### Community 28 - "Documento de Diseño: Organización Estructural del Proyecto Costia"
 Cohesion: 0.20
@@ -140,6 +148,10 @@ Nodes (7): Plan de Implementación: Rediseño del Ecosistema Interno Costia, Reg
 Cohesion: 0.12
 Nodes (9): @playwright/test, { test, expect }, { test, expect }, { test, expect }, { test, expect }, { test, expect }, { test, expect }, { test, expect } (+1 more)
 
+### Community 38 - "README.md"
+Cohesion: 0.12
+Nodes (3): ConfiguracionController, controladorCrear, FichaTecnicaControlador
+
 ### Community 45 - "package.json"
 Cohesion: 0.15
 Nodes (12): author, description, devDependencies, @playwright/test@^1.64.1, directories, doc, keywords, license (+4 more)
@@ -156,23 +168,43 @@ Nodes (3): APP_PAGES, { test, expect }, VIEWPORTS
 Cohesion: 0.28
 Nodes (3): { defineConfig, devices }, fs, ARTIFACT_DIR
 
+### Community 57 - "🎓 COSTIA — Guía de Estudio y Defensa de Proyecto"
+Cohesion: 0.09
+Nodes (23): 10. Banco de Preguntas Trampa del Docente y Respuestas Modelo, 11. Plan de Contingencia, 1. Ficha Técnica del Proyecto, 1. *"¿Por qué utilizaron PDO en lugar de MySQLi?"*, 2. *"¿Dónde está aplicada la Tercera Forma Normal (3FN)?"*, 2. El Problema que Resuelve (Justificación de Negocio), 3. *"¿Cómo garantizan transacciones atómicas al crear o actualizar recetas?"*, 3. Repartición de Roles para la Exposición (+15 more)
+
+### Community 58 - "models.js"
+Cohesion: 0.20
+Nodes (3): ImageHelper, Insumo, 3. Librerías, APIs y Tecnologías Utilizadas (y para qué sirve cada una)
+
+### Community 60 - "Costia — Guía Completa de Estudio, Arquitectura, Librerías y Pitch con Datos Verificados"
+Cohesion: 0.18
+Nodes (10): 1. ¿Qué es Costia y qué problema resuelve?, 2.1. Capas del Sistema, 2.2. Seguridad y Cumplimiento Legal Incorporados, 2. Arquitectura Técnica y Mapa del Proyecto, 4. Recorrido Rápido por los Módulos (Mapa de Estudio), 7. Preguntas Frecuentes del Jurado y Respuestas Modelo, 8. Cómo Ejecutar el Proyecto (Guía Rápida para tu Compañero), Costia — Guía Completa de Estudio, Arquitectura, Librerías y Pitch con Datos Verificados (+2 more)
+
+### Community 61 - "Costia — Sistema de Costeo Gastronómico y Fijación de Precios de Venta"
+Cohesion: 0.29
+Nodes (7): 🏗 Arquitectura del Software, 🤖 Asesor Financiero IA (Híbrido: Ollama + Motor Determinista), Costia — Sistema de Costeo Gastronómico y Fijación de Precios de Venta, 📖 Mapa de Estudio Rápido (Para entender el código en 4 pasos), 🧪 Pruebas Automatizadas E2E (Playwright), 🛠 Requisitos del Entorno, 👤 Usuario de Prueba Preconfigurado
+
+### Community 63 - "6. Pitch de Presentación con Datos Verificados"
+Cohesion: 0.50
+Nodes (4): 6.1. Cifras Verificadas Clave para Memorizar, 6.2. Elevator Pitch (60 segundos), 6.3. Guion de Presentación Completo (3 minutos + Demo en Vivo), 6. Pitch de Presentación con Datos Verificados
+
 ## Knowledge Gaps
-- **37 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **41 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AsesorCostiaAgent` connect `AsesorCostiaAgent` to `README.md`?**
-  _High betweenness centrality (0.069) - this node is a cross-community bridge._
-- **Are the 8 inferred relationships involving `StoreService` (e.g. with `12. Mapa de Estudio Rápido para el Compañero` and `1. Ficha Técnica del Proyecto`) actually correct?**
-  _`StoreService` has 8 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `StoreService` connect `StoreService` to `UnidadConverter`, `Usuario`, `README.md`, `.getConnection`, `models.js`, `Costia — Guía Completa de Estudio, Arquitectura, Librerías y Pitch con Datos Verificados`, `Costia — Sistema de Costeo Gastronómico y Fijación de Precios de Venta`, `🎓 COSTIA — Guía de Estudio y Defensa de Proyecto`?**
+  _High betweenness centrality (0.064) - this node is a cross-community bridge._
+- **Are the 10 inferred relationships involving `StoreService` (e.g. with `12. Mapa de Estudio Rápido para el Compañero` and `1. Ficha Técnica del Proyecto`) actually correct?**
+  _`StoreService` has 10 INFERRED edges - model-reasoned connections that need verification._
 - **Should `StoreService` be split into smaller, more focused modules?**
   _Cohesion score 0.13002114164904863 - nodes in this community are weakly interconnected._
-- **Why does `StoreService` connect `StoreService` to `Producto`, `InsumoController`, `Usuario`, `README.md`, `🎓 COSTIA — Guía de Estudio y Defensa de Proyecto`?**
-  _High betweenness centrality (0.066) - this node is a cross-community bridge._
-- **Should `Producto` be split into smaller, more focused modules?**
-  _Cohesion score 0.0855614973262032 - nodes in this community are weakly interconnected._
+- **Why does `AsesorCostiaAgent` connect `AsesorCostiaAgent` to `README.md`?**
+  _High betweenness centrality (0.056) - this node is a cross-community bridge._
+- **Should `CrearProductoController` be split into smaller, more focused modules?**
+  _Cohesion score 0.13800904977375567 - nodes in this community are weakly interconnected._
 - **Why does `CrearProductoController` connect `CrearProductoController` to `README.md`?**
-  _High betweenness centrality (0.052) - this node is a cross-community bridge._
-- **Should `InsumoController` be split into smaller, more focused modules?**
-  _Cohesion score 0.09230769230769231 - nodes in this community are weakly interconnected._
+  _High betweenness centrality (0.056) - this node is a cross-community bridge._
+- **Should `Usuario` be split into smaller, more focused modules?**
+  _Cohesion score 0.10685483870967742 - nodes in this community are weakly interconnected._

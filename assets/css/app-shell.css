@@ -12,6 +12,12 @@
      - 100% Responsivo: Cajón lateral off-canvas en pantallas móviles.
    ============================================================ */
 
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+    background-color: #0A1410;
+    color-scheme: dark;
+}
+
 /* ===== ACCESIBILIDAD: SKIP LINK (WCAG AAA) ===== */
 .costia-skip-link {
     position: absolute;
@@ -66,6 +72,24 @@
     z-index: 90;
     border-bottom: 1px solid rgba(246, 242, 234, 0.1);
     box-sizing: border-box;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+html:not([data-theme="dark"]) body:not(.dark-mode) .costia-mobile-bar {
+    background: #FDFBF7;
+    color: #0D241C;
+    border-bottom: 1px solid rgba(13, 36, 28, 0.12);
+}
+
+html:not([data-theme="dark"]) body:not(.dark-mode) .costia-mobile-brand,
+html:not([data-theme="dark"]) body:not(.dark-mode) .costia-mobile-brand-title {
+    color: #0D241C;
+}
+
+html:not([data-theme="dark"]) body:not(.dark-mode) .costia-mobile-toggle {
+    background: rgba(13, 36, 28, 0.06);
+    border-color: rgba(13, 36, 28, 0.14);
+    color: #0D241C;
 }
 
 @media (min-width: 900px) {
@@ -157,6 +181,7 @@ body.sidebar-open .costia-drawer-backdrop {
     padding: 14px 10px;
     scrollbar-width: thin;
     scrollbar-color: rgba(246, 242, 234, 0.2) transparent;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .terminal-sidebar::-webkit-scrollbar {
@@ -247,11 +272,13 @@ body.sidebar-open .costia-drawer-backdrop {
     }
 }
 
-/* Modo claro opcional para el sidebar */
-.terminal-sidebar.theme-light {
-    background: #FFFFFF;
+/* Modo claro para el sidebar */
+.terminal-sidebar.theme-light,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar {
+    background: #FDFBF7;
     color: #10211B;
-    border-right: 1px solid rgba(7, 31, 23, 0.12);
+    border-right: 1px solid rgba(13, 36, 28, 0.12);
+    scrollbar-color: rgba(13, 36, 28, 0.2) transparent;
 }
 
 .sidebar-inner {
@@ -273,8 +300,9 @@ body.sidebar-open .costia-drawer-backdrop {
     margin-bottom: 12px;
 }
 
-.terminal-sidebar.theme-light .sidebar-brand-box {
-    border-bottom-color: rgba(7, 31, 23, 0.1);
+.terminal-sidebar.theme-light .sidebar-brand-box,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-brand-box {
+    border-bottom-color: rgba(13, 36, 28, 0.1);
 }
 
 .sidebar-brand-link {
@@ -284,6 +312,10 @@ body.sidebar-open .costia-drawer-backdrop {
     text-decoration: none;
     color: #FFFFFF;
     min-height: 44px;
+}
+
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-brand-link {
+    color: #0D241C;
 }
 
 .sidebar-brand-logo {
@@ -303,8 +335,9 @@ body.sidebar-open .costia-drawer-backdrop {
     letter-spacing: -0.2px;
 }
 
-.terminal-sidebar.theme-light .sidebar-brand-title {
-    color: #071F17;
+.terminal-sidebar.theme-light .sidebar-brand-title,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-brand-title {
+    color: #0D241C;
 }
 
 /* Botón cerrar del drawer móvil */
@@ -320,6 +353,12 @@ body.sidebar-open .costia-drawer-backdrop {
     color: #CBD5E1;
     cursor: pointer;
     transition: background 0.15s ease;
+}
+
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-close-btn {
+    background: rgba(13, 36, 28, 0.06);
+    border-color: rgba(13, 36, 28, 0.14);
+    color: #0D241C;
 }
 
 .sidebar-close-btn:hover {
@@ -366,8 +405,9 @@ body.sidebar-open .costia-drawer-backdrop {
     text-align: left;
 }
 
-.terminal-sidebar.theme-light .sidebar-item-link {
-    color: #3D4F47;
+.terminal-sidebar.theme-light .sidebar-item-link,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-item-link {
+    color: #2E3D36;
 }
 
 .sidebar-item-link:hover {
@@ -375,7 +415,8 @@ body.sidebar-open .costia-drawer-backdrop {
     color: #FFFFFF;
 }
 
-.terminal-sidebar.theme-light .sidebar-item-link:hover {
+.terminal-sidebar.theme-light .sidebar-item-link:hover,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-item-link:hover {
     background: #EDE6D8;
     color: #0D241C;
 }
@@ -387,8 +428,9 @@ body.sidebar-open .costia-drawer-backdrop {
     font-weight: 700;
 }
 
-.terminal-sidebar.theme-light .sidebar-item-link.activo {
-    background: #EDE6D8;
+.terminal-sidebar.theme-light .sidebar-item-link.activo,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-item-link.activo {
+    background: #E8F2EC;
     color: #0F6A4A;
 }
 
@@ -462,11 +504,13 @@ body.sidebar-open .costia-drawer-backdrop {
     background: rgba(246, 242, 234, 0.06);
 }
 
-.terminal-sidebar.theme-light .sidebar-sublink {
-    color: #555D57;
+.terminal-sidebar.theme-light .sidebar-sublink,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-sublink {
+    color: #4E554F;
 }
 
-.terminal-sidebar.theme-light .sidebar-sublink:hover {
+.terminal-sidebar.theme-light .sidebar-sublink:hover,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-sublink:hover {
     color: #0F6A4A;
     background: rgba(15, 106, 74, 0.08);
 }
@@ -477,7 +521,8 @@ body.sidebar-open .costia-drawer-backdrop {
     font-weight: 600;
 }
 
-.terminal-sidebar.theme-light .sidebar-sublink.activo {
+.terminal-sidebar.theme-light .sidebar-sublink.activo,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-sublink.activo {
     color: #0F6A4A;
     background: rgba(15, 106, 74, 0.12);
 }
@@ -493,11 +538,13 @@ body.sidebar-open .costia-drawer-backdrop {
     background: rgba(239, 68, 68, 0.12) !important;
 }
 
-.terminal-sidebar.theme-light .sidebar-sublink--danger {
+.terminal-sidebar.theme-light .sidebar-sublink--danger,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-sublink--danger {
     color: #B42318 !important;
 }
 
-.terminal-sidebar.theme-light .sidebar-sublink--danger:hover {
+.terminal-sidebar.theme-light .sidebar-sublink--danger:hover,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-sublink--danger:hover {
     color: #912018 !important;
     background: rgba(180, 35, 24, 0.08) !important;
 }
@@ -521,8 +568,9 @@ body.sidebar-open .costia-drawer-backdrop {
     margin-top: auto;
 }
 
-.terminal-sidebar.theme-light .sidebar-footer-box {
-    border-top-color: rgba(26, 30, 27, 0.1);
+.terminal-sidebar.theme-light .sidebar-footer-box,
+html:not([data-theme="dark"]) body:not(.dark-mode) .terminal-sidebar .sidebar-footer-box {
+    border-top-color: rgba(13, 36, 28, 0.1);
 }
 
 /* Viewport Principal a la Derecha */
@@ -862,11 +910,14 @@ body.dark-mode .terminal-shell-container,
 [data-theme="dark"] .terminal-shell-container,
 body.dark-mode .terminal-content-viewport,
 [data-theme="dark"] .terminal-content-viewport,
+body.dark-mode .app,
+[data-theme="dark"] .app,
 body.dark-mode .contenido,
 [data-theme="dark"] .contenido,
 body.dark-mode .terminal-main-stage,
 [data-theme="dark"] .terminal-main-stage {
     background-color: #0A1410 !important;
+    background-image: none !important;
     color: #F4F0E6 !important;
 }
 
@@ -1357,6 +1408,104 @@ body.dark-mode .topbar-status-bar .topbar-btn:hover,
     background: #0F6A4A !important;
     border-color: #2BB67E !important;
     color: #FDFBF7 !important;
+}
+
+/* ============================================================
+   VIEW TRANSITIONS (Navegación MPA fluida sin parpadeo brusco)
+   ============================================================ */
+@view-transition {
+    navigation: auto;
+}
+
+.terminal-sidebar {
+    view-transition-name: costia-sidebar;
+}
+
+.topbar-status-bar {
+    view-transition-name: costia-topbar;
+}
+
+.costia-mobile-bar {
+    view-transition-name: costia-mobile-bar;
+}
+
+.terminal-content-viewport main {
+    view-transition-name: costia-stage;
+}
+
+::view-transition-group(costia-sidebar),
+::view-transition-group(costia-topbar),
+::view-transition-group(costia-mobile-bar) {
+    animation-duration: 0ms;
+}
+
+::view-transition-old(costia-sidebar),
+::view-transition-new(costia-sidebar),
+::view-transition-old(costia-topbar),
+::view-transition-new(costia-topbar),
+::view-transition-old(costia-mobile-bar),
+::view-transition-new(costia-mobile-bar) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+@keyframes costia-vt-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes costia-vt-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+::view-transition-old(costia-stage) {
+    animation: costia-vt-out 130ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+::view-transition-new(costia-stage) {
+    animation: costia-vt-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 150ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Fallback progresivo para navegadores sin View Transitions cross-document */
+@supports not (view-transition-name: costia-stage) {
+    .terminal-content-viewport main {
+        animation: costia-vt-in 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root),
+    ::view-transition-old(costia-stage),
+    ::view-transition-new(costia-stage) {
+        animation: none;
+        animation-duration: 1ms;
+    }
+
+    @supports not (view-transition-name: costia-stage) {
+        .terminal-content-viewport main {
+            animation: none;
+        }
+    }
 }
 
 

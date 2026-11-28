@@ -24,9 +24,16 @@ class ThemeManager {
 
     aplicarTema(tema) {
         this.temaActual = tema;
+        const esDark = tema === 'dark';
         document.documentElement.setAttribute('data-theme', tema);
+        document.documentElement.style.backgroundColor = esDark ? '#0A1410' : '';
+        document.documentElement.style.colorScheme = esDark ? 'dark' : 'light';
         if (document.body) {
-            document.body.classList.toggle('dark-mode', tema === 'dark');
+            document.body.classList.toggle('dark-mode', esDark);
+        }
+        const sidebar = document.getElementById('terminal-sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('theme-light', !esDark);
         }
         localStorage.setItem(ThemeManager.CLAVE_STORAGE, tema);
         this.actualizarBotonUI();

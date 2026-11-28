@@ -44,6 +44,12 @@ class AppShell {
             icon: '<svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M3 14l2-7 2 7a2 2 0 0 1-4 0z"/><path d="M17 14l2-7 2 7a2 2 0 0 1-4 0z"/></svg>'
         },
         {
+            key: 'ofertas-cierre',
+            href: 'ofertas-cierre.html',
+            label: 'Ofertas Cierre',
+            icon: '<svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>'
+        },
+        {
             key: 'configuracion',
             href: 'configuracion.html',
             id: 'link-sidebar-config-page',
@@ -51,6 +57,8 @@ class AppShell {
             icon: '<svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>'
         }
     ];
+
+    static PREFETCHED_URLS = new Set();
 
     constructor() {
         this.sidebar = document.getElementById('terminal-sidebar');
@@ -82,6 +90,7 @@ class AppShell {
         if (path.includes('crear-producto.html')) return 'crear-producto';
         if (path.includes('ficha-tecnica.html') || path.includes('ficha-preview.html')) return 'ficha-tecnica';
         if (path.includes('equilibrio.html')) return 'equilibrio';
+        if (path.includes('ofertas-cierre.html')) return 'ofertas-cierre';
         if (path.includes('configuracion.html')) return 'configuracion';
         return 'dashboard';
     }
@@ -225,6 +234,12 @@ class AppShell {
                     this.cerrarDrawer();
                 }
             });
+
+            if (!link.classList.contains('activo')) {
+                const prefetchDestino = () => this.precargarDocumento(link.getAttribute('href'));
+                link.addEventListener('pointerenter', prefetchDestino, { passive: true });
+                link.addEventListener('focusin', prefetchDestino, { passive: true });
+            }
         });
 
         const linkAsesor = document.getElementById('link-sidebar-asesor');
@@ -265,6 +280,26 @@ class AppShell {
         document.body.classList.remove('sidebar-open');
         if (this.backdrop) this.backdrop.classList.remove('activo');
         if (this.btnMobileToggle) this.btnMobileToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    precargarDocumento(href) {
+        if (!href || !document.head) return;
+        if (navigator.connection && navigator.connection.saveData) return;
+        let url;
+        try {
+            url = new URL(href, window.location.href);
+        } catch (_) {
+            return;
+        }
+        if (url.origin !== window.location.origin || !url.pathname.toLowerCase().endsWith('.html')) return;
+        if (AppShell.PREFETCHED_URLS.has(url.href)) return;
+        AppShell.PREFETCHED_URLS.add(url.href);
+
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.as = 'document';
+        link.href = url.href;
+        document.head.appendChild(link);
     }
 }
 

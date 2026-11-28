@@ -21,25 +21,33 @@ class CrearProductoController {
         this.porcentajeGastoProporcional = 25;
         this.recomendacionModoActual     = null;
         this._cargandoBorrador           = false;
+        this.canastaIds                  = new Set();
+        this.filtroDespensa              = 'todos';
+        this.busquedaDespensa            = '';
+        this.productoImagen              = null;
+        this._bounceTimer                = null;
     }
 
     iniciar() {
         this.configurarEventosGenerales();
-        this.renderizarChipsInsumosRapidos();
+        this.renderizarDespensa();
+        this.renderizarCanasta();
         const editando = this.cargarProductoSiEsEdicion();
         if (!editando) {
             this.precargarDefaultsNegocio();
             const borradorRestaurado = this.restaurarBorrador();
             if (!borradorRestaurado) {
-                this.agregarFila(); // fila inicial
+                this.agregarFila(); // fila inicial de respaldo
                 this.actualizarResumen();
+                this.irAPaso(1, { forzar: true });
             }
         }
 
         // Si MySQL responde con sincronización posterior, recargar si es edición
         Store.alActualizar(() => {
             this.actualizarOpcionesInsumos();
-            this.renderizarChipsInsumosRapidos();
+            this.renderizarDespensa();
+            this.renderizarCanasta();
             if (this.productoEditandoId) {
                 this.cargarProductoSiEsEdicion();
             }
@@ -87,19 +95,56 @@ class CrearProductoController {
             });
         });
 
-        const inputFiltroRapido = document.getElementById('buscar-insumo-rapido');
-        inputFiltroRapido?.addEventListener('input', (e) => {
-            this.renderizarChipsInsumosRapidos(e.target.value || '');
+        const inputBuscarDespensa = document.getElementById('buscar-despensa');
+        inputBuscarDespensa?.addEventListener('input', (e) => {
+            this.busquedaDespensa = e.target.value || '';
+            this.renderizarDespensa();
         });
 
-        document.getElementById('insumos-rapidos-chips')?.addEventListener('click', (e) => {
-            const chip = e.target.closest('.insumo-rapido-chip[data-insumo-id]');
-            if (!chip) return;
-            const insumoId = parseInt(chip.dataset.insumoId, 10);
-            if (insumoId) this.agregarInsumoRapido(insumoId);
+        document.getElementById('despensa-filtros')?.addEventListener('click', (e) => {
+            const pill = e.target.closest('.despensa-filtro-pill[data-filtro]');
+            if (!pill) return;
+            document.querySelectorAll('.despensa-filtro-pill').forEach(p => p.classList.remove('activo'));
+            pill.classList.add('activo');
+            this.filtroDespensa = pill.dataset.filtro || 'todos';
+            this.renderizarDespensa();
         });
 
-        // 1b. Navegación y herramientas del Wizard de 3 pasos
+        document.getElementById('despensa-grid')?.addEventListener('click', (e) => {
+            const card = e.target.closest('.despensa-card[data-insumo-id]');
+            if (!card) return;
+            const insumoId = parseInt(card.dataset.insumoId, 10);
+            if (insumoId) this.toggleInsumoCanasta(insumoId, card);
+        });
+
+        // Foto opcional del producto
+        this.configurarFotoProducto();
+
+        // Canasta flotante y drawer
+        document.getElementById('btn-canasta-flotante')?.addEventListener('click', () => this.abrirCanasta());
+        document.getElementById('btn-cerrar-canasta')?.addEventListener('click', () => this.cerrarCanasta());
+        document.getElementById('canasta-backdrop')?.addEventListener('click', () => this.cerrarCanasta());
+        document.getElementById('btn-vaciar-canasta')?.addEventListener('click', () => this.vaciarCanasta());
+        document.getElementById('btn-canasta-continuar')?.addEventListener('click', () => {
+            this.cerrarCanasta();
+            this.irAPaso(2);
+        });
+
+        document.getElementById('canasta-lista')?.addEventListener('click', (e) => {
+            const btnQuitar = e.target.closest('[data-quitar-canasta]');
+            if (!btnQuitar) return;
+            const insumoId = parseInt(btnQuitar.dataset.quitarCanasta, 10);
+            if (insumoId) this.quitarDeCanasta(insumoId);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const drawer = document.getElementById('canasta-drawer');
+                if (drawer && !drawer.hidden) this.cerrarCanasta();
+            }
+        });
+
+        // 1b. Navegación y herramientas del Wizard de 4 pasos
         this.configurarEventosWizard();
 
         // 2. Costos adicionales
@@ -247,9 +292,12 @@ class CrearProductoController {
 
         document.getElementById('btn-ir-paso-2')?.addEventListener('click', () => this.irAPaso(2));
         document.getElementById('btn-volver-paso-1')?.addEventListener('click', () => this.irAPaso(1));
+        document.getElementById('btn-volver-despensa')?.addEventListener('click', () => this.irAPaso(1));
         document.getElementById('btn-ir-paso-3')?.addEventListener('click', () => this.irAPaso(3));
         document.getElementById('btn-volver-paso-2')?.addEventListener('click', () => this.irAPaso(2));
-        document.getElementById('btn-volver-paso-1-desde-3')?.addEventListener('click', () => this.irAPaso(1));
+        document.getElementById('btn-ir-paso-4')?.addEventListener('click', () => this.irAPaso(4));
+        document.getElementById('btn-volver-paso-3')?.addEventListener('click', () => this.irAPaso(3));
+        document.getElementById('btn-volver-paso-1-desde-4')?.addEventListener('click', () => this.irAPaso(1));
 
         document.querySelectorAll('.gastos-prop-pill[data-pct-gasto]').forEach(pill => {
             pill.addEventListener('click', () => {
@@ -285,7 +333,15 @@ class CrearProductoController {
     }
 
     /**
-     * Verifica que el Paso 1 tenga al menos un insumo con cantidad y costo válido (> 0).
+     * Verifica que el Paso 1 tenga al menos un ingrediente elegido en la canasta o ya cargado en tabla.
+     */
+    tieneIngredientesElegidos() {
+        if (this.canastaIds && this.canastaIds.size > 0) return true;
+        return this.tieneInsumosValidos();
+    }
+
+    /**
+     * Verifica que la receta tenga al menos un insumo con cantidad y costo válido (> 0).
      */
     tieneInsumosValidos() {
         const items = this.obtenerItemsRecetaFormulario();
@@ -300,18 +356,39 @@ class CrearProductoController {
     }
 
     /**
-     * Navega entre los pasos 1, 2 y 3 conservando todo el estado del formulario.
-     * Exige al menos un insumo válido en el Paso 1 para avanzar al Paso 2 o Paso 3.
+     * Navega entre los pasos 1, 2, 3 y 4 conservando todo el estado del formulario.
      */
     irAPaso(numeroPaso, opciones = {}) {
-        const paso = Math.min(3, Math.max(1, parseInt(numeroPaso, 10) || 1));
+        const paso = Math.min(4, Math.max(1, parseInt(numeroPaso, 10) || 1));
+        const tieneSeleccion = this.tieneIngredientesElegidos();
         const insumosValidos = this.tieneInsumosValidos();
 
-        if (paso > 1 && !opciones.forzar && !insumosValidos) {
-            Store.toast('Primero registra al menos un insumo con cantidad en el Paso 1 para calcular los gastos proporcionales.', 'info');
-            const primerSelect = document.querySelector('#receta-cuerpo .fila-insumo');
-            if (primerSelect) primerSelect.focus();
+        if (paso === 2 && !opciones.forzar && !tieneSeleccion) {
+            Store.toast('Primero elige al menos 1 ingrediente de tu despensa para armar la canasta.', 'info');
+            document.getElementById('buscar-despensa')?.focus();
             return false;
+        }
+
+        if (paso >= 3 && !opciones.forzar) {
+            if (!tieneSeleccion) {
+                Store.toast('Primero elige al menos 1 ingrediente de tu despensa.', 'info');
+                this.irAPaso(1, { forzar: true });
+                return false;
+            }
+            if (this.pasoActual === 1) {
+                this.sincronizarCanastaConTabla();
+            }
+            if (!this.tieneInsumosValidos()) {
+                Store.toast('Define una cantidad válida (> 0) en el Paso 2 para continuar.', 'info');
+                this.irAPaso(2, { forzar: true });
+                const primerCant = document.querySelector('#receta-cuerpo .fila-cantidad');
+                if (primerCant) primerCant.focus();
+                return false;
+            }
+        }
+
+        if (paso === 2) {
+            this.sincronizarCanastaConTabla();
         }
 
         this.pasoActual = paso;
@@ -324,7 +401,10 @@ class CrearProductoController {
         document.querySelectorAll('.wizard-step-tab').forEach(tab => {
             const tabPaso = parseInt(tab.dataset.paso, 10);
             const esActivo = tabPaso === paso;
-            const estaCompletado = tabPaso < paso || (tabPaso === 1 && insumosValidos && paso > 1);
+            const estaCompletado =
+                (tabPaso === 1 && tieneSeleccion && paso > 1) ||
+                (tabPaso === 2 && insumosValidos && paso > 2) ||
+                (tabPaso === 3 && insumosValidos && paso > 3);
             tab.classList.toggle('activo', esActivo);
             tab.classList.toggle('completado', estaCompletado);
             tab.setAttribute('aria-selected', esActivo ? 'true' : 'false');
@@ -337,12 +417,20 @@ class CrearProductoController {
 
         const fill = document.getElementById('wizard-progress-fill');
         if (fill) {
-            fill.style.width = paso === 1 ? '33.33%' : (paso === 2 ? '66.66%' : '100%');
+            fill.style.width = `${paso * 25}%`;
         }
 
         const layout = document.getElementById('crear-layout');
         if (layout) {
-            layout.classList.toggle('crear-layout--con-resumen', paso === 3);
+            layout.classList.toggle('crear-layout--con-resumen', paso === 4);
+        }
+
+        const btnCanasta = document.getElementById('btn-canasta-flotante');
+        if (btnCanasta) {
+            btnCanasta.hidden = paso !== 1;
+        }
+        if (paso !== 1) {
+            this.cerrarCanasta();
         }
 
         this.actualizarResumen();
@@ -522,7 +610,7 @@ class CrearProductoController {
     }
 
     /**
-     * Actualiza los textos, métricas proporcionales, alertas y recomendaciones de los 3 pasos.
+     * Actualiza los textos, métricas proporcionales, alertas y recomendaciones de los 4 pasos.
      */
     actualizarTarjetasWizard({ nombre, unidades, receta, costoIngredientes, costoMerma, empaque, manoObra, merma, insumos }) {
         const setTxt = (id, val) => {
@@ -531,23 +619,38 @@ class CrearProductoController {
         };
 
         const itemsCount = receta.length;
+        const canastaCount = this.canastaIds ? this.canastaIds.size : 0;
         const tieneInsumos = itemsCount > 0 && costoIngredientes > 0;
         const costoInsumoUnidad = costoIngredientes / unidades;
         const prop = this.calcularGastosProporcionalesSugeridos(costoIngredientes, unidades, nombre);
 
-        // 1. Stepper y Paso 1
+        // 1. Stepper y Paso 1 (Despensa / Canasta)
         setTxt(
             'stepper-resumen-1',
-            tieneInsumos ? `${itemsCount} insumo(s) · ${Store.fmt(costoInsumoUnidad)}/ud` : 'Define receta y unidades'
+            canastaCount > 0
+                ? `${canastaCount} ${canastaCount === 1 ? 'ingrediente' : 'ingredientes'} en canasta`
+                : 'Arma tu canasta'
         );
         setTxt(
             'paso-1-estado-texto',
-            tieneInsumos
-                ? `${itemsCount} insumo(s) · Lote ${Store.fmt(costoIngredientes)} (${Store.fmt(costoInsumoUnidad)}/ud)`
-                : 'Agrega al menos 1 insumo para continuar'
+            canastaCount > 0
+                ? `${canastaCount} ${canastaCount === 1 ? 'ingrediente elegido' : 'ingredientes elegidos'} en tu canasta`
+                : 'Elige al menos 1 ingrediente para tu canasta'
         );
 
-        // 2. Tarjeta de Gastos Proporcionales en Paso 2
+        // 2. Stepper y Paso 2 (Cantidades)
+        setTxt(
+            'stepper-resumen-2',
+            tieneInsumos ? `${itemsCount} insumo(s) · ${Store.fmt(costoInsumoUnidad)}/ud` : 'Define cantidades y uds'
+        );
+        setTxt(
+            'paso-2-estado-texto',
+            tieneInsumos
+                ? `${itemsCount} insumo(s) · Lote ${Store.fmt(costoIngredientes)} (${Store.fmt(costoInsumoUnidad)}/ud)`
+                : 'Agrega al menos 1 insumo con cantidad > 0'
+        );
+
+        // 3. Tarjeta de Gastos Proporcionales en Paso 3
         setTxt('gasto-ref-insumos-lote', Store.fmt(costoIngredientes));
         setTxt('gasto-ref-unidades', unidades);
         setTxt('gasto-ref-insumo-unidad', Store.fmt(costoInsumoUnidad));
@@ -559,7 +662,7 @@ class CrearProductoController {
 
         const gastoDirectoUnidad = (manoObra / unidades) + empaque;
         setTxt(
-            'stepper-resumen-2',
+            'stepper-resumen-3',
             tieneInsumos
                 ? (manoObra > 0 || empaque > 0 || merma > 0
                     ? `Merma ${merma}% · Gastos ${Store.fmt(gastoDirectoUnidad)}/ud`
@@ -580,7 +683,7 @@ class CrearProductoController {
             }
         }
 
-        // 3. Recomendación inteligente de Modo en Paso 3
+        // 4. Recomendación inteligente de Modo en Paso 4
         const gastoAdicionalTotalUnidad = Math.max(0, (costoMerma + (empaque * unidades) + manoObra) / unidades);
         const recModo = this.calcularRecomendacionModo({
             nombre,
@@ -623,17 +726,19 @@ class CrearProductoController {
 
         setTxt('margen-sugerido-texto', `${recModo.margenComp}%`);
         setTxt(
-            'stepper-resumen-3',
+            'stepper-resumen-4',
             tieneInsumos
                 ? (esMargenRec ? `Sugerido: Margen ${recModo.margenComp}%` : `Sugerido: Mult. ×${recModo.multComp}`)
-                : 'Modo recomendado y liquidación'
+                : 'Modo de precio y resumen'
         );
 
         // Actualizar estado visual de completado en las pestañas del stepper
         const tab1 = document.getElementById('tab-paso-1');
-        if (tab1) {
-            tab1.classList.toggle('completado', tieneInsumos && this.pasoActual > 1);
-        }
+        const tab2 = document.getElementById('tab-paso-2');
+        const tab3 = document.getElementById('tab-paso-3');
+        if (tab1) tab1.classList.toggle('completado', (canastaCount > 0 || tieneInsumos) && this.pasoActual > 1);
+        if (tab2) tab2.classList.toggle('completado', tieneInsumos && this.pasoActual > 2);
+        if (tab3) tab3.classList.toggle('completado', tieneInsumos && this.pasoActual > 3);
     }
 
     // ─── Filas de Ingredientes en la Receta ───────────────────────
@@ -649,80 +754,402 @@ class CrearProductoController {
         });
     }
 
-    renderizarChipsInsumosRapidos(filtro = '') {
-        const cont = document.getElementById('insumos-rapidos-chips');
-        if (!cont) return;
-        const q = String(filtro || '').trim().toLowerCase();
-        const insumos = this.obtenerInsumos();
-        const usados = new Set(
-            Array.from(document.querySelectorAll('#receta-cuerpo .fila-insumo'))
-                .map(sel => parseInt(sel.value, 10))
-                .filter(Boolean)
-        );
+    // ─── Foto opcional del producto ───────────────────────────────
 
-        const filtrados = insumos.filter(i => !q || i.nombre.toLowerCase().includes(q));
-        if (filtrados.length === 0) {
-            cont.innerHTML = `<span class="insumos-rapidos-vacio">No hay insumos que coincidan con "${Store.escapeHtml(filtro)}".</span>`;
+    configurarFotoProducto() {
+        const inputImg = document.getElementById('producto-imagen-input');
+        const btnQuitar = document.getElementById('btn-quitar-producto-imagen');
+
+        inputImg?.addEventListener('change', async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            try {
+                this.productoImagen = await ImageHelper.comprimirArchivo(file, { maxSize: 480, quality: 0.82 });
+                this.actualizarPreviewFotoProducto();
+                this.guardarBorrador();
+            } catch (err) {
+                Store.toast(err?.message || 'No se pudo procesar la foto del producto.', 'error');
+                inputImg.value = '';
+            }
+        });
+
+        btnQuitar?.addEventListener('click', () => {
+            this.productoImagen = null;
+            if (inputImg) inputImg.value = '';
+            this.actualizarPreviewFotoProducto();
+            this.guardarBorrador();
+        });
+    }
+
+    actualizarPreviewFotoProducto() {
+        const preview = document.getElementById('producto-imagen-preview');
+        const btnQuitar = document.getElementById('btn-quitar-producto-imagen');
+        if (!preview) return;
+
+        if (this.productoImagen) {
+            preview.innerHTML = `<img src="${Store.escapeHtml(this.productoImagen)}" alt="Vista previa del producto">`;
+            preview.classList.add('tiene-imagen');
+            if (btnQuitar) btnQuitar.hidden = false;
+        } else {
+            preview.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
+            preview.classList.remove('tiene-imagen');
+            if (btnQuitar) btnQuitar.hidden = true;
+        }
+    }
+
+    // ─── Despensa Interactiva y Canasta Animada ──────────────────
+
+    obtenerCategoriaInsumo(insumo) {
+        const u = (insumo?.unidad || '').toLowerCase();
+        if (typeof UnidadConverter !== 'undefined') {
+            if (UnidadConverter.UNIDADES_MASA.includes(u)) return 'masa';
+            if (UnidadConverter.UNIDADES_VOLUMEN.includes(u)) return 'volumen';
+        }
+        return 'otros';
+    }
+
+    iconoInsumoSVG(categoria) {
+        if (categoria === 'masa') {
+            return `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 19h12l-1.5-10h-9L6 19z"/><path d="M9 9a3 3 0 0 1 6 0"/></svg>`;
+        }
+        if (categoria === 'volumen') {
+            return `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`;
+        }
+        return `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
+    }
+
+    renderizarDespensa() {
+        const grid = document.getElementById('despensa-grid');
+        if (!grid) return;
+
+        const q = String(this.busquedaDespensa || '').trim().toLowerCase();
+        const insumos = this.obtenerInsumos();
+        const productos = Store.cargarProductos();
+
+        // Calcular uso real en recetas locales si totalRecetas viene en 0
+        const usoMapa = new Map();
+        productos.forEach(p => {
+            (p.receta || []).forEach(r => {
+                usoMapa.set(r.insumoId, (usoMapa.get(r.insumoId) || 0) + 1);
+            });
+        });
+
+        let filtrados = insumos.filter(ins => {
+            if (q && !ins.nombre.toLowerCase().includes(q)) return false;
+            const cat = this.obtenerCategoriaInsumo(ins);
+            if (this.filtroDespensa === 'masa') return cat === 'masa';
+            if (this.filtroDespensa === 'volumen') return cat === 'volumen';
+            if (this.filtroDespensa === 'otros') return cat === 'otros';
+            if (this.filtroDespensa === 'usados') {
+                return (ins.totalRecetas || usoMapa.get(ins.id) || 0) > 0;
+            }
+            return true;
+        });
+
+        if (this.filtroDespensa === 'usados') {
+            filtrados = [...filtrados].sort((a, b) => {
+                const ua = a.totalRecetas || usoMapa.get(a.id) || 0;
+                const ub = b.totalRecetas || usoMapa.get(b.id) || 0;
+                return ub - ua;
+            });
+        }
+
+        if (insumos.length === 0) {
+            grid.innerHTML = `
+                <div class="despensa-vacio">
+                    <p>Aún no tienes insumos registrados en tu inventario.</p>
+                    <a href="insumos.html#modal-insumo" class="btn-primario">Registrar primer insumo</a>
+                </div>`;
             return;
         }
 
-        cont.innerHTML = filtrados.slice(0, 16).map(i => {
-            const yaEnReceta = usados.has(i.id);
+        if (filtrados.length === 0) {
+            grid.innerHTML = `
+                <div class="despensa-vacio">
+                    <p>No encontramos ingredientes que coincidan con tu búsqueda o filtro.</p>
+                </div>`;
+            return;
+        }
+
+        grid.innerHTML = filtrados.map(ins => {
+            const enCanasta = this.canastaIds.has(ins.id);
+            const cat = this.obtenerCategoriaInsumo(ins);
+            const mediaHTML = ins.imagen
+                ? `<img src="${Store.escapeHtml(ins.imagen)}" alt="${Store.escapeHtml(ins.nombre)}" class="despensa-card__img" loading="lazy">`
+                : `<div class="despensa-card__placeholder despensa-card__placeholder--${cat}">${this.iconoInsumoSVG(cat)}</div>`;
+
             return `
-                <button type="button" class="insumo-rapido-chip${yaEnReceta ? ' activo' : ''}" data-insumo-id="${i.id}" title="${yaEnReceta ? 'Ya está en tu receta (clic para editar cantidad)' : `Agregar ${Store.escapeHtml(i.nombre)} a la receta`}">
-                    <span class="insumo-rapido-chip__ico" aria-hidden="true">${yaEnReceta ? '✓' : '+'}</span>
-                    <span>${Store.escapeHtml(i.nombre)}</span>
-                </button>
-            `;
+                <button
+                    type="button"
+                    class="despensa-card${enCanasta ? ' en-canasta' : ''}"
+                    data-insumo-id="${ins.id}"
+                    aria-pressed="${enCanasta ? 'true' : 'false'}"
+                    title="${enCanasta ? 'Quitar de la canasta' : `Echar ${Store.escapeHtml(ins.nombre)} a la canasta`}"
+                >
+                    <div class="despensa-card__media">
+                        ${mediaHTML}
+                        <span class="despensa-card__badge">${enCanasta ? '✓ En canasta' : '+ Añadir'}</span>
+                    </div>
+                    <div class="despensa-card__body">
+                        <strong class="despensa-card__nombre">${Store.escapeHtml(ins.nombre)}</strong>
+                        <span class="despensa-card__precio tabular-nums">${Store.fmt(ins.precio)} <small>/ ${Store.escapeHtml(ins.unidad)}</small></span>
+                    </div>
+                </button>`;
         }).join('');
     }
 
-    agregarInsumoRapido(insumoId) {
-        const filas = Array.from(document.querySelectorAll('#receta-cuerpo .receta-fila'));
-        const filaExistente = filas.find(f => parseInt(f.querySelector('.fila-insumo')?.value, 10) === insumoId);
-        if (filaExistente) {
-            const cantInput = filaExistente.querySelector('.fila-cantidad');
-            if (cantInput) {
-                cantInput.focus();
-                cantInput.select();
-            }
+    toggleInsumoCanasta(insumoId, cardEl = null) {
+        const insumos = this.obtenerInsumos();
+        const insumo = insumos.find(i => i.id === insumoId);
+        if (!insumo) return;
+
+        if (this.canastaIds.has(insumoId)) {
+            this.quitarDeCanasta(insumoId);
             return;
         }
 
-        const filaVacia = filas.find(f => !f.querySelector('.fila-insumo')?.value);
-        if (filaVacia) {
-            const sel = filaVacia.querySelector('.fila-insumo');
-            const id = parseInt(filaVacia.dataset.id, 10);
-            if (sel) {
-                sel.value = String(insumoId);
-                this.alCambiarInsumo(sel, id);
-                this.actualizarResumen();
-                const cantInput = filaVacia.querySelector('.fila-cantidad');
-                if (cantInput) {
-                    cantInput.focus();
-                    cantInput.select();
-                }
-                return;
-            }
+        this.canastaIds.add(insumoId);
+        if (cardEl) {
+            cardEl.classList.add('en-canasta');
+            cardEl.setAttribute('aria-pressed', 'true');
+            const badge = cardEl.querySelector('.despensa-card__badge');
+            if (badge) badge.textContent = '✓ En canasta';
+            this.animarVueloACanasta(cardEl, insumo);
+        } else {
+            this.renderizarDespensa();
         }
 
+        this.sincronizarCanastaConTabla();
+        this.renderizarCanasta();
+        this.actualizarResumen();
+    }
+
+    quitarDeCanasta(insumoId) {
+        this.canastaIds.delete(insumoId);
+
+        // Remover su fila en Paso 2 si existe
+        const filas = Array.from(document.querySelectorAll('#receta-cuerpo .receta-fila'));
+        const filaObjetivo = filas.find(f => parseInt(f.querySelector('.fila-insumo')?.value, 10) === insumoId);
+        if (filaObjetivo) {
+            filaObjetivo.remove();
+        }
+        if (document.querySelectorAll('#receta-cuerpo .receta-fila').length === 0) {
+            this.agregarFila();
+        }
+
+        this.renderizarDespensa();
+        this.renderizarCanasta();
+        this.actualizarResumen();
+    }
+
+    vaciarCanasta() {
+        if (this.canastaIds.size === 0) return;
+        this.canastaIds.clear();
+        const cuerpo = document.getElementById('receta-cuerpo');
+        if (cuerpo) cuerpo.innerHTML = '';
         this.agregarFila();
-        const nuevasFilas = Array.from(document.querySelectorAll('#receta-cuerpo .receta-fila'));
-        const ultima = nuevasFilas[nuevasFilas.length - 1];
-        if (ultima) {
-            const sel = ultima.querySelector('.fila-insumo');
-            const id = parseInt(ultima.dataset.id, 10);
-            if (sel) {
-                sel.value = String(insumoId);
-                this.alCambiarInsumo(sel, id);
-                this.actualizarResumen();
-                const cantInput = ultima.querySelector('.fila-cantidad');
-                if (cantInput) {
-                    cantInput.focus();
-                    cantInput.select();
+        this.renderizarDespensa();
+        this.renderizarCanasta();
+        this.actualizarResumen();
+    }
+
+    animarVueloACanasta(cardEl, insumo) {
+        const btnCanasta = document.getElementById('btn-canasta-flotante');
+        if (!btnCanasta) return;
+
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const dispararBounce = () => {
+            btnCanasta.classList.remove('canasta-bounce');
+            void btnCanasta.offsetWidth;
+            btnCanasta.classList.add('canasta-bounce');
+            clearTimeout(this._bounceTimer);
+            this._bounceTimer = setTimeout(() => btnCanasta.classList.remove('canasta-bounce'), 420);
+        };
+
+        if (reduceMotion || typeof HTMLElement.prototype.animate !== 'function') {
+            dispararBounce();
+            return;
+        }
+
+        const origen = cardEl.getBoundingClientRect();
+        const destino = btnCanasta.getBoundingClientRect();
+        if (origen.width === 0 || destino.width === 0) {
+            dispararBounce();
+            return;
+        }
+
+        const chip = document.createElement('div');
+        chip.className = 'despensa-fly-chip';
+        const cat = this.obtenerCategoriaInsumo(insumo);
+        chip.innerHTML = insumo.imagen
+            ? `<img src="${Store.escapeHtml(insumo.imagen)}" alt="">`
+            : this.iconoInsumoSVG(cat);
+
+        const startX = origen.left + origen.width / 2 - 22;
+        const startY = origen.top + origen.height / 2 - 22;
+        const endX = destino.left + destino.width / 2 - 22;
+        const endY = destino.top + destino.height / 2 - 22;
+        const midX = (startX + endX) / 2;
+        const midY = Math.min(startY, endY) - 85;
+
+        chip.style.left = `${startX}px`;
+        chip.style.top = `${startY}px`;
+        document.body.appendChild(chip);
+
+        const anim = chip.animate([
+            { transform: 'translate(0px, 0px) scale(1)', opacity: 1 },
+            { transform: `translate(${midX - startX}px, ${midY - startY}px) scale(1.12)`, opacity: 0.95, offset: 0.45 },
+            { transform: `translate(${endX - startX}px, ${endY - startY}px) scale(0.35)`, opacity: 0.25 }
+        ], {
+            duration: 380,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            fill: 'forwards'
+        });
+
+        anim.onfinish = () => {
+            chip.remove();
+            dispararBounce();
+        };
+        anim.oncancel = () => chip.remove();
+    }
+
+    renderizarCanasta() {
+        const listaEl = document.getElementById('canasta-lista');
+        const badgeEl = document.getElementById('canasta-contador');
+        const subEl   = document.getElementById('canasta-drawer-count');
+        const btnCont = document.getElementById('btn-canasta-continuar');
+        const btnVac  = document.getElementById('btn-vaciar-canasta');
+
+        const insumos = this.obtenerInsumos();
+        const seleccionados = Array.from(this.canastaIds)
+            .map(id => insumos.find(i => i.id === id))
+            .filter(Boolean);
+
+        const count = seleccionados.length;
+        if (badgeEl) badgeEl.textContent = String(count);
+        if (subEl) subEl.textContent = `${count} ${count === 1 ? 'ingrediente elegido' : 'ingredientes elegidos'}`;
+        if (btnCont) btnCont.disabled = count === 0;
+        if (btnVac) btnVac.disabled = count === 0;
+
+        if (!listaEl) return;
+
+        if (count === 0) {
+            listaEl.innerHTML = `
+                <div class="canasta-vacia">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <p>Tu canasta está vacía</p>
+                    <small>Toca cualquier ingrediente en la despensa para echarlo aquí.</small>
+                </div>`;
+            return;
+        }
+
+        listaEl.innerHTML = seleccionados.map(ins => {
+            const cat = this.obtenerCategoriaInsumo(ins);
+            const thumb = ins.imagen
+                ? `<img src="${Store.escapeHtml(ins.imagen)}" alt="" class="canasta-item__thumb">`
+                : `<span class="canasta-item__ico">${this.iconoInsumoSVG(cat)}</span>`;
+            return `
+                <div class="canasta-item" data-insumo-id="${ins.id}">
+                    ${thumb}
+                    <div class="canasta-item__info">
+                        <strong>${Store.escapeHtml(ins.nombre)}</strong>
+                        <small class="tabular-nums">${Store.fmt(ins.precio)} / ${Store.escapeHtml(ins.unidad)}</small>
+                    </div>
+                    <button type="button" class="canasta-item__quitar" data-quitar-canasta="${ins.id}" aria-label="Quitar ${Store.escapeHtml(ins.nombre)} de la canasta" title="Quitar">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>`;
+        }).join('');
+    }
+
+    abrirCanasta() {
+        const drawer = document.getElementById('canasta-drawer');
+        const backdrop = document.getElementById('canasta-backdrop');
+        this.renderizarCanasta();
+        if (backdrop) backdrop.hidden = false;
+        if (drawer) {
+            drawer.hidden = false;
+            requestAnimationFrame(() => drawer.classList.add('abierto'));
+        }
+    }
+
+    cerrarCanasta() {
+        const drawer = document.getElementById('canasta-drawer');
+        const backdrop = document.getElementById('canasta-backdrop');
+        if (drawer) {
+            drawer.classList.remove('abierto');
+            drawer.hidden = true;
+        }
+        if (backdrop) backdrop.hidden = true;
+    }
+
+    sincronizarCanastaConTabla() {
+        const body = document.getElementById('receta-cuerpo');
+        if (!body) return;
+
+        const filas = Array.from(body.querySelectorAll('.receta-fila'));
+        const idsEnTabla = new Set();
+
+        filas.forEach(fila => {
+            const val = parseInt(fila.querySelector('.fila-insumo')?.value, 10);
+            if (val) {
+                if (this.canastaIds.size > 0 && !this.canastaIds.has(val)) {
+                    fila.remove();
+                } else {
+                    idsEnTabla.add(val);
                 }
             }
+        });
+
+        // Eliminar filas vacías si ya hay ingredientes en la canasta
+        if (this.canastaIds.size > 0) {
+            Array.from(body.querySelectorAll('.receta-fila')).forEach(fila => {
+                if (!fila.querySelector('.fila-insumo')?.value) {
+                    fila.remove();
+                }
+            });
         }
+
+        // Agregar fila nueva para cada ingrediente de la canasta que falte en tabla
+        this.canastaIds.forEach(insumoId => {
+            if (!idsEnTabla.has(insumoId)) {
+                const filasActuales = Array.from(body.querySelectorAll('.receta-fila'));
+                const filaVacia = filasActuales.find(f => !f.querySelector('.fila-insumo')?.value);
+                if (filaVacia) {
+                    const sel = filaVacia.querySelector('.fila-insumo');
+                    const fId = parseInt(filaVacia.dataset.id, 10);
+                    if (sel) {
+                        sel.value = String(insumoId);
+                        this.alCambiarInsumo(sel, fId);
+                    }
+                } else {
+                    this.agregarFila();
+                    const nuevas = Array.from(body.querySelectorAll('.receta-fila'));
+                    const ultima = nuevas[nuevas.length - 1];
+                    const sel = ultima?.querySelector('.fila-insumo');
+                    const fId = parseInt(ultima?.dataset.id, 10);
+                    if (sel) {
+                        sel.value = String(insumoId);
+                        this.alCambiarInsumo(sel, fId);
+                    }
+                }
+            }
+        });
+
+        if (body.querySelectorAll('.receta-fila').length === 0) {
+            this.agregarFila();
+        }
+    }
+
+    sincronizarCanastaDesdeTabla() {
+        const ids = new Set();
+        document.querySelectorAll('#receta-cuerpo .fila-insumo').forEach(sel => {
+            const val = parseInt(sel.value, 10);
+            if (val) ids.add(val);
+        });
+        this.canastaIds = ids;
+        this.renderizarDespensa();
+        this.renderizarCanasta();
     }
 
     actualizarOpcionesInsumos() {
@@ -799,12 +1226,17 @@ class CrearProductoController {
     }
 
     eliminarFila(id) {
-        const filas = document.querySelectorAll('.receta-fila');
-        if (filas.length <= 1) {
-            Store.toast('La receta debe tener al menos un insumo.', 'info');
-            return;
+        const fila = document.querySelector(`.receta-fila[data-id="${id}"]`);
+        if (!fila) return;
+        const insumoId = parseInt(fila.querySelector('.fila-insumo')?.value, 10);
+        if (insumoId) {
+            this.canastaIds.delete(insumoId);
         }
-        document.querySelector(`.receta-fila[data-id="${id}"]`)?.remove();
+        fila.remove();
+        if (document.querySelectorAll('.receta-fila').length === 0) {
+            this.agregarFila();
+        }
+        this.sincronizarCanastaDesdeTabla();
         this.actualizarResumen();
     }
 
@@ -830,6 +1262,7 @@ class CrearProductoController {
         ).join('');
         selUnidad.disabled = false;
 
+        this.sincronizarCanastaDesdeTabla();
         this.actualizarResumen();
     }
 
@@ -939,7 +1372,7 @@ class CrearProductoController {
         setTxt('live-ganancia-ud',        `+${Store.fmt(gananciaUnidad)}`);
         setTxt('res-costo-ingredientes',  Store.fmt(costoIngredientes));
         this.actualizarPresetsUnidades();
-        this.renderizarChipsInsumosRapidos(document.getElementById('buscar-insumo-rapido')?.value || '');
+        this.renderizarCanasta();
 
         // Filas condicionales en el resumen
         const fMerma = document.getElementById('res-fila-merma');
@@ -1096,7 +1529,10 @@ class CrearProductoController {
         const inputMargen       = document.getElementById('input-margen')?.value || '30';
         const inputMultiplicador = document.getElementById('input-multiplicador')?.value || '2.5';
 
+        const canastaIds = Array.from(this.canastaIds || []);
         const tieneContenido = nombre.trim().length > 0
+            || Boolean(this.productoImagen)
+            || canastaIds.length > 0
             || filas.length > 0
             || (parseFloat(porcentajeMerma) || 0) > 0
             || (parseFloat(costoEmpaque) || 0) > 0
@@ -1108,6 +1544,8 @@ class CrearProductoController {
 
         return {
             nombre,
+            imagen: this.productoImagen || null,
+            canastaIds,
             unidades,
             porcentajeMerma,
             costoEmpaque,
@@ -1183,10 +1621,22 @@ class CrearProductoController {
             const cuerpo = document.getElementById('receta-cuerpo');
             if (cuerpo) cuerpo.innerHTML = '';
 
+            this.productoImagen = ImageHelper.esImagenValida(borrador.imagen) ? borrador.imagen : null;
+            this.actualizarPreviewFotoProducto();
+
             const insumosDisponibles = new Set(this.obtenerInsumos().map(i => i.id));
             const filasValidas = Array.isArray(borrador.receta)
                 ? borrador.receta.filter(r => r && insumosDisponibles.has(r.insumoId))
                 : [];
+
+            const canastaGuardada = Array.isArray(borrador.canastaIds)
+                ? borrador.canastaIds.filter(id => insumosDisponibles.has(Number(id))).map(Number)
+                : [];
+
+            this.canastaIds = new Set([
+                ...canastaGuardada,
+                ...filasValidas.map(f => Number(f.insumoId))
+            ]);
 
             if (filasValidas.length > 0) {
                 filasValidas.forEach(item => this.agregarFila(item));
@@ -1194,10 +1644,13 @@ class CrearProductoController {
                 this.agregarFila();
             }
 
+            this.renderizarDespensa();
+            this.renderizarCanasta();
+
             if (borrador.pasoActual && borrador.pasoActual > 1) {
                 this.irAPaso(borrador.pasoActual, { forzar: true });
             } else {
-                this.actualizarResumen();
+                this.irAPaso(1, { forzar: true });
             }
 
             const banner = document.getElementById('banner-borrador-producto');
@@ -1221,12 +1674,19 @@ class CrearProductoController {
             setVal('porcentaje-merma', '0');
             setVal('costo-empaque', '0');
             setVal('costo-mano-obra', '0');
+            this.productoImagen = null;
+            const inputImg = document.getElementById('producto-imagen-input');
+            if (inputImg) inputImg.value = '';
+            this.actualizarPreviewFotoProducto();
+            this.canastaIds.clear();
             this.cambiarModo('margen');
             this.precargarDefaultsNegocio();
 
             const cuerpo = document.getElementById('receta-cuerpo');
             if (cuerpo) cuerpo.innerHTML = '';
             this.agregarFila();
+            this.renderizarDespensa();
+            this.renderizarCanasta();
             this.irAPaso(1, { forzar: true });
             if (typeof Store !== 'undefined' && typeof Store.toast === 'function') {
                 Store.toast('Borrador descartado', 'info');
@@ -1255,8 +1715,13 @@ class CrearProductoController {
         }
 
         if (receta.length === 0) {
-            this.irAPaso(1, { forzar: true });
-            Store.toast('Agrega al menos un insumo con cantidad válida a la receta.', 'error');
+            if (this.canastaIds && this.canastaIds.size > 0) {
+                this.irAPaso(2, { forzar: true });
+                Store.toast('Define cantidades válidas para los ingredientes de tu canasta.', 'error');
+            } else {
+                this.irAPaso(1, { forzar: true });
+                Store.toast('Elige al menos un ingrediente en la despensa y define su cantidad.', 'error');
+            }
             return;
         }
 
@@ -1274,6 +1739,7 @@ class CrearProductoController {
             const prodTemp = new Producto({
                 id:                  this.productoEditandoId || 0,
                 nombre,
+                imagen:              this.productoImagen || null,
                 modo:                this.modoPrecio,
                 valorModo,
                 tipoMargen,
@@ -1288,6 +1754,7 @@ class CrearProductoController {
             const datosProducto = {
                 id:                  this.productoEditandoId,
                 nombre,
+                imagen:              this.productoImagen || null,
                 modo:                this.modoPrecio,
                 valorModo,
                 tipoMargen,
@@ -1339,6 +1806,8 @@ class CrearProductoController {
 
         document.getElementById('producto-nombre').value     = producto.nombre;
         document.getElementById('unidades-producidas').value = producto.unidadesProducidas || 1;
+        this.productoImagen = producto.imagen || null;
+        this.actualizarPreviewFotoProducto();
 
         const inpMerma = document.getElementById('porcentaje-merma');
         if (inpMerma) inpMerma.value = producto.porcentajeMerma || 0;
@@ -1363,8 +1832,11 @@ class CrearProductoController {
 
         if (producto.receta && producto.receta.length > 0) {
             document.getElementById('receta-cuerpo').innerHTML = '';
+            this.canastaIds = new Set(producto.receta.map(item => Number(item.insumoId)).filter(Boolean));
             producto.receta.forEach(item => this.agregarFila(item));
-            this.actualizarResumen();
+            this.renderizarDespensa();
+            this.renderizarCanasta();
+            this.irAPaso(2, { forzar: true });
             return true;
         }
 

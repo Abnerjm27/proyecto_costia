@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Costia - Crear producto</title>
+    <script>(function(){try{if(localStorage.getItem('costia_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.documentElement.style.backgroundColor='#0A1410';document.documentElement.style.colorScheme='dark';}}catch(_){}})();</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/base.css?v=31">
+    <link rel="stylesheet" href="../assets/css/base.css?v=33">
     <link rel="stylesheet" href="../assets/css/terminal-theme.css?v=31">
-    <link rel="stylesheet" href="../assets/css/app-shell.css?v=31">
+    <link rel="stylesheet" href="../assets/css/app-shell.css?v=34">
     <link rel="stylesheet" href="../assets/css/app.css?v=31">
     <link rel="stylesheet" href="../assets/css/crear-producto.css?v=31">
     <link rel="icon" href="../assets/img/costia-icon.png">
@@ -83,9 +84,9 @@
                             <button type="button" class="borrador-banner__btn" id="btn-descartar-borrador">Descartar borrador</button>
                         </div>
 
-                        <!-- Barra Stepper de 3 Pasos -->
+                        <!-- Barra Stepper de 4 Pasos -->
                         <nav class="wizard-stepper-box" aria-label="Pasos para crear el producto">
-                            <div class="wizard-stepper" id="wizard-stepper" role="tablist">
+                            <div class="wizard-stepper wizard-stepper--4" id="wizard-stepper" role="tablist">
                                 <button
                                     type="button"
                                     class="wizard-step-tab activo"
@@ -94,12 +95,12 @@
                                     role="tab"
                                     aria-selected="true"
                                     aria-current="step"
-                                    aria-controls="paso-1-insumos"
+                                    aria-controls="paso-1-despensa"
                                 >
                                     <span class="wizard-step-tab__num" aria-hidden="true">1</span>
                                     <span class="wizard-step-tab__texto">
-                                        <strong>Registrar Insumos</strong>
-                                        <small id="stepper-resumen-1">Define receta y unidades</small>
+                                        <strong>Elegir Ingredientes</strong>
+                                        <small id="stepper-resumen-1">Arma tu canasta</small>
                                     </span>
                                 </button>
 
@@ -110,12 +111,12 @@
                                     data-paso="2"
                                     role="tab"
                                     aria-selected="false"
-                                    aria-controls="paso-2-gastos"
+                                    aria-controls="paso-2-insumos"
                                 >
                                     <span class="wizard-step-tab__num" aria-hidden="true">2</span>
                                     <span class="wizard-step-tab__texto">
-                                        <strong>Gastos, Merma y Empaque</strong>
-                                        <small id="stepper-resumen-2">Proporcional a tus insumos</small>
+                                        <strong>Cantidades y Lote</strong>
+                                        <small id="stepper-resumen-2">Define cantidades y uds</small>
                                     </span>
                                 </button>
 
@@ -126,17 +127,33 @@
                                     data-paso="3"
                                     role="tab"
                                     aria-selected="false"
-                                    aria-controls="paso-3-modo"
+                                    aria-controls="paso-3-gastos"
                                 >
                                     <span class="wizard-step-tab__num" aria-hidden="true">3</span>
                                     <span class="wizard-step-tab__texto">
+                                        <strong>Gastos, Merma y Empaque</strong>
+                                        <small id="stepper-resumen-3">Proporcional a tus insumos</small>
+                                    </span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="wizard-step-tab"
+                                    id="tab-paso-4"
+                                    data-paso="4"
+                                    role="tab"
+                                    aria-selected="false"
+                                    aria-controls="paso-4-modo"
+                                >
+                                    <span class="wizard-step-tab__num" aria-hidden="true">4</span>
+                                    <span class="wizard-step-tab__texto">
                                         <strong>Elegir Modo de Precio</strong>
-                                        <small id="stepper-resumen-3">Modo de precio y resumen</small>
+                                        <small id="stepper-resumen-4">Modo de precio y resumen</small>
                                     </span>
                                 </button>
                             </div>
                             <div class="wizard-progress-track" aria-hidden="true">
-                                <div class="wizard-progress-fill" id="wizard-progress-fill" style="width: 33.33%;"></div>
+                                <div class="wizard-progress-fill" id="wizard-progress-fill" style="width: 25%;"></div>
                             </div>
                         </nav>
 
@@ -156,44 +173,100 @@
                             </div>
                         </div>
 
-                        <!-- ===== PASO 1: REGISTRAR INSUMOS ===== -->
-                        <div class="wizard-paso-panel activo" id="paso-1-insumos" data-paso-panel="1" role="tabpanel" aria-labelledby="tab-paso-1">
+                        <!-- ===== PASO 1: DESPENSA VISUAL Y CANASTA ===== -->
+                        <div class="wizard-paso-panel activo" id="paso-1-despensa" data-paso-panel="1" role="tabpanel" aria-labelledby="tab-paso-1">
 
-                            <!-- Sección 1: Nombre -->
+                            <!-- Sección 1: Nombre y Foto Opcional -->
                             <section class="form-seccion">
                                 <h2 class="form-seccion__titulo">Información del producto</h2>
-                                <p class="form-seccion__subtitulo">Dale un nombre claro para identificarlo fácilmente</p>
-                                <div class="campo">
-                                    <label for="producto-nombre">Nombre del producto</label>
-                                    <input
-                                        type="text"
-                                        id="producto-nombre"
-                                        name="nombre"
-                                        placeholder="Ej: Pan artesanal con semillas"
-                                        required
-                                    >
+                                <p class="form-seccion__subtitulo">Dale un nombre claro y, si quieres, agrega una foto de presentación</p>
+                                <div class="producto-info-grid">
+                                    <div class="campo">
+                                        <label for="producto-nombre">Nombre del producto</label>
+                                        <input
+                                            type="text"
+                                            id="producto-nombre"
+                                            name="nombre"
+                                            placeholder="Ej: Pan artesanal con semillas"
+                                            required
+                                        >
+                                    </div>
+                                    <div class="campo producto-foto-campo">
+                                        <label for="producto-imagen-input">Foto del producto <span class="campo__ayuda">(opcional)</span></label>
+                                        <div class="producto-foto-picker">
+                                            <div class="producto-foto-picker__preview" id="producto-imagen-preview" aria-live="polite">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                            </div>
+                                            <div class="producto-foto-picker__acciones">
+                                                <label for="producto-imagen-input" class="producto-foto-picker__btn">Subir foto</label>
+                                                <button type="button" class="producto-foto-picker__quitar" id="btn-quitar-producto-imagen" hidden>Quitar</button>
+                                            </div>
+                                            <input type="file" id="producto-imagen-input" accept="image/jpeg,image/png,image/webp" class="sr-only-input">
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
 
-                            <!-- Sección 2: Receta -->
+                            <!-- Sección 2: Despensa Interactiva -->
                             <section class="form-seccion">
                                 <div class="form-seccion__header-flex">
                                     <div>
-                                        <h2 class="form-seccion__titulo">Paso 1: Ingredientes de la receta</h2>
+                                        <h2 class="form-seccion__titulo">Paso 1: Elige los ingredientes en tu despensa</h2>
                                         <p class="form-seccion__subtitulo">
-                                            Agrega los insumos que componen tu receta y la cantidad que usas por tanda
+                                            Toca cada ingrediente para echarlo a tu canasta. Luego definirás las cantidades exactas.
                                         </p>
                                     </div>
-                                    <span class="bn-badge-order-book">Paso 1 de 3</span>
+                                    <span class="bn-badge-order-book">Paso 1 de 4</span>
                                 </div>
 
-                                <!-- Selector rápido e interactivo de insumos -->
-                                <div class="insumos-rapidos-box" id="insumos-rapidos-box">
-                                    <div class="insumos-rapidos-header">
-                                        <span class="insumos-rapidos-titulo">Añadir rápido con 1 clic:</span>
-                                        <input type="search" id="buscar-insumo-rapido" class="insumos-rapidos-search" placeholder="Filtrar despensa..." aria-label="Filtrar insumos rápidos" autocomplete="off">
+                                <div class="despensa-toolbar">
+                                    <div class="despensa-search-wrap">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                        <input type="search" id="buscar-despensa" class="despensa-search-input" placeholder="Buscar en tu despensa..." aria-label="Buscar ingredientes en la despensa" autocomplete="off">
                                     </div>
-                                    <div class="insumos-rapidos-chips" id="insumos-rapidos-chips"></div>
+                                    <div class="despensa-filtros" id="despensa-filtros" role="group" aria-label="Filtrar ingredientes">
+                                        <button type="button" class="despensa-filtro-pill activo" data-filtro="todos">Todos</button>
+                                        <button type="button" class="despensa-filtro-pill" data-filtro="usados">Más usados</button>
+                                        <button type="button" class="despensa-filtro-pill" data-filtro="masa">Peso (kg/g)</button>
+                                        <button type="button" class="despensa-filtro-pill" data-filtro="volumen">Líquidos (l/ml)</button>
+                                        <button type="button" class="despensa-filtro-pill" data-filtro="otros">Unidades</button>
+                                    </div>
+                                </div>
+
+                                <div class="despensa-grid" id="despensa-grid" aria-live="polite">
+                                    <!-- Tarjetas generadas dinámicamente por CrearProductoController -->
+                                </div>
+                            </section>
+
+                            <div class="wizard-nav-footer">
+                                <span class="wizard-nav-estado" id="paso-1-estado-texto">Elige al menos 1 ingrediente para tu canasta</span>
+                                <button type="button" class="btn-primario wizard-btn-next" id="btn-ir-paso-2">
+                                    <span>Siguiente: Definir cantidades</span>
+                                    <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- fin paso-1-despensa -->
+
+                        <!-- ===== PASO 2: CANTIDADES Y RENDIMIENTO ===== -->
+                        <div class="wizard-paso-panel" id="paso-2-insumos" data-paso-panel="2" role="tabpanel" aria-labelledby="tab-paso-2">
+
+                            <section class="form-seccion">
+                                <div class="form-seccion__header-flex">
+                                    <div>
+                                        <h2 class="form-seccion__titulo">Paso 2: Cantidades y rendimiento del lote</h2>
+                                        <p class="form-seccion__subtitulo">
+                                            Define cuánto usas de cada ingrediente elegido y cuántas unidades rinde esta receta
+                                        </p>
+                                    </div>
+                                    <span class="bn-badge-order-book">Paso 2 de 4</span>
+                                </div>
+
+                                <div class="paso2-despensa-bar">
+                                    <button type="button" class="btn-secundario btn-volver-despensa-inline" id="btn-volver-despensa">
+                                        <svg class="svg-inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                        <span>+ Añadir o quitar desde la despensa</span>
+                                    </button>
                                 </div>
 
                                 <div class="receta-tabla-wrap">
@@ -215,7 +288,7 @@
 
                                 <button type="button" class="btn-agregar-fila" id="btn-agregar">
                                     <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                    <span>Agregar insumo</span>
+                                    <span>Agregar fila manual</span>
                                 </button>
 
                                 <!-- Footer: unidades producidas y costo calculado -->
@@ -245,26 +318,30 @@
                             </section>
 
                             <div class="wizard-nav-footer">
-                                <span class="wizard-nav-estado" id="paso-1-estado-texto">Agrega al menos 1 insumo para continuar</span>
-                                <button type="button" class="btn-primario wizard-btn-next" id="btn-ir-paso-2">
+                                <button type="button" class="btn-secundario wizard-btn-prev" id="btn-volver-paso-1">
+                                    <svg class="svg-inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                                    <span>Volver a la Despensa</span>
+                                </button>
+                                <span class="wizard-nav-estado" id="paso-2-estado-texto">Define las cantidades de tu receta</span>
+                                <button type="button" class="btn-primario wizard-btn-next" id="btn-ir-paso-3">
                                     <span>Siguiente: Gastos y Merma</span>
                                     <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                 </button>
                             </div>
                         </div>
-                        <!-- fin paso-1-insumos -->
+                        <!-- fin paso-2-insumos -->
 
-                        <!-- ===== PASO 2: GASTOS, MERMA Y EMPAQUE PROPORCIONALES ===== -->
-                        <div class="wizard-paso-panel" id="paso-2-gastos" data-paso-panel="2" role="tabpanel" aria-labelledby="tab-paso-2">
+                        <!-- ===== PASO 3: GASTOS, MERMA Y EMPAQUE PROPORCIONALES ===== -->
+                        <div class="wizard-paso-panel" id="paso-3-gastos" data-paso-panel="3" role="tabpanel" aria-labelledby="tab-paso-3">
                             <section class="form-seccion">
                                 <div class="form-seccion__header-flex">
                                     <div>
-                                        <h2 class="form-seccion__titulo">Paso 2: Gastos, Merma y Empaque / Desechable</h2>
+                                        <h2 class="form-seccion__titulo">Paso 3: Gastos, Merma y Empaque / Desechable</h2>
                                         <p class="form-seccion__subtitulo">
-                                            Calculado de forma proporcional a los insumos del Paso 1 para evitar precios irreales o inflados.
+                                            Calculado de forma proporcional a los insumos de tu receta para evitar precios irreales o inflados.
                                         </p>
                                     </div>
-                                    <span class="bn-badge-order-book">Paso 2 de 3</span>
+                                    <span class="bn-badge-order-book">Paso 3 de 4</span>
                                 </div>
 
                                 <!-- Tarjeta de Recomendación Proporcional basada en Paso 1 -->
@@ -463,29 +540,29 @@
                             </section>
 
                             <div class="wizard-nav-footer">
-                                <button type="button" class="btn-secundario wizard-btn-prev" id="btn-volver-paso-1">
+                                <button type="button" class="btn-secundario wizard-btn-prev" id="btn-volver-paso-2">
                                     <svg class="svg-inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                                    <span>Volver al Paso 1: Insumos</span>
+                                    <span>Volver al Paso 2: Cantidades</span>
                                 </button>
-                                <button type="button" class="btn-primario wizard-btn-next" id="btn-ir-paso-3">
+                                <button type="button" class="btn-primario wizard-btn-next" id="btn-ir-paso-4">
                                     <span>Siguiente: Elegir Modo de Precio</span>
                                     <svg class="svg-inline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                 </button>
                             </div>
                         </div>
-                        <!-- fin paso-2-gastos -->
+                        <!-- fin paso-3-gastos -->
 
-                        <!-- ===== PASO 3: ELEGIR MODO DE PRECIO RECOMENDADO ===== -->
-                        <div class="wizard-paso-panel" id="paso-3-modo" data-paso-panel="3" role="tabpanel" aria-labelledby="tab-paso-3">
+                        <!-- ===== PASO 4: ELEGIR MODO DE PRECIO RECOMENDADO ===== -->
+                        <div class="wizard-paso-panel" id="paso-4-modo" data-paso-panel="4" role="tabpanel" aria-labelledby="tab-paso-4">
                             <section class="form-seccion">
                                 <div class="form-seccion__header-flex">
                                     <div>
-                                        <h2 class="form-seccion__titulo">Paso 3: Elegir Modo de Precio de Venta</h2>
+                                        <h2 class="form-seccion__titulo">Paso 4: Elegir Modo de Precio de Venta</h2>
                                         <p class="form-seccion__subtitulo">
-                                            Evaluamos tus insumos del Paso 1 y tus gastos del Paso 2 para recomendarte el modo más conveniente.
+                                            Evaluamos los insumos de tu receta y tus gastos del Paso 3 para recomendarte el modo más conveniente.
                                         </p>
                                     </div>
-                                    <span class="bn-badge-order-book">PASO 3 DE 3</span>
+                                    <span class="bn-badge-order-book">PASO 4 DE 4</span>
                                 </div>
 
                                 <!-- Tarjeta de Recomendación Inteligente de Modo -->
@@ -657,17 +734,17 @@
 
                             <div class="wizard-nav-footer wizard-nav-footer--multi">
                                 <div class="wizard-nav-footer__back-group">
-                                    <button type="button" class="btn-secundario wizard-btn-prev" id="btn-volver-paso-2">
+                                    <button type="button" class="btn-secundario wizard-btn-prev" id="btn-volver-paso-3">
                                         <svg class="svg-inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                                        <span>Volver al Paso 2: Gastos</span>
+                                        <span>Volver al Paso 3: Gastos</span>
                                     </button>
-                                    <button type="button" class="btn-secundario wizard-btn-prev" id="btn-volver-paso-1-desde-3">
-                                        <span>Ir al Paso 1: Insumos</span>
+                                    <button type="button" class="btn-secundario wizard-btn-prev" id="btn-volver-paso-1-desde-4">
+                                        <span>Ir al Paso 1: Despensa</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- fin paso-3-modo -->
+                        <!-- fin paso-4-modo -->
 
                     </div>
                     <!-- fin columna izquierda -->
@@ -765,11 +842,60 @@
 </div>
 <!-- fin .terminal-shell-container -->
 
+<!-- ===== BOTÓN FLOTANTE Y DRAWER DE CANASTA ===== -->
+<button
+    type="button"
+    class="canasta-flotante"
+    id="btn-canasta-flotante"
+    aria-haspopup="dialog"
+    aria-controls="canasta-drawer"
+    aria-label="Abrir canasta de ingredientes"
+>
+    <span class="canasta-flotante__icono" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    </span>
+    <span class="canasta-flotante__texto">Canasta</span>
+    <span class="canasta-flotante__badge tabular-nums" id="canasta-contador">0</span>
+</button>
+
+<div class="canasta-backdrop" id="canasta-backdrop" hidden aria-hidden="true"></div>
+
+<aside
+    class="canasta-drawer"
+    id="canasta-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="canasta-drawer-titulo"
+    hidden
+>
+    <div class="canasta-drawer__header">
+        <div>
+            <h2 class="canasta-drawer__titulo" id="canasta-drawer-titulo">Tu canasta de receta</h2>
+            <p class="canasta-drawer__subtitulo" id="canasta-drawer-count">0 ingredientes elegidos</p>
+        </div>
+        <button type="button" class="canasta-drawer__cerrar" id="btn-cerrar-canasta" aria-label="Cerrar canasta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+
+    <div class="canasta-drawer__body" id="canasta-lista">
+        <!-- Ítems renderizados dinámicamente -->
+    </div>
+
+    <div class="canasta-drawer__footer">
+        <button type="button" class="btn-secundario canasta-drawer__vaciar" id="btn-vaciar-canasta">Vaciar</button>
+        <button type="button" class="btn-primario canasta-drawer__continuar" id="btn-canasta-continuar">
+            <span>Definir cantidades</span>
+            <svg class="svg-inline-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+    </div>
+</aside>
+
 <!-- Modelos POO, almacenamiento, shell y controlador -->
 <script src="../assets/js/models.js?v=31"></script>
 <script src="../assets/js/store.js?v=31"></script>
 <script src="../assets/js/theme.js?v=31"></script>
-<script src="../assets/js/app-shell.js?v=31"></script>
+<script src="../assets/js/app-shell.js?v=33"></script>
 <script src="../assets/js/crear-producto.js?v=31"></script>
 </body>
 </html>

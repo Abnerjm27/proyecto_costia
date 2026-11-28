@@ -134,6 +134,9 @@ class FichaTecnicaControlador {
 
             const cantInsumos = p.receta ? p.receta.length : 0;
             const uds = Math.max(1, p.unidadesProducidas || 1);
+            const fotoHTML = p.imagen
+                ? `<div class="ficha-card__foto-wrap"><img src="${Store.escapeHtml(p.imagen)}" alt="${Store.escapeHtml(p.nombre)}" class="ficha-card__foto" loading="lazy"></div>`
+                : '';
 
             return `
                 <article class="ficha-card" data-id="${p.id}">
@@ -142,8 +145,13 @@ class FichaTecnicaControlador {
                             <span class="ficha-card__codigo">REC-${String(p.id).padStart(3, '0')}</span>
                             <span class="ficha-card__badge-modo">${Store.escapeHtml(modoLabel)}</span>
                         </div>
-                        <h2 class="ficha-card__titulo">${Store.escapeHtml(p.nombre)}</h2>
-                        <p class="ficha-card__subtitulo">${cantInsumos} insumos registrados · Rinde ${uds} ${uds === 1 ? 'unidad' : 'unidades'}</p>
+                        <div class="ficha-card__head-row">
+                            ${fotoHTML}
+                            <div>
+                                <h2 class="ficha-card__titulo">${Store.escapeHtml(p.nombre)}</h2>
+                                <p class="ficha-card__subtitulo">${cantInsumos} insumos registrados · Rinde ${uds} ${uds === 1 ? 'unidad' : 'unidades'}</p>
+                            </div>
+                        </div>
                         
                         <div class="ficha-card__specs">
                             <div class="ficha-card__spec-item">
@@ -223,6 +231,24 @@ class FichaTecnicaControlador {
         setElTxt('ficha-fecha', new Date().toLocaleDateString('es-CO'));
         setElTxt('ficha-prod-nombre', prod.nombre);
         setElTxt('barra-subtitulo', `${prod.nombre} (${negocio})`);
+
+        const headerProd = document.querySelector('.ficha-producto-header');
+        let thumbWrap = document.getElementById('ficha-prod-thumb-wrap');
+        if (prod.imagen) {
+            if (!thumbWrap && headerProd) {
+                thumbWrap = document.createElement('div');
+                thumbWrap.id = 'ficha-prod-thumb-wrap';
+                thumbWrap.className = 'ficha-producto-thumb-wrap';
+                headerProd.insertBefore(thumbWrap, headerProd.firstChild);
+            }
+            if (thumbWrap) {
+                thumbWrap.innerHTML = `<img src="${Store.escapeHtml(prod.imagen)}" alt="${Store.escapeHtml(prod.nombre)}" class="ficha-producto-thumb">`;
+                thumbWrap.style.display = '';
+            }
+        } else if (thumbWrap) {
+            thumbWrap.style.display = 'none';
+            thumbWrap.innerHTML = '';
+        }
 
         // 2. Cálculos del modelo
         const costoUnidad  = prod.calcularCostoUnidad(insumos);

@@ -113,4 +113,33 @@ test.describe('Costia — Dashboard Financiero & Simulador de Pricing', () => {
     await expect(page.locator('#calc-target-margin-display')).toContainText(/Real:/i);
     await expect(page.locator('#calc-precio-sugerido')).toContainText('1.200');
   });
+
+  test('debe incluir escenarios rápidos, medidor de rentabilidad y barra lateral adaptable a modo claro/oscuro', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+
+    // Medidor de rentabilidad visible
+    const gauge = page.locator('#sim-profit-gauge');
+    await expect(gauge).toBeVisible();
+    await expect(page.locator('#sim-gauge-pct')).toContainText('%');
+    await expect(page.locator('#sim-gauge-status')).toBeVisible();
+
+    // Escenario rápido Insumos +15%
+    const pill15 = page.locator('#sim-escenarios-bar .sim-escenario-pill[data-escenario="alza15"]');
+    await expect(pill15).toBeVisible();
+    await pill15.click();
+    await expect(pill15).toHaveClass(/activo/);
+    await expect(page.locator('#inflacion-simulada-val')).toHaveText('+15%');
+
+    // En modo claro por defecto la barra lateral debe ser clara (#FDFBF7 -> rgb(253, 251, 247))
+    const sidebar = page.locator('#terminal-sidebar');
+    await expect(sidebar).toHaveCSS('background-color', 'rgb(253, 251, 247)');
+
+    // Al cambiar a modo oscuro debe pasar a pino profundo (#0D241C -> rgb(13, 36, 28))
+    await page.locator('#btn-toggle-tema').click();
+    await expect(sidebar).toHaveCSS('background-color', 'rgb(13, 36, 28)');
+
+    // Volver a modo claro
+    await page.locator('#btn-toggle-tema').click();
+    await expect(sidebar).toHaveCSS('background-color', 'rgb(253, 251, 247)');
+  });
 });

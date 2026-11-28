@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Costia — Ofertas de Cierre y Liquidación de Excedentes</title>
+    <script>(function(){try{if(localStorage.getItem('costia_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');document.documentElement.style.backgroundColor='#0A1410';document.documentElement.style.colorScheme='dark';}}catch(_){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css?v=33">
+    <link rel="stylesheet" href="../assets/css/terminal-theme.css?v=32">
+    <link rel="stylesheet" href="../assets/css/app-shell.css?v=34">
+    <link rel="stylesheet" href="../assets/css/app.css?v=32">
+    <link rel="stylesheet" href="../assets/css/productos.css?v=32">
+    <link rel="stylesheet" href="../assets/css/ofertas-cierre.css?v=32">
+    <link rel="icon" href="../assets/img/costia-icon-green.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#071F17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../assets/img/costia-icon-green.png">
+</head>
+<body class="costia-workstation-body">
+
+<a href="#contenido-principal" class="costia-skip-link">Saltar al contenido principal</a>
+
+<!-- BARRA MÓVIL (< 900px) -->
+<header class="costia-mobile-bar" role="banner">
+    <a href="dashboard.html" class="costia-mobile-brand">
+        <img src="../assets/img/costia-icon-green.png" alt="Logo Costia" width="28" height="28" class="costia-mobile-brand-logo">
+        <span class="costia-mobile-brand-title">Costia</span>
+    </a>
+    <button type="button" class="costia-mobile-toggle" id="btn-mobile-sidebar-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="terminal-sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+</header>
+<div class="costia-drawer-backdrop" id="costia-drawer-backdrop" aria-hidden="true"></div>
+
+<div class="terminal-shell-container">
+    <!-- SIDEBAR UNIFICADA -->
+    <aside class="terminal-sidebar" id="terminal-sidebar" aria-label="Navegación principal de Costia"></aside>
+
+    <div class="terminal-content-viewport">
+        <!-- TOPBAR -->
+        <header class="topbar-status-bar" role="region" aria-label="Barra de acciones de ofertas de cierre">
+            <div class="topbar-context-box">
+                <span class="topbar-beacon-dot" aria-hidden="true"></span>
+                <span class="topbar-context-title">Liquidación de Excedentes · Portal de Contacto</span>
+            </div>
+
+            <div class="topbar-status-actions">
+                <a href="vitrina.html" class="btn-secundario btn-sm topbar-btn" id="link-ver-vitrina">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    <span>Ver vitrina pública →</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="terminal-main-stage" id="contenido-principal">
+            <section class="seccion-catalogo-principal" aria-label="Gestión de ofertas de cierre">
+                <div class="contenido__encabezado">
+                    <div>
+                        <h1 class="contenido__titulo">Ofertas de Cierre</h1>
+                        <p class="contenido__subtitulo">Recupera el costo de tus excedentes del día publicando anuncios temporales para recogida presencial en tu local.</p>
+                    </div>
+                    <div class="contenido__acciones">
+                        <a href="terminos.html#ofertas-cierre" class="btn-secundario">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <span>Reglas sanitarias (Art. 53)</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- KPIs -->
+                <section class="kpis-grid" aria-label="Resumen de liquidación de excedentes">
+                    <div class="kpi-card">
+                        <span class="kpi-card__icono kpi-card__icono--verde">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                        </span>
+                        <div class="kpi-card__info">
+                            <span class="kpi-card__etiqueta">Ofertas activas hoy:</span>
+                            <strong class="kpi-card__valor tabular-nums" id="kpi-ofertas-activas">0 activas</strong>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-card__icono kpi-card__icono--pino">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </span>
+                        <div class="kpi-card__info">
+                            <span class="kpi-card__etiqueta">Capital recuperable:</span>
+                            <strong class="kpi-card__valor tabular-nums" id="kpi-capital-recuperable">$0</strong>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-card__icono kpi-card__icono--ambar">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                        </span>
+                        <div class="kpi-card__info">
+                            <span class="kpi-card__etiqueta">Unidades en vitrina:</span>
+                            <strong class="kpi-card__valor tabular-nums" id="kpi-unidades-vitrina">0 unidades</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2 COLUMNAS: PUBLICADOR INTELIGENTE + MIS OFERTAS -->
+                <div class="ofertas-workstation-grid">
+
+                    <!-- PANEL IZQUIERDO: PUBLICADOR INTELIGENTE -->
+                    <section class="oferta-panel" aria-labelledby="titulo-publicar-oferta">
+                        <div class="oferta-panel__head">
+                            <div>
+                                <h2 class="oferta-panel__title" id="titulo-publicar-oferta">Publicar excedente del día</h2>
+                                <p class="oferta-panel__sub">Calculamos tu precio mínimo de recuperación directamente desde tus recetas.</p>
+                            </div>
+                            <span class="oferta-badge-portal">Solo recogida</span>
+                        </div>
+
+                        <form id="form-publicar-oferta" class="oferta-form" novalidate>
+                            <div class="oferta-field">
+                                <label class="oferta-label" for="oferta-receta">
+                                    <span>Producto de tu catálogo</span>
+                                    <span class="oferta-label-hint">Tus costos siguen privados</span>
+                                </label>
+                                <select id="oferta-receta" class="oferta-select" required></select>
+                            </div>
+
+                            <!-- Bloque de Fotografía del Producto -->
+                            <div class="oferta-field">
+                                <label class="oferta-label" for="oferta-foto-input">
+                                    <span>Fotografía del producto</span>
+                                    <span class="oferta-label-hint">Arrastra una foto o usa la sugerida</span>
+                                </label>
+                                <div class="oferta-upload-zone" id="oferta-upload-zone">
+                                    <input type="file" id="oferta-foto-input" accept="image/jpeg,image/png,image/webp" hidden>
+                                    <div class="oferta-foto-frame" id="oferta-foto-frame" role="button" tabindex="0" aria-label="Seleccionar o arrastrar fotografía del producto">
+                                        <img id="oferta-foto-preview" class="oferta-foto-preview" src="../assets/img/ofertas/pan-artesanal.png" alt="Vista previa del producto">
+                                    </div>
+                                    <div class="oferta-upload-actions">
+                                        <span class="oferta-label-hint" id="oferta-foto-estado">Foto editorial sugerida automáticamente</span>
+                                        <div class="oferta-upload-btns">
+                                            <button type="button" class="btn-oferta-accion" id="btn-cambiar-foto">Cambiar foto</button>
+                                            <button type="button" class="btn-oferta-accion" id="btn-foto-sugerida">Usar sugerida</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta de Cálculo Financiero en Vivo -->
+                            <div class="calculo-liquido-box" aria-live="polite">
+                                <div class="calculo-liquido-grid">
+                                    <div class="calculo-celda">
+                                        <span class="calculo-celda__k">Precio mostrador</span>
+                                        <strong class="calculo-celda__v" id="calc-precio-regular">$0</strong>
+                                    </div>
+                                    <div class="calculo-celda">
+                                        <span class="calculo-celda__k">Costo unitario (piso)</span>
+                                        <strong class="calculo-celda__v" id="calc-costo-unidad">$0</strong>
+                                    </div>
+                                    <div class="calculo-celda calculo-celda--sugerido">
+                                        <span class="calculo-celda__k">Sugerido cierre</span>
+                                        <strong class="calculo-celda__v" id="calc-precio-sugerido">$0</strong>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-aplicar-sugerido" id="btn-usar-sugerido">
+                                    Aplicar precio sugerido
+                                </button>
+                                <div class="calculo-feedback calculo-feedback--ok" id="calc-feedback">
+                                    <span>Selecciona un producto para calcular su rango de liquidación segura.</span>
+                                </div>
+                            </div>
+
+                            <div class="oferta-field-grid">
+                                <div class="oferta-field">
+                                    <label class="oferta-label" for="oferta-categoria">Categoría permitida</label>
+                                    <select id="oferta-categoria" class="oferta-select" required>
+                                        <option value="panaderia">Panadería</option>
+                                        <option value="pasteleria">Pastelería</option>
+                                        <option value="cafeteria">Cafetería</option>
+                                        <option value="empacados">Empacados vigentes</option>
+                                    </select>
+                                </div>
+                                <div class="oferta-field">
+                                    <label class="oferta-label" for="oferta-unidades">
+                                        <span>Unidades disponibles</span>
+                                        <span class="oferta-label-hint">1 a 50</span>
+                                    </label>
+                                    <input type="number" id="oferta-unidades" class="oferta-input oferta-input--mono" min="1" max="50" value="6" required>
+                                </div>
+                            </div>
+
+                            <div class="nota-sanitaria-regla">
+                                <strong>Categorías restringidas:</strong> Por seguridad alimentaria (Res. 2674 de 2013), no se permiten carnes o mariscos crudos, lácteos sin cadena de frío ni productos vencidos.
+                            </div>
+
+                            <div class="oferta-field-grid">
+                                <div class="oferta-field">
+                                    <label class="oferta-label" for="oferta-precio-regular">
+                                        <span>Precio real en mostrador (COP)</span>
+                                        <span class="oferta-label-hint">Art. 30 Ley 1480</span>
+                                    </label>
+                                    <input type="number" id="oferta-precio-regular" class="oferta-input oferta-input--mono" min="100" step="10" required>
+                                </div>
+                                <div class="oferta-field">
+                                    <label class="oferta-label" for="oferta-precio">
+                                        <span>Precio de cierre (COP)</span>
+                                        <span class="oferta-label-hint">Mín. 15% desc.</span>
+                                    </label>
+                                    <input type="number" id="oferta-precio" class="oferta-input oferta-input--mono" min="100" step="50" required>
+                                </div>
+                            </div>
+
+                            <div class="oferta-field">
+                                <label class="oferta-label" for="oferta-ttl">Expiración automática</label>
+                                <select id="oferta-ttl" class="oferta-select">
+                                    <option value="2">Expira en 2 horas</option>
+                                    <option value="4" selected>Expira en 4 horas (cierre)</option>
+                                    <option value="6">Expira en 6 horas</option>
+                                </select>
+                            </div>
+
+                            <div class="oferta-field-grid">
+                                <div class="oferta-field">
+                                    <label class="oferta-label" for="oferta-horario">Horario de recogida</label>
+                                    <input type="text" id="oferta-horario" class="oferta-input" maxlength="80" placeholder="Hoy 18:00 - 20:00" value="Hoy 18:00 - 20:00" required>
+                                </div>
+                                <div class="oferta-field">
+                                    <label class="oferta-label" for="oferta-contacto">WhatsApp / Teléfono público</label>
+                                    <input type="text" id="oferta-contacto" class="oferta-input" maxlength="80" placeholder="310 555 0192" required>
+                                </div>
+                            </div>
+
+                            <div class="oferta-field-grid oferta-field-grid--zona">
+                                <div class="oferta-field">
+                                    <label class="oferta-label" for="oferta-pais">País</label>
+                                    <select id="oferta-pais" class="oferta-select" required>
+                                        <option value="Colombia" selected>Colombia</option>
+                                        <option value="México">México</option>
+                                        <option value="Perú">Perú</option>
+                                        <option value="Ecuador">Ecuador</option>
+                                        <option value="Chile">Chile</option>
+                                        <option value="Argentina">Argentina</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="oferta-field">
+                                    <label class="oferta-label" id="label-oferta-departamento" for="oferta-departamento">Departamento</label>
+                                    <select id="oferta-departamento" class="oferta-select" required>
+                                        <option value="Bogotá D.C." selected>Bogotá D.C.</option>
+                                    </select>
+                                </div>
+                                <div class="oferta-field">
+                                    <label class="oferta-label" for="oferta-municipio">Municipio / Ciudad</label>
+                                    <select id="oferta-municipio" class="oferta-select" required>
+                                        <option value="Bogotá" selected>Bogotá</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="oferta-field">
+                                <label class="oferta-label" for="oferta-direccion">
+                                    <span>Dirección física de recogida</span>
+                                    <span class="oferta-label-hint" id="oferta-gps-estado">Opcional: fija GPS para «Cerca de mí»</span>
+                                </label>
+                                <div class="oferta-direccion-row">
+                                    <input type="text" id="oferta-direccion" class="oferta-input" maxlength="200" placeholder="Cra 15 # 82-40, Chapinero" required>
+                                    <button type="button" class="btn-oferta-accion" id="btn-ubicar-local">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                        <span>Fijar GPS del local</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="oferta-field">
+                                <span class="oferta-label">Alérgenos declarados (toca para marcar)</span>
+                                <div class="alergenos-group" id="alergenos-group" role="group" aria-label="Alérgenos del producto">
+                                    <button type="button" class="alergeno-chip" data-alergeno="Gluten" aria-pressed="false">Gluten</button>
+                                    <button type="button" class="alergeno-chip" data-alergeno="Lácteos" aria-pressed="false">Lácteos</button>
+                                    <button type="button" class="alergeno-chip" data-alergeno="Huevo" aria-pressed="false">Huevo</button>
+                                    <button type="button" class="alergeno-chip" data-alergeno="Frutos secos" aria-pressed="false">Frutos secos</button>
+                                    <button type="button" class="alergeno-chip" data-alergeno="Soya" aria-pressed="false">Soya</button>
+                                </div>
+                            </div>
+
+                            <div class="oferta-field">
+                                <label class="oferta-label" for="oferta-nota-frescura">Nota de frescura y estado</label>
+                                <textarea id="oferta-nota-frescura" class="oferta-textarea" maxlength="200">Horneado / preparado hoy · Excedente de cierre 100% apto para consumo.</textarea>
+                            </div>
+
+                            <label class="declaracion-box" for="oferta-declaracion">
+                                <input type="checkbox" id="oferta-declaracion" required>
+                                <span class="declaracion-box__texto">
+                                    <strong>Declaración sanitaria y de precio real:</strong> Certifico que este alimento es un excedente vigente <strong>100% inocuo y apto para consumo humano</strong> (Concepto Sanitario / BPM vigentes) y que el <strong>precio regular declarado</strong> coincide exactamente con el precio real de mi mostrador, asumiendo exclusiva responsabilidad conforme a los <a href="terminos.html#ofertas-cierre" target="_blank" rel="noopener">Términos de Ofertas de Cierre</a>.
+                                </span>
+                            </label>
+
+                            <div id="oferta-form-error" class="oferta-form-error" role="alert" hidden></div>
+
+                            <button type="submit" class="btn-primario" id="btn-publicar-oferta">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                <span>Publicar en vitrina de cierre</span>
+                            </button>
+                        </form>
+                    </section>
+
+                    <!-- PANEL DERECHO: MIS OFERTAS DE HOY -->
+                    <section class="oferta-panel" aria-labelledby="titulo-mis-ofertas">
+                        <div class="oferta-panel__head">
+                            <div>
+                                <h2 class="oferta-panel__title" id="titulo-mis-ofertas">Mis ofertas publicadas</h2>
+                                <p class="oferta-panel__sub">Descuenta unidades vendidas en mostrador para mantener el stock real al día.</p>
+                            </div>
+                        </div>
+
+                        <div id="mis-ofertas-lista" class="mis-ofertas-lista" aria-live="polite"></div>
+                    </section>
+
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/models.js?v=32"></script>
+<script src="../assets/js/store.js?v=32"></script>
+<script src="../assets/js/theme.js?v=32"></script>
+<script src="../assets/js/app-shell.js?v=33"></script>
+<script src="../assets/js/catalogo-geo.js?v=32"></script>
+<script src="../assets/js/ofertas-cierre.js?v=32"></script>
+</body>
+</html>

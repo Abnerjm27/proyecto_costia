@@ -92,15 +92,81 @@ class UnidadConverter {
 }
 
 // ============================================================
+// 1.5 UTILIDAD DE IMÁGENES (Compresión y Validación)
+// ============================================================
+
+class ImageHelper {
+    static MAX_BYTES_RAW = 8 * 1024 * 1024;
+
+    static esImagenValida(src) {
+        if (typeof src !== 'string') return false;
+        const val = src.trim();
+        if (!val) return false;
+        if (/^data:image\/(jpeg|jpg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(val)) {
+            return val.length <= 350000;
+        }
+        return /^(\.\.\/|\/)?assets\/img\/[A-Za-z0-9._/-]+$/.test(val);
+    }
+
+    static comprimirArchivo(file, { maxSize = 360, quality = 0.82 } = {}) {
+        return new Promise((resolve, reject) => {
+            if (!file || !file.type || !file.type.startsWith('image/')) {
+                reject(new Error('Selecciona un archivo de imagen válido (JPG, PNG o WebP).'));
+                return;
+            }
+            if (file.size > ImageHelper.MAX_BYTES_RAW) {
+                reject(new Error('La imagen supera el límite de 8 MB.'));
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onerror = () => reject(new Error('No se pudo leer el archivo de imagen.'));
+            reader.onload = () => {
+                const img = new Image();
+                img.onerror = () => reject(new Error('El archivo no es una imagen válida.'));
+                img.onload = () => {
+                    const ladoMax = Math.max(img.width, img.height) || 1;
+                    const escala = ladoMax > maxSize ? maxSize / ladoMax : 1;
+                    const ancho = Math.max(1, Math.round(img.width * escala));
+                    const alto = Math.max(1, Math.round(img.height * escala));
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = ancho;
+                    canvas.height = alto;
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) {
+                        reject(new Error('No se pudo inicializar el procesador de imagen.'));
+                        return;
+                    }
+                    ctx.drawImage(img, 0, 0, ancho, alto);
+
+                    let dataUrl = canvas.toDataURL('image/webp', quality);
+                    if (!dataUrl.startsWith('data:image/webp')) {
+                        dataUrl = canvas.toDataURL('image/jpeg', quality);
+                    }
+                    if (dataUrl.length > 350000) {
+                        dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+                    }
+                    resolve(dataUrl);
+                };
+                img.src = String(reader.result || '');
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+}
+
+// ============================================================
 // 2. MODELO INSUMO
 // ============================================================
 
 class Insumo {
-    constructor({ id, nombre, unidad, precio, precio_anterior = null, fecha_cambio = null, total_recetas = 0, productos_usados = [] }) {
+    constructor({ id, nombre, unidad, precio, imagen = null, precio_anterior = null, fecha_cambio = null, total_recetas = 0, productos_usados = [] }) {
         this.id              = Number(id);
         this.nombre          = String(nombre).trim();
         this.unidad          = String(unidad).trim();
         this.precio          = Number(precio) || 0; // Precio por 1 unidad base
+        this.imagen          = ImageHelper.esImagenValida(imagen) ? imagen : null;
         this.precioAnterior  = (precio_anterior !== null && precio_anterior !== undefined && !isNaN(precio_anterior))
             ? Number(precio_anterior)
             : null;
@@ -139,6 +205,7 @@ class Insumo {
             nombre:           this.nombre,
             unidad:           this.unidad,
             precio:           this.precio,
+            imagen:           this.imagen,
             precio_anterior:  this.precioAnterior,
             fecha_cambio:     this.fechaCambio,
             total_recetas:    this.totalRecetas,
@@ -210,6 +277,7 @@ class Producto {
     constructor({
         id,
         nombre,
+        imagen = null,
         modo = 'margen',
         valorModo = 30,
         tipoMargen = 'costo',
@@ -223,6 +291,7 @@ class Producto {
     }) {
         this.id                  = Number(id);
         this.nombre              = String(nombre).trim();
+        this.imagen              = ImageHelper.esImagenValida(imagen) ? imagen : null;
         this.modo                = modo === 'multiplicador' ? 'multiplicador' : 'margen';
         const valorRaw           = Number(valorModo);
         this.valorModo           = (!isNaN(valorRaw) && valorRaw > 0)
@@ -327,6 +396,7 @@ class Producto {
         return {
             id:                  this.id,
             nombre:              this.nombre,
+            imagen:              this.imagen,
             modo:                this.modo,
             valorModo:           this.valorModo,
             tipoMargen:          this.tipoMargen,
@@ -343,6 +413,7 @@ class Producto {
 
 // Exportación al objeto global
 window.UnidadConverter = UnidadConverter;
+window.ImageHelper     = ImageHelper;
 window.Insumo          = Insumo;
 window.ItemReceta      = ItemReceta;
 window.Producto        = Producto;

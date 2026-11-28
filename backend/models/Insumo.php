@@ -10,19 +10,22 @@ class Insumo {
     private string $nombre;
     private string $unidad;
     private float $precio;
+    private ?string $imagen;
 
     public function __construct(
         string $nombre,
         string $unidad,
         float $precio,
         int $usuarioId = 0,
-        ?int $id = null
+        ?int $id = null,
+        ?string $imagen = null
     ) {
         $this->id        = $id;
         $this->usuarioId = $usuarioId;
         $this->nombre    = trim($nombre);
         $this->unidad    = trim($unidad);
         $this->precio    = max(0.0, $precio);
+        $this->imagen    = $imagen;
     }
 
     public function getId(): ?int {
@@ -61,6 +64,14 @@ class Insumo {
         $this->precio = max(0.0, $precio);
     }
 
+    public function getImagen(): ?string {
+        return $this->imagen;
+    }
+
+    public function setImagen(?string $imagen): void {
+        $this->imagen = $imagen;
+    }
+
     public function toArray(): array {
         return [
             'id'         => $this->id,
@@ -68,6 +79,7 @@ class Insumo {
             'nombre'     => $this->nombre,
             'unidad'     => $this->unidad,
             'precio'     => $this->precio,
+            'imagen'     => $this->imagen,
         ];
     }
 }

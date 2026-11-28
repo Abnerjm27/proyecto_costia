@@ -59,6 +59,8 @@ test.describe('Costia — Gestión de Insumos', () => {
 
     const modal = page.locator('#modal-insumo');
     await expect(modal).toBeVisible();
+    await expect(modal.locator('#insumo-imagen-preview')).toBeVisible();
+    await expect(modal.locator('#insumo-imagen-input')).toBeAttached();
 
     // Rellenar datos del nuevo insumo
     const nombreAleatorio = `Esencia Vainilla ${Date.now().toString().slice(-4)}`;
@@ -103,6 +105,14 @@ test.describe('Costia — Gestión de Insumos', () => {
   });
 
   test('debe funcionar el Historial de Alzas mediante filtro y ancla #alzas', async ({ page }) => {
+    // 0. El demo arranca estable sin alzas falsas; generamos un alza real editando Harina de trigo
+    const filaHarinaInicial = page.locator('#insumos-cuerpo tr.tabla__fila', { hasText: 'Harina de trigo' });
+    await filaHarinaInicial.locator('.tabla__btn--editar').click();
+    await expect(page.locator('#modal-insumo')).toBeVisible();
+    await page.locator('#insumo-precio').fill('3800');
+    await page.locator('.modal__btn-guardar').click();
+    await expect(filaHarinaInicial.locator('.insumo-var--sube')).toBeVisible();
+
     // 1. Filtrar por Historial de Alzas
     const pillAlzas = page.locator('#btn-filtro-alzas');
     await pillAlzas.click();

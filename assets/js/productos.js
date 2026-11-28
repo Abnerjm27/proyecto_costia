@@ -52,10 +52,18 @@ class ProductosWorkstationController {
 
         const grid = document.getElementById('productos-grid');
         grid?.addEventListener('click', (e) => {
+            const menuBtn = e.target.closest('.producto-card__menu-btn');
+            if (menuBtn) {
+                e.stopPropagation();
+                this.alternarMenuTarjeta(menuBtn);
+                return;
+            }
+
             const actionBtn = e.target.closest('[data-action]');
             if (!actionBtn) return;
 
             e.stopPropagation();
+            this.cerrarMenusTarjeta();
             const action = actionBtn.dataset.action;
             const id = Number(actionBtn.dataset.id);
             if (!id) return;
@@ -71,6 +79,46 @@ class ProductosWorkstationController {
             } else if (action === 'mantener-precio') {
                 this.mantenerPrecioYRecalcularMargen(id);
             }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.producto-card__menu-wrap')) {
+                this.cerrarMenusTarjeta();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.cerrarMenusTarjeta();
+            }
+        });
+    }
+
+    alternarMenuTarjeta(btn) {
+        const wrap = btn.closest('.producto-card__menu-wrap');
+        const dropdown = wrap?.querySelector('.producto-card__menu-dropdown');
+        const card = btn.closest('.producto-card');
+        if (!dropdown || !card) return;
+
+        const estabaAbierto = dropdown.classList.contains('abierto');
+        this.cerrarMenusTarjeta();
+
+        if (!estabaAbierto) {
+            dropdown.classList.add('abierto');
+            card.classList.add('menu-activo');
+            btn.setAttribute('aria-expanded', 'true');
+        }
+    }
+
+    cerrarMenusTarjeta() {
+        document.querySelectorAll('.producto-card__menu-dropdown.abierto').forEach((menu) => {
+            menu.classList.remove('abierto');
+        });
+        document.querySelectorAll('.producto-card.menu-activo').forEach((card) => {
+            card.classList.remove('menu-activo');
+        });
+        document.querySelectorAll('.producto-card__menu-btn[aria-expanded="true"]').forEach((b) => {
+            b.setAttribute('aria-expanded', 'false');
         });
     }
 
@@ -201,9 +249,13 @@ class ProductosWorkstationController {
 
         const alertaHTML = this.construirAlerta(producto.id, cambio);
         const recetaHTML = this.construirReceta(producto, insumos);
+        const thumbHTML = producto.imagen
+            ? `<div class="producto-card__thumb-wrap"><img src="${Store.escapeHtml(producto.imagen)}" alt="${Store.escapeHtml(producto.nombre)}" class="producto-card__thumb" width="72" height="72" loading="lazy"></div>`
+            : '';
 
         return `
-            <article class="producto-card" data-id="${producto.id}" role="region" aria-label="Receta de ${Store.escapeHtml(producto.nombre)}">
+            <article class="producto-card${producto.imagen ? ' producto-card--con-foto' : ''}" data-id="${producto.id}" role="region" aria-label="Receta de ${Store.escapeHtml(producto.nombre)}">
+                ${thumbHTML}
                 <div class="producto-card__col-info">
                     <div class="producto-card__header">
                         <h3 class="producto-card__nombre" title="Editar ${Store.escapeHtml(producto.nombre)}">
@@ -239,23 +291,42 @@ class ProductosWorkstationController {
                     </div>
                 </div>
 
-                <div class="producto-card__col-acciones">
-                    <a href="ficha-tecnica.html?id=${producto.id}" target="_blank" class="btn-ficha" title="Ver e imprimir Ficha Técnica en PDF">
-                        <svg class="btn-ficha__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                        <span>Ficha Técnica</span>
-                    </a>
-                    <div class="producto-card__botones-secundarios">
-                        <a href="dashboard.html?producto=${producto.id}" class="btn-card-action" title="Simular precio en Inicio" aria-label="Simular precio de ${Store.escapeHtml(producto.nombre)}">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                <div class="producto-card__menu-wrap">
+                    <button
+                        type="button"
+                        class="producto-card__menu-btn"
+                        aria-haspopup="menu"
+                        aria-expanded="false"
+                        aria-label="Opciones de ${Store.escapeHtml(producto.nombre)}"
+                        title="Más opciones"
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <circle cx="12" cy="5" r="2"/>
+                            <circle cx="12" cy="12" r="2"/>
+                            <circle cx="12" cy="19" r="2"/>
+                        </svg>
+                    </button>
+                    <div class="producto-card__menu-dropdown" role="menu" aria-label="Acciones para ${Store.escapeHtml(producto.nombre)}">
+                        <a href="ficha-tecnica.html?id=${producto.id}" target="_blank" class="producto-menu-item btn-ficha" role="menuitem">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Ver Ficha Técnica</span>
                         </a>
-                        <button type="button" class="btn-card-action btn-editar" data-action="editar" data-id="${producto.id}" aria-label="Editar ${Store.escapeHtml(producto.nombre)}" title="Editar receta">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        <button type="button" class="producto-menu-item btn-editar" data-action="editar" data-id="${producto.id}" role="menuitem">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span>Editar receta</span>
                         </button>
-                        <button type="button" class="btn-card-action btn-duplicar" data-action="duplicar" data-id="${producto.id}" title="Clonar receta" aria-label="Duplicar ${Store.escapeHtml(producto.nombre)}">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <a href="dashboard.html?producto=${producto.id}" class="producto-menu-item" role="menuitem">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                            <span>Simular precio</span>
+                        </a>
+                        <button type="button" class="producto-menu-item btn-duplicar" data-action="duplicar" data-id="${producto.id}" role="menuitem">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            <span>Duplicar receta</span>
                         </button>
-                        <button type="button" class="btn-card-action btn-eliminar" data-action="eliminar" data-id="${producto.id}" aria-label="Eliminar ${Store.escapeHtml(producto.nombre)}" title="Eliminar receta">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        <div class="producto-menu-sep" role="separator"></div>
+                        <button type="button" class="producto-menu-item producto-menu-item--peligro btn-eliminar" data-action="eliminar" data-id="${producto.id}" role="menuitem">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            <span>Eliminar receta</span>
                         </button>
                     </div>
                 </div>
@@ -348,6 +419,7 @@ class ProductosWorkstationController {
 
         const datosCopia = {
             nombre: `${prod.nombre} (Copia)`,
+            imagen: prod.imagen || null,
             modo: prod.modo,
             valorModo: prod.valorModo,
             tipoMargen: prod.tipoMargen || 'venta',

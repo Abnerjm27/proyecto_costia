@@ -19,6 +19,7 @@ class Producto {
     private float $costoManoObra;
     private ?float $precioVentaAnterior;
     private ?float $costoSnapshot;
+    private ?string $imagen;
     /** @var RecetaItem[] */
     private array $receta;
 
@@ -35,7 +36,8 @@ class Producto {
         int $usuarioId = 0,
         ?int $id = null,
         ?float $precioVentaAnterior = null,
-        ?float $costoSnapshot = null
+        ?float $costoSnapshot = null,
+        ?string $imagen = null
     ) {
         $this->id                  = $id;
         $this->usuarioId           = $usuarioId;
@@ -50,6 +52,7 @@ class Producto {
         $this->receta              = $receta;
         $this->precioVentaAnterior = $precioVentaAnterior;
         $this->costoSnapshot       = $costoSnapshot;
+        $this->imagen              = $imagen;
     }
 
     public function getId(): ?int {
@@ -100,6 +103,10 @@ class Producto {
         return $this->costoSnapshot;
     }
 
+    public function getImagen(): ?string {
+        return $this->imagen;
+    }
+
     /** @return RecetaItem[] */
     public function getReceta(): array {
         return $this->receta;
@@ -114,6 +121,7 @@ class Producto {
             'id'                  => $this->id,
             'usuario_id'          => $this->usuarioId,
             'nombre'              => $this->nombre,
+            'imagen'              => $this->imagen,
             'modo'                => $this->modo,
             'valorModo'           => $this->valorModo,
             'tipoMargen'          => $this->tipoMargen,

@@ -5,26 +5,26 @@
 
 class StoreService {
     static INSUMOS_DEFAULT = [
-        { id: 1, nombre: 'Harina de trigo', unidad: 'kg', precio: 3200, precio_anterior: 3000 },
-        { id: 2, nombre: 'Levadura seca', unidad: 'g', precio: 45 },
-        { id: 3, nombre: 'Mantequilla', unidad: 'g', precio: 18 },
-        { id: 4, nombre: 'Azúcar blanca', unidad: 'kg', precio: 2800, precio_anterior: 2950 },
-        { id: 5, nombre: 'Huevo', unidad: 'unidad', precio: 350 },
-        { id: 6, nombre: 'Chocolate amargo', unidad: 'g', precio: 62 },
-        { id: 7, nombre: 'Leche entera', unidad: 'l', precio: 4200 },
-        { id: 8, nombre: 'Café molido', unidad: 'g', precio: 55 },
-        { id: 9, nombre: 'Queso campesino', unidad: 'g', precio: 24 },
-        { id: 10, nombre: 'Avena en hojuelas', unidad: 'g', precio: 9 },
+        { id: 1, nombre: 'Harina de trigo', unidad: 'kg', precio: 3200, imagen: '../assets/img/demo/insumos/harina.jpg' },
+        { id: 2, nombre: 'Levadura seca', unidad: 'g', precio: 45, imagen: '../assets/img/demo/insumos/levadura.jpg' },
+        { id: 3, nombre: 'Mantequilla', unidad: 'g', precio: 18, imagen: '../assets/img/demo/insumos/mantequilla.jpg' },
+        { id: 4, nombre: 'Azúcar blanca', unidad: 'kg', precio: 2800, imagen: '../assets/img/demo/insumos/azucar.jpg' },
+        { id: 5, nombre: 'Huevo', unidad: 'unidad', precio: 350, imagen: '../assets/img/demo/insumos/huevo.jpg' },
+        { id: 6, nombre: 'Chocolate amargo', unidad: 'g', precio: 62, imagen: '../assets/img/demo/insumos/chocolate.jpg' },
+        { id: 7, nombre: 'Leche entera', unidad: 'l', precio: 4200, imagen: '../assets/img/demo/insumos/leche.jpg' },
+        { id: 8, nombre: 'Café molido', unidad: 'g', precio: 55, imagen: '../assets/img/demo/insumos/cafe.jpg' },
+        { id: 9, nombre: 'Queso campesino', unidad: 'g', precio: 24, imagen: '../assets/img/demo/insumos/queso.jpg' },
+        { id: 10, nombre: 'Avena en hojuelas', unidad: 'g', precio: 9, imagen: '../assets/img/demo/insumos/avena.jpg' },
     ];
 
     static PRODUCTOS_DEFAULT = [
-        { id: 1, nombre: 'Pan artesanal', modo: 'margen', valorModo: 35, tipoMargen: 'venta', unidadesProducidas: 10, costoEmpaque: 50, porcentajeMerma: 5, costoManoObra: 800, precioVentaAnterior: 821.92, costoSnapshot: 534.25, receta: [{ insumoId: 1, cantidad: 500, unidadReceta: 'g' }, { insumoId: 2, cantidad: 10, unidadReceta: 'g' }, { insumoId: 3, cantidad: 100, unidadReceta: 'g' }] },
-        { id: 2, nombre: 'Torta de chocolate', modo: 'margen', valorModo: 38, tipoMargen: 'venta', unidadesProducidas: 1, costoEmpaque: 1800, porcentajeMerma: 4, costoManoObra: 3200, precioVentaAnterior: 34836.13, costoSnapshot: 21598.40, receta: [{ insumoId: 1, cantidad: 300, unidadReceta: 'g' }, { insumoId: 3, cantidad: 200, unidadReceta: 'g' }, { insumoId: 4, cantidad: 0.25, unidadReceta: 'kg' }, { insumoId: 5, cantidad: 4, unidadReceta: 'unidad' }, { insumoId: 6, cantidad: 150, unidadReceta: 'g' }] },
-        { id: 3, nombre: 'Galletas de avena', modo: 'margen', valorModo: 40, tipoMargen: 'venta', unidadesProducidas: 24, costoEmpaque: 35, porcentajeMerma: 3, costoManoObra: 700, precioVentaAnterior: 397.35, costoSnapshot: 238.41, receta: [{ insumoId: 1, cantidad: 200, unidadReceta: 'g' }, { insumoId: 10, cantidad: 150, unidadReceta: 'g' }, { insumoId: 3, cantidad: 80, unidadReceta: 'g' }, { insumoId: 4, cantidad: 0.1, unidadReceta: 'kg' }, { insumoId: 5, cantidad: 1, unidadReceta: 'unidad' }] },
-        { id: 4, nombre: 'Croissant de mantequilla', modo: 'margen', valorModo: 40, tipoMargen: 'venta', unidadesProducidas: 12, costoEmpaque: 120, porcentajeMerma: 6, costoManoObra: 2200, precioVentaAnterior: 1780.94, costoSnapshot: 1068.57, receta: [{ insumoId: 1, cantidad: 600, unidadReceta: 'g' }, { insumoId: 2, cantidad: 15, unidadReceta: 'g' }, { insumoId: 3, cantidad: 250, unidadReceta: 'g' }, { insumoId: 7, cantidad: 250, unidadReceta: 'ml' }, { insumoId: 4, cantidad: 60, unidadReceta: 'g' }, { insumoId: 5, cantidad: 1, unidadReceta: 'unidad' }] },
-        { id: 5, nombre: 'Pan de queso campesino', modo: 'margen', valorModo: 35, tipoMargen: 'venta', unidadesProducidas: 12, costoEmpaque: 90, porcentajeMerma: 4, costoManoObra: 1800, precioVentaAnterior: 1981.23, costoSnapshot: 1287.80, receta: [{ insumoId: 1, cantidad: 400, unidadReceta: 'g' }, { insumoId: 9, cantidad: 350, unidadReceta: 'g' }, { insumoId: 3, cantidad: 60, unidadReceta: 'g' }, { insumoId: 5, cantidad: 2, unidadReceta: 'unidad' }, { insumoId: 7, cantidad: 150, unidadReceta: 'ml' }] },
-        { id: 6, nombre: 'Capuchino artesanal (12 oz)', modo: 'margen', valorModo: 45, tipoMargen: 'venta', unidadesProducidas: 1, costoEmpaque: 420, porcentajeMerma: 5, costoManoObra: 550, precioVentaAnterior: 5471.09, costoSnapshot: 3009.10, receta: [{ insumoId: 8, cantidad: 18, unidadReceta: 'g' }, { insumoId: 7, cantidad: 220, unidadReceta: 'ml' }, { insumoId: 4, cantidad: 10, unidadReceta: 'g' }] },
-        { id: 7, nombre: 'Brownie de chocolate', modo: 'multiplicador', valorModo: 2.2, tipoMargen: 'costo', unidadesProducidas: 16, costoEmpaque: 60, porcentajeMerma: 2, costoManoObra: 0, precioVentaAnterior: 2529.43, costoSnapshot: 1149.74, receta: [{ insumoId: 6, cantidad: 200, unidadReceta: 'g' }, { insumoId: 3, cantidad: 150, unidadReceta: 'g' }, { insumoId: 4, cantidad: 200, unidadReceta: 'g' }, { insumoId: 5, cantidad: 3, unidadReceta: 'unidad' }, { insumoId: 1, cantidad: 120, unidadReceta: 'g' }] },
+        { id: 1, nombre: 'Pan artesanal', imagen: '../assets/img/ofertas/pan-artesanal.png', modo: 'margen', valorModo: 35, tipoMargen: 'venta', unidadesProducidas: 10, costoEmpaque: 50, porcentajeMerma: 5, costoManoObra: 800, precioVentaAnterior: 821.92, costoSnapshot: 534.25, receta: [{ insumoId: 1, cantidad: 500, unidadReceta: 'g' }, { insumoId: 2, cantidad: 10, unidadReceta: 'g' }, { insumoId: 3, cantidad: 100, unidadReceta: 'g' }] },
+        { id: 2, nombre: 'Torta de chocolate', imagen: '../assets/img/ofertas/torta-chocolate.png', modo: 'margen', valorModo: 38, tipoMargen: 'venta', unidadesProducidas: 1, costoEmpaque: 1800, porcentajeMerma: 4, costoManoObra: 3200, precioVentaAnterior: 34836.13, costoSnapshot: 21598.40, receta: [{ insumoId: 1, cantidad: 300, unidadReceta: 'g' }, { insumoId: 3, cantidad: 200, unidadReceta: 'g' }, { insumoId: 4, cantidad: 0.25, unidadReceta: 'kg' }, { insumoId: 5, cantidad: 4, unidadReceta: 'unidad' }, { insumoId: 6, cantidad: 150, unidadReceta: 'g' }] },
+        { id: 3, nombre: 'Galletas de avena', imagen: '../assets/img/ofertas/galletas-avena.png', modo: 'margen', valorModo: 40, tipoMargen: 'venta', unidadesProducidas: 24, costoEmpaque: 35, porcentajeMerma: 3, costoManoObra: 700, precioVentaAnterior: 397.35, costoSnapshot: 238.41, receta: [{ insumoId: 1, cantidad: 200, unidadReceta: 'g' }, { insumoId: 10, cantidad: 150, unidadReceta: 'g' }, { insumoId: 3, cantidad: 80, unidadReceta: 'g' }, { insumoId: 4, cantidad: 0.1, unidadReceta: 'kg' }, { insumoId: 5, cantidad: 1, unidadReceta: 'unidad' }] },
+        { id: 4, nombre: 'Croissant de mantequilla', imagen: '../assets/img/ofertas/croissant.png', modo: 'margen', valorModo: 40, tipoMargen: 'venta', unidadesProducidas: 12, costoEmpaque: 120, porcentajeMerma: 6, costoManoObra: 2200, precioVentaAnterior: 1780.94, costoSnapshot: 1068.57, receta: [{ insumoId: 1, cantidad: 600, unidadReceta: 'g' }, { insumoId: 2, cantidad: 15, unidadReceta: 'g' }, { insumoId: 3, cantidad: 250, unidadReceta: 'g' }, { insumoId: 7, cantidad: 250, unidadReceta: 'ml' }, { insumoId: 4, cantidad: 60, unidadReceta: 'g' }, { insumoId: 5, cantidad: 1, unidadReceta: 'unidad' }] },
+        { id: 5, nombre: 'Pan de queso campesino', imagen: '../assets/img/demo/productos/pan-queso.jpg', modo: 'margen', valorModo: 35, tipoMargen: 'venta', unidadesProducidas: 12, costoEmpaque: 90, porcentajeMerma: 4, costoManoObra: 1800, precioVentaAnterior: 1981.23, costoSnapshot: 1287.80, receta: [{ insumoId: 1, cantidad: 400, unidadReceta: 'g' }, { insumoId: 9, cantidad: 350, unidadReceta: 'g' }, { insumoId: 3, cantidad: 60, unidadReceta: 'g' }, { insumoId: 5, cantidad: 2, unidadReceta: 'unidad' }, { insumoId: 7, cantidad: 150, unidadReceta: 'ml' }] },
+        { id: 6, nombre: 'Capuchino artesanal (12 oz)', imagen: '../assets/img/demo/productos/capuchino.jpg', modo: 'margen', valorModo: 45, tipoMargen: 'venta', unidadesProducidas: 1, costoEmpaque: 420, porcentajeMerma: 5, costoManoObra: 550, precioVentaAnterior: 5471.09, costoSnapshot: 3009.10, receta: [{ insumoId: 8, cantidad: 18, unidadReceta: 'g' }, { insumoId: 7, cantidad: 220, unidadReceta: 'ml' }, { insumoId: 4, cantidad: 10, unidadReceta: 'g' }] },
+        { id: 7, nombre: 'Brownie de chocolate', imagen: '../assets/img/demo/productos/brownie.jpg', modo: 'multiplicador', valorModo: 2.2, tipoMargen: 'costo', unidadesProducidas: 16, costoEmpaque: 60, porcentajeMerma: 2, costoManoObra: 0, precioVentaAnterior: 2529.43, costoSnapshot: 1149.74, receta: [{ insumoId: 6, cantidad: 200, unidadReceta: 'g' }, { insumoId: 3, cantidad: 150, unidadReceta: 'g' }, { insumoId: 4, cantidad: 200, unidadReceta: 'g' }, { insumoId: 5, cantidad: 3, unidadReceta: 'unidad' }, { insumoId: 1, cantidad: 120, unidadReceta: 'g' }] },
     ];
 
     /**
@@ -142,7 +142,16 @@ class StoreService {
 
     cargarInsumos() {
         const raw = localStorage.getItem(this.CLAVE_INSUMOS);
-        return (raw ? JSON.parse(raw) : StoreService.INSUMOS_DEFAULT).map(item => new Insumo(item));
+        const lista = raw ? JSON.parse(raw) : StoreService.INSUMOS_DEFAULT;
+        return lista.map(item => {
+            if (item && !Object.prototype.hasOwnProperty.call(item, 'imagen')) {
+                const def = StoreService.INSUMOS_DEFAULT.find(d => d.id === Number(item.id));
+                if (def && def.imagen) {
+                    return new Insumo({ ...item, imagen: def.imagen });
+                }
+            }
+            return new Insumo(item);
+        });
     }
 
     guardarInsumosLocal(insumos) {
@@ -151,7 +160,7 @@ class StoreService {
 
     guardarInsumos(insumos) { this.guardarInsumosLocal(insumos); }
 
-    async guardarInsumoAsync({ id, nombre, unidad, precio }) {
+    async guardarInsumoAsync({ id, nombre, unidad, precio, imagen = undefined }) {
         // Asegurar que todos los productos tengan sellado su precio de venta anterior
         // con los valores vigentes de insumos ANTES de aplicar el cambio de precio
         const insumosAntes = this.cargarInsumos();
@@ -159,12 +168,18 @@ class StoreService {
 
         let precioAnterior = null;
         let fechaCambio = null;
+        let imagenFinal = imagen !== undefined
+            ? (ImageHelper.esImagenValida(imagen) ? imagen : null)
+            : null;
 
         if (id) {
             const idNum = parseInt(id);
             const insumoExistente = insumosAntes.find(i => i.id === idNum);
             precioAnterior = insumoExistente ? insumoExistente.precioAnterior : null;
             fechaCambio = insumoExistente ? insumoExistente.fechaCambio : null;
+            if (imagen === undefined && insumoExistente) {
+                imagenFinal = insumoExistente.imagen || null;
+            }
 
             if (insumoExistente && Math.abs(Number(insumoExistente.precio) - Number(precio)) >= 0.01) {
                 precioAnterior = Number(insumoExistente.precio);
@@ -173,7 +188,7 @@ class StoreService {
 
             const insumosDespues = insumosAntes.map(i =>
                 i.id === idNum
-                    ? new Insumo({ id: idNum, nombre, unidad, precio, precio_anterior: precioAnterior, fecha_cambio: fechaCambio })
+                    ? new Insumo({ id: idNum, nombre, unidad, precio, imagen: imagenFinal, precio_anterior: precioAnterior, fecha_cambio: fechaCambio })
                     : i
             );
 
@@ -197,10 +212,12 @@ class StoreService {
 
         if (this.tieneSesion) {
             try {
+                const payload = { accion: id ? 'actualizar' : 'crear', id, nombre, unidad, precio };
+                if (imagen !== undefined) payload.imagen = imagenFinal;
                 const res = await fetch('../backend/api/insumos.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ accion: id ? 'actualizar' : 'crear', id, nombre, unidad, precio })
+                    body: JSON.stringify(payload)
                 });
                 const data = await res.json();
                 if (res.ok && data.status === 'success') {
@@ -232,13 +249,14 @@ class StoreService {
                     nombre,
                     unidad,
                     precio,
+                    imagen: imagenFinal,
                     precio_anterior: precioAnterior,
                     fecha_cambio: fechaCambio
                 });
             }
         } else {
             const nuevoId = insumos.length > 0 ? Math.max(...insumos.map(i => i.id)) + 1 : 1;
-            insumos.push(new Insumo({ id: nuevoId, nombre, unidad, precio }));
+            insumos.push(new Insumo({ id: nuevoId, nombre, unidad, precio, imagen: imagenFinal }));
         }
         this.guardarInsumosLocal(insumos);
         this.notificarActualizacion();
@@ -309,7 +327,14 @@ class StoreService {
         });
 
         return lista.map(item => {
-            const prod = new Producto(item);
+            let itemConFoto = item;
+            if (item && !Object.prototype.hasOwnProperty.call(item, 'imagen')) {
+                const defImg = StoreService.PRODUCTOS_DEFAULT.find(d => d.id === Number(item.id));
+                if (defImg && defImg.imagen) {
+                    itemConFoto = { ...item, imagen: defImg.imagen };
+                }
+            }
+            const prod = new Producto(itemConFoto);
             // Recuperar precio anterior si estaba nulo para cualquier producto
             if (prod.precioVentaAnterior === null || isNaN(prod.precioVentaAnterior)) {
                 const def = StoreService.PRODUCTOS_DEFAULT.find(d => d.id === prod.id);
@@ -354,8 +379,13 @@ class StoreService {
         if (id) {
             const idx = productos.findIndex(p => p.id === id);
             if (idx !== -1) {
+                const tieneCampoImagen = Object.prototype.hasOwnProperty.call(datosProducto, 'imagen');
+                const imagenFinal = tieneCampoImagen
+                    ? (ImageHelper.esImagenValida(datosProducto.imagen) ? datosProducto.imagen : null)
+                    : (productos[idx].imagen || null);
                 Object.assign(productos[idx], {
                     nombre: datosProducto.nombre,
+                    imagen: imagenFinal,
                     modo: datosProducto.modo,
                     valorModo: datosProducto.valorModo,
                     tipoMargen: datosProducto.tipoMargen || 'costo',
@@ -371,9 +401,11 @@ class StoreService {
             }
         } else {
             const nuevoId = productos.length > 0 ? Math.max(...productos.map(p => p.id)) + 1 : 1;
+            const imagenNueva = ImageHelper.esImagenValida(datosProducto.imagen) ? datosProducto.imagen : null;
             const nuevoProd = new Producto({
                 id: nuevoId,
                 nombre: datosProducto.nombre,
+                imagen: imagenNueva,
                 modo: datosProducto.modo,
                 valorModo: datosProducto.valorModo,
                 tipoMargen: datosProducto.tipoMargen || 'costo',

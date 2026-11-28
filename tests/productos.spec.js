@@ -66,11 +66,27 @@ test.describe('Costia — Catálogo de Productos y Precios', () => {
     await expect(page).toHaveURL(/paginas\/crear-producto\.html/);
   });
 
-  test('cada tarjeta de producto debe contener desglose de costos y enlace a ficha técnica', async ({ page }) => {
+  test('cada tarjeta de producto debe contener desglose de costos y menú de 3 puntos con opciones claras', async ({ page }) => {
     const primeraCard = page.locator('#productos-grid article.producto-card').first();
     await expect(primeraCard.locator('.producto-card__costo')).toBeVisible();
     await expect(primeraCard.locator('.producto-card__precio')).toBeVisible();
-    await expect(primeraCard.locator('.btn-ficha')).toBeVisible();
+
+    const menuBtn = primeraCard.locator('.producto-card__menu-btn');
+    const dropdown = primeraCard.locator('.producto-card__menu-dropdown');
+    await expect(menuBtn).toBeVisible();
+    await expect(dropdown).toBeHidden();
+
+    // Abrir el menú de 3 puntos y validar opciones etiquetadas
+    await menuBtn.click();
+    await expect(dropdown).toBeVisible();
+    await expect(dropdown.locator('.btn-ficha')).toContainText('Ver Ficha Técnica');
+    await expect(dropdown.locator('.btn-editar')).toContainText('Editar receta');
+    await expect(dropdown.locator('.btn-duplicar')).toContainText('Duplicar receta');
+    await expect(dropdown.locator('.btn-eliminar')).toContainText('Eliminar receta');
+
+    // Cerrar con Escape
+    await page.keyboard.press('Escape');
+    await expect(dropdown).toBeHidden();
   });
 
   test('debe tener visible el botón para exportar catálogo en PDF', async ({ page }) => {

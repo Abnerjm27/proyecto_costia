@@ -176,5 +176,59 @@ class Database {
                 INDEX idx_receta_insumo (insumo_id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
         ");
+
+        // 5. Tabla ofertas_cierre (Vitrina de Liquidación de Excedentes)
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS ofertas_cierre (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                usuario_id INT NOT NULL,
+                producto_id INT NULL,
+                negocio_nombre VARCHAR(120) NOT NULL,
+                producto_nombre VARCHAR(150) NOT NULL,
+                categoria ENUM('panaderia','pasteleria','cafeteria','empacados') NOT NULL DEFAULT 'panaderia',
+                precio_regular DECIMAL(12, 2) NOT NULL,
+                costo_unitario DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+                precio_oferta DECIMAL(12, 2) NOT NULL,
+                unidades_disponibles INT NOT NULL DEFAULT 1,
+                horario_recogida VARCHAR(80) NOT NULL,
+                pais VARCHAR(80) NOT NULL DEFAULT 'Colombia',
+                departamento VARCHAR(80) NOT NULL DEFAULT 'Bogotá D.C.',
+                municipio VARCHAR(80) NOT NULL DEFAULT 'Bogotá',
+                direccion_recogida VARCHAR(200) NOT NULL,
+                contacto_publico VARCHAR(80) NOT NULL,
+                alergenos VARCHAR(255) NULL DEFAULT '',
+                nota_frescura VARCHAR(200) NULL DEFAULT 'Excedente del día · 100% apto para consumo',
+                imagen_url MEDIUMTEXT NULL DEFAULT NULL,
+                latitud DECIMAL(10, 7) NULL DEFAULT NULL,
+                longitud DECIMAL(10, 7) NULL DEFAULT NULL,
+                declaracion_sanitaria TINYINT(1) NOT NULL DEFAULT 1,
+                expira_en DATETIME NOT NULL,
+                estado ENUM('activa','agotada','retirada','reportada') NOT NULL DEFAULT 'activa',
+                motivo_reporte VARCHAR(255) NULL DEFAULT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                INDEX idx_ofertas_usuario (usuario_id),
+                INDEX idx_ofertas_estado_expira (estado, expira_en)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+
+        $colsOfertas = $pdo->query("SHOW COLUMNS FROM ofertas_cierre")->fetchAll(PDO::FETCH_COLUMN);
+        if (!in_array('imagen_url', $colsOfertas, true)) {
+            $pdo->exec("ALTER TABLE ofertas_cierre ADD COLUMN imagen_url MEDIUMTEXT NULL DEFAULT NULL AFTER nota_frescura");
+        }
+        if (!in_array('latitud', $colsOfertas, true)) {
+            $pdo->exec("ALTER TABLE ofertas_cierre ADD COLUMN latitud DECIMAL(10, 7) NULL DEFAULT NULL AFTER imagen_url");
+        }
+        if (!in_array('longitud', $colsOfertas, true)) {
+            $pdo->exec("ALTER TABLE ofertas_cierre ADD COLUMN longitud DECIMAL(10, 7) NULL DEFAULT NULL AFTER latitud");
+        }
+        if (!in_array('pais', $colsOfertas, true)) {
+            $pdo->exec("ALTER TABLE ofertas_cierre ADD COLUMN pais VARCHAR(80) NOT NULL DEFAULT 'Colombia' AFTER horario_recogida");
+        }
+        if (!in_array('departamento', $colsOfertas, true)) {
+            $pdo->exec("ALTER TABLE ofertas_cierre ADD COLUMN departamento VARCHAR(80) NOT NULL DEFAULT 'Bogotá D.C.' AFTER pais");
+        }
+        if (!in_array('municipio', $colsOfertas, true)) {
+            $pdo->exec("ALTER TABLE ofertas_cierre ADD COLUMN municipio VARCHAR(80) NOT NULL DEFAULT 'Bogotá' AFTER departamento");
+        }
     }
 }

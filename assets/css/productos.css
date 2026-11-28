@@ -721,10 +721,12 @@ body.dark-mode .be-global-resumen-vivo,
 }
 
 .producto-card {
+    position: relative;
+    overflow: visible;
     background-color: #FDFBF7;
     border: 1px solid rgba(26, 30, 27, 0.11);
     border-radius: 10px;
-    padding: 14px 18px;
+    padding: 14px 58px 14px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -736,6 +738,28 @@ body.dark-mode .be-global-resumen-vivo,
     flex-wrap: wrap;
     min-width: 0;
     max-width: 100%;
+}
+
+.producto-card.menu-activo {
+    z-index: 35;
+    border-color: #0F6A4A;
+}
+
+.producto-card__thumb-wrap {
+    width: 68px;
+    height: 68px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(15, 106, 74, 0.22);
+    background: #EDE6D8;
+    flex-shrink: 0;
+}
+
+.producto-card__thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .producto-card:hover {
@@ -897,8 +921,13 @@ body.dark-mode .be-global-resumen-vivo,
 
 @media (max-width: 480px) {
     .producto-card {
-        padding: 12px;
+        padding: 12px 52px 12px 12px;
         gap: 12px;
+    }
+
+    .producto-card__thumb-wrap {
+        width: 56px;
+        height: 56px;
     }
 
     .producto-card__col-precios {
@@ -910,6 +939,106 @@ body.dark-mode .be-global-resumen-vivo,
         width: 100%;
         justify-content: space-between;
     }
+}
+
+/* === MENÚ CONTEXTUAL 3 PUNTOS (⋮) EN ESQUINA DE TARJETA === */
+.producto-card__menu-wrap {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
+}
+
+.producto-card__menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    border: 1px solid rgba(26, 30, 27, 0.12);
+    background: #F6F2EA;
+    color: #0D241C;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+}
+
+.producto-card__menu-btn:hover,
+.producto-card__menu-btn[aria-expanded="true"] {
+    background: #0F6A4A;
+    border-color: #0F6A4A;
+    color: #FDFBF7;
+}
+
+.producto-card__menu-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 210px;
+    padding: 6px;
+    border-radius: 12px;
+    background: #0D241C;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 16px 36px rgba(7, 22, 16, 0.34);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    transform-origin: top right;
+    animation: menuTarjetaEntrada 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.producto-card__menu-dropdown.abierto {
+    display: flex;
+}
+
+@keyframes menuTarjetaEntrada {
+    from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.producto-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 11px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #F4F0E6;
+    font-family: var(--font-texto, 'Source Sans 3', sans-serif);
+    font-size: 0.87rem;
+    font-weight: 600;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.producto-menu-item:hover {
+    background: rgba(43, 182, 126, 0.18);
+    color: #6EE7B7;
+}
+
+.producto-menu-item svg {
+    flex-shrink: 0;
+    opacity: 0.9;
+}
+
+.producto-menu-sep {
+    height: 1px;
+    margin: 4px 6px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.producto-menu-item--peligro {
+    color: #FCA5A5;
+}
+
+.producto-menu-item--peligro:hover {
+    background: rgba(220, 38, 38, 0.22);
+    color: #FECACA;
 }
 
 .btn-ficha {
@@ -2181,11 +2310,34 @@ body.dark-mode .btn-ficha,
 [data-theme="dark"] .btn-ficha,
 body.dark-mode .btn-card-action,
 [data-theme="dark"] .btn-card-action,
+body.dark-mode .producto-card__menu-btn,
+[data-theme="dark"] .producto-card__menu-btn,
 body.dark-mode .filtro-pill:not(.activo),
 [data-theme="dark"] .filtro-pill:not(.activo) {
     background: rgba(246, 242, 234, 0.06) !important;
     border-color: rgba(246, 242, 234, 0.16) !important;
     color: #F4F0E6 !important;
+}
+
+body.dark-mode .producto-card__menu-btn:hover,
+[data-theme="dark"] .producto-card__menu-btn:hover,
+body.dark-mode .producto-card__menu-btn[aria-expanded="true"],
+[data-theme="dark"] .producto-card__menu-btn[aria-expanded="true"] {
+    background: #2BB67E !important;
+    border-color: #2BB67E !important;
+    color: #0A1410 !important;
+}
+
+body.dark-mode .producto-card__menu-dropdown,
+[data-theme="dark"] .producto-card__menu-dropdown {
+    background: #0B1914 !important;
+    border-color: rgba(43, 182, 126, 0.28) !important;
+}
+
+body.dark-mode .producto-card__thumb-wrap,
+[data-theme="dark"] .producto-card__thumb-wrap {
+    background: #182B23 !important;
+    border-color: rgba(43, 182, 126, 0.3) !important;
 }
 
 body.dark-mode .buscador,
@@ -2278,6 +2430,238 @@ body.dark-mode .alerta-precio__btn-ok,
 body.dark-mode .alerta-precio__btn-mantener:hover,
 [data-theme="dark"] .alerta-precio__btn-mantener:hover {
     background: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================
+   SIMULADOR INTERACTIVO: CHART.JS, ESCENARIOS Y GAUGE
+   ============================================================ */
+.chart-canvas-wrapper {
+    position: relative;
+    height: 225px;
+    min-height: 220px;
+    width: 100%;
+    padding: 8px 10px 4px;
+    box-sizing: border-box;
+}
+
+.chart-canvas-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.sim-escenarios-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(26, 30, 27, 0.12);
+}
+
+.sim-escenarios-label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #4E554F;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.sim-escenarios-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.sim-escenario-pill {
+    min-height: 32px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(26, 30, 27, 0.15);
+    background: #F6F2EA;
+    color: #0D241C;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+}
+
+.sim-escenario-pill:hover {
+    border-color: #0F6A4A;
+    background: #EDE6D8;
+    transform: translateY(-1px);
+}
+
+.sim-escenario-pill.activo {
+    background: #0F6A4A;
+    border-color: #0F6A4A;
+    color: #FDFBF7;
+}
+
+/* Medidor semicircular de rentabilidad (Gauge) */
+.sim-gauge-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: #F6F2EA;
+    border: 1px solid rgba(26, 30, 27, 0.12);
+}
+
+.sim-gauge-visual {
+    position: relative;
+    width: 96px;
+    height: 54px;
+    flex-shrink: 0;
+}
+
+.sim-gauge-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.sim-gauge-track {
+    stroke: rgba(13, 36, 28, 0.12);
+}
+
+.sim-gauge-arc {
+    stroke: #0F6A4A;
+    transition: stroke-dashoffset 0.35s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.25s ease;
+}
+
+.sim-gauge-card.gauge--ajustado .sim-gauge-arc {
+    stroke: #D97706;
+}
+
+.sim-gauge-card.gauge--peligro .sim-gauge-arc {
+    stroke: #C53030;
+}
+
+.sim-gauge-pct {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    text-align: center;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #0D241C;
+}
+
+.sim-gauge-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    min-width: 0;
+}
+
+.sim-gauge-titulo {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #4E554F;
+}
+
+.sim-gauge-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.sim-gauge-status.gauge--saludable {
+    background: rgba(15, 106, 74, 0.14);
+    color: #0A6847;
+}
+
+.sim-gauge-status.gauge--ajustado {
+    background: rgba(217, 119, 6, 0.14);
+    color: #9A4A04;
+}
+
+.sim-gauge-status.gauge--peligro {
+    background: rgba(197, 48, 48, 0.14);
+    color: #B91C1C;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sim-gauge-arc {
+        transition: none;
+    }
+}
+
+/* Dark mode para escenarios y gauge */
+body.dark-mode .sim-escenarios-bar,
+[data-theme="dark"] .sim-escenarios-bar {
+    border-top-color: rgba(246, 242, 234, 0.14);
+}
+
+body.dark-mode .sim-escenarios-label,
+[data-theme="dark"] .sim-escenarios-label,
+body.dark-mode .sim-gauge-titulo,
+[data-theme="dark"] .sim-gauge-titulo {
+    color: #B8B3A6;
+}
+
+body.dark-mode .sim-escenario-pill:not(.activo),
+[data-theme="dark"] .sim-escenario-pill:not(.activo) {
+    background: #182B23;
+    border-color: rgba(246, 242, 234, 0.16);
+    color: #F4F0E6;
+}
+
+body.dark-mode .sim-escenario-pill.activo,
+[data-theme="dark"] .sim-escenario-pill.activo {
+    background: #2BB67E;
+    border-color: #2BB67E;
+    color: #0A1410;
+}
+
+body.dark-mode .sim-gauge-card,
+[data-theme="dark"] .sim-gauge-card {
+    background: #182B23;
+    border-color: rgba(246, 242, 234, 0.12);
+}
+
+body.dark-mode .sim-gauge-track,
+[data-theme="dark"] .sim-gauge-track {
+    stroke: rgba(255, 255, 255, 0.14);
+}
+
+body.dark-mode .sim-gauge-card.gauge--saludable .sim-gauge-arc,
+[data-theme="dark"] .sim-gauge-card.gauge--saludable .sim-gauge-arc {
+    stroke: #2BB67E;
+}
+
+body.dark-mode .sim-gauge-pct,
+[data-theme="dark"] .sim-gauge-pct {
+    color: #F4F0E6;
+}
+
+body.dark-mode .sim-gauge-status.gauge--saludable,
+[data-theme="dark"] .sim-gauge-status.gauge--saludable {
+    background: rgba(43, 182, 126, 0.18);
+    color: #6EE7B7;
+}
+
+body.dark-mode .sim-gauge-status.gauge--ajustado,
+[data-theme="dark"] .sim-gauge-status.gauge--ajustado {
+    background: rgba(251, 191, 36, 0.18);
+    color: #FCD34D;
+}
+
+body.dark-mode .sim-gauge-status.gauge--peligro,
+[data-theme="dark"] .sim-gauge-status.gauge--peligro {
+    background: rgba(248, 113, 113, 0.2);
+    color: #FCA5A5;
 }
 
 

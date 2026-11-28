@@ -1078,3 +1078,23 @@ body .asesor-ollama-hint {
         color: #0A1410;
     }
 }
+
+/* ============================================================
+   VIEW TRANSITIONS GLOBALES (MPA nativo sin recarga brusca)
+   ============================================================ */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 150ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 1ms;
+    }
+}

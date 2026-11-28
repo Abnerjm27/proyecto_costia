@@ -1,14 +1,14 @@
 {
   "assets/js/crear-producto.js": {
-    "mtime": 1795471716.4039342,
-    "seen": 1795471765.8294477,
-    "ast_hash": "9f111afa6ba4a4fb815cbf78bfc0520f",
+    "mtime": 1795808106.458994,
+    "seen": 1795808357.8342855,
+    "ast_hash": "406387193dec91982f54d7a498a13199",
     "semantic_hash": ""
   },
   "assets/js/insumos.js": {
-    "mtime": 1795119706.4282513,
-    "seen": 1795131030.5842633,
-    "ast_hash": "db78a71f8b390a415c7870ff35ac187e",
+    "mtime": 1795807818.273821,
+    "seen": 1795808357.8342855,
+    "ast_hash": "89c92c6b8ded69aa0ca9c61407c2f0e2",
     "semantic_hash": ""
   },
   "assets/js/login.js": {
@@ -18,15 +18,15 @@
     "semantic_hash": ""
   },
   "assets/js/models.js": {
-    "mtime": 1795121391.5413692,
-    "seen": 1795131030.5842633,
-    "ast_hash": "c6fa508c6b3d99b9cae1f63e2caf432c",
+    "mtime": 1795807766.575627,
+    "seen": 1795808357.8352854,
+    "ast_hash": "267ace074b2b3dcbe853ed22157b3e22",
     "semantic_hash": ""
   },
   "assets/js/productos.js": {
-    "mtime": 1795457413.894563,
-    "seen": 1795457446.8042483,
-    "ast_hash": "007b4f852f22d9e7253ea864e2671ad5",
+    "mtime": 1795807883.4978697,
+    "seen": 1795808357.8352854,
+    "ast_hash": "c2c3261446acc1c5d3f57b26a482847c",
     "semantic_hash": ""
   },
   "assets/js/registro.js": {
@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   "assets/js/store.js": {
-    "mtime": 1795459744.895321,
-    "seen": 1795459779.2183099,
-    "ast_hash": "725182d9ae2eed4a50366a82b3b8c2c0",
+    "mtime": 1795815671.8111932,
+    "seen": 1795815711.7341719,
+    "ast_hash": "902e11e2e60215d5413f3e9dc4178225",
     "semantic_hash": ""
   },
   "backend/api/demo.php": {
@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "backend/api/insumos.php": {
-    "mtime": 1793674875.5600412,
-    "seen": 1793675076.1954288,
-    "ast_hash": "9f715773dfcf9e4a78424478e8b687f2",
+    "mtime": 1795807736.8252444,
+    "seen": 1795808357.8382614,
+    "ast_hash": "4b3cee709c133ac983de48d3363294b3",
     "semantic_hash": ""
   },
   "backend/api/productos.php": {
@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "backend/config/Database.php": {
-    "mtime": 1795200901.6755972,
-    "seen": 1795201508.7931361,
-    "ast_hash": "9d136a0de65a03d1f5d6be08d5a656a9",
+    "mtime": 1795486997.2231548,
+    "seen": 1795487191.7173078,
+    "ast_hash": "1250ad9e82995c71d3cb7bbe3560a85c",
     "semantic_hash": ""
   },
   "backend/controllers/AuthController.php": {
@@ -102,28 +102,28 @@
     "semantic_hash": ""
   },
   "backend/controllers/InsumoController.php": {
-    "mtime": 1791942496.5313678,
-    "seen": 1792320352.4668565,
-    "ast_hash": "86dab11a3ab73966e44474f90d1b4034",
-    "semantic_hash": "86dab11a3ab73966e44474f90d1b4034"
+    "mtime": 1795815258.7201507,
+    "seen": 1795815403.2619252,
+    "ast_hash": "0c353c36d0b8a32c3aff5b7cb3f9e8f7",
+    "semantic_hash": ""
   },
   "backend/controllers/ProductoController.php": {
-    "mtime": 1793764915.6691635,
-    "seen": 1793765564.1598022,
-    "ast_hash": "98946f6e86ddbe10879f7cb5d8ef7414",
+    "mtime": 1795815260.2220347,
+    "seen": 1795815403.2625158,
+    "ast_hash": "d202c5ed4859f9a9cfa4680f10aabf7e",
     "semantic_hash": ""
   },
   "backend/models/Insumo.php": {
-    "mtime": 1791942460.8871698,
-    "seen": 1792320352.4668612,
-    "ast_hash": "935f551b42feec48d680a9523a46b16a",
-    "semantic_hash": "935f551b42feec48d680a9523a46b16a"
+    "mtime": 1795807709.470763,
+    "seen": 1795808357.8428776,
+    "ast_hash": "bbf00ec4985c2e596e8cb7f7baec7cae",
+    "semantic_hash": ""
   },
   "backend/models/Producto.php": {
-    "mtime": 1791943240.5966322,
-    "seen": 1792320352.4668636,
-    "ast_hash": "88197e2a101bf92dca482f15245e3bd8",
-    "semantic_hash": "88197e2a101bf92dca482f15245e3bd8"
+    "mtime": 1795807712.280299,
+    "seen": 1795808357.8428776,
+    "ast_hash": "76f5db7b5387eaf307933914516c5cbd",
+    "semantic_hash": ""
   },
   "backend/models/RecetaItem.php": {
     "mtime": 1791942468.3242755,
@@ -144,39 +144,39 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1795134349.9435916,
-    "seen": 1795148063.929043,
-    "ast_hash": "8dc16fc803ec2ed241b3531a48954179",
+    "mtime": 1795816231.9053001,
+    "seen": 1795816285.785084,
+    "ast_hash": "f8007badad43630a6e585e6b62b3d9dd",
     "semantic_hash": ""
   },
   "paginas/crear-producto.html": {
-    "mtime": 1795472017.7871087,
-    "seen": 1795472026.1734915,
-    "ast_hash": "feb844561b6ccbf63fea985b54ce2a94",
+    "mtime": 1795816912.1886337,
+    "seen": 1795816938.0375128,
+    "ast_hash": "92715538a51dded866c02b8bc7e97608",
     "semantic_hash": ""
   },
   "paginas/insumos.html": {
-    "mtime": 1795471637.0447342,
-    "seen": 1795471765.8721828,
-    "ast_hash": "90139aa4e1c07c6e8f0f46f468672170",
+    "mtime": 1795816912.2041621,
+    "seen": 1795816938.0375128,
+    "ast_hash": "833d1bf4f69319d8dcc276c11c5ecdbb",
     "semantic_hash": ""
   },
   "paginas/login.html": {
-    "mtime": 1795134349.980106,
-    "seen": 1795148063.929043,
-    "ast_hash": "8ffab994d2e55b73a938ea04b36b61ce",
+    "mtime": 1795816232.0687456,
+    "seen": 1795816285.785084,
+    "ast_hash": "0545296a472b94a47a3ef81c44ac64ef",
     "semantic_hash": ""
   },
   "paginas/productos.html": {
-    "mtime": 1795471103.138684,
-    "seen": 1795471167.8782976,
-    "ast_hash": "7f3c76d7f743d12986a85e494f82a910",
+    "mtime": 1795816912.214672,
+    "seen": 1795816938.0385127,
+    "ast_hash": "25adc99f8749b1a6d2ff8f6f76adc9ec",
     "semantic_hash": ""
   },
   "paginas/registro.html": {
-    "mtime": 1795134349.9821048,
-    "seen": 1795148063.9304838,
-    "ast_hash": "2014c98f89888eaa014ce0bd8c636c2f",
+    "mtime": 1795816232.0946374,
+    "seen": 1795816285.785084,
+    "ast_hash": "1097ec4a06aa3327260d6b82bf9dcacb",
     "semantic_hash": ""
   },
   "assets/img/bell.svg": {
@@ -306,15 +306,15 @@
     "semantic_hash": ""
   },
   "paginas/ficha-preview.html": {
-    "mtime": 1795134349.961461,
-    "seen": 1795148063.929043,
-    "ast_hash": "389ffcb465cc7fe589aa169bd117aa89",
+    "mtime": 1795816232.0443041,
+    "seen": 1795816285.785084,
+    "ast_hash": "187ebd693df5b446113b52e44431b977",
     "semantic_hash": ""
   },
   "paginas/ficha-tecnica.html": {
-    "mtime": 1795471105.490243,
-    "seen": 1795471167.8762975,
-    "ast_hash": "ada6df6071d3708171259a3f213a1871",
+    "mtime": 1795816912.2006896,
+    "seen": 1795816938.0375128,
+    "ast_hash": "6aa5fb9424c619ee384fc3b6bc3f38ca",
     "semantic_hash": ""
   },
   "assets/js/asesor/asesor-finanzas.js": {
@@ -408,9 +408,9 @@
     "semantic_hash": ""
   },
   "tests/crear-producto.spec.js": {
-    "mtime": 1795471738.2080994,
-    "seen": 1795471765.8561685,
-    "ast_hash": "660a0ebc73d1ba47515e3f32d6e2970d",
+    "mtime": 1795808224.1965804,
+    "seen": 1795808357.8478756,
+    "ast_hash": "52ccfbb8acb74a6833333d8d5a305122",
     "semantic_hash": ""
   },
   "tests/ficha-tecnica.spec.js": {
@@ -420,9 +420,9 @@
     "semantic_hash": ""
   },
   "tests/insumos.spec.js": {
-    "mtime": 1794316675.0311403,
-    "seen": 1794316845.6568015,
-    "ast_hash": "8e9c29afba6a9de209ced92614532312",
+    "mtime": 1795815689.2033093,
+    "seen": 1795815711.7537894,
+    "ast_hash": "0c0fd2c77e1099dca14e2404537cabe5",
     "semantic_hash": ""
   },
   "tests/landing.spec.js": {
@@ -432,9 +432,9 @@
     "semantic_hash": ""
   },
   "tests/productos.spec.js": {
-    "mtime": 1794291293.8096328,
-    "seen": 1794291678.3726132,
-    "ast_hash": "c881d8891d91fb1afab0f6b358bfe655",
+    "mtime": 1795808225.666735,
+    "seen": 1795808357.8498752,
+    "ast_hash": "f3f5a4e4087781d13fbb6908033cc170",
     "semantic_hash": ""
   },
   "backend/config/Session.php": {
@@ -444,21 +444,21 @@
     "semantic_hash": ""
   },
   "paginas/privacidad.html": {
-    "mtime": 1795134102.4545827,
-    "seen": 1795148063.929043,
-    "ast_hash": "8566dfaf9015b287b3325c55f87b2ea1",
+    "mtime": 1795816232.0798442,
+    "seen": 1795816285.785084,
+    "ast_hash": "aa8d65cb51ad67a08332ab2652311b3b",
     "semantic_hash": ""
   },
   "paginas/terminos.html": {
-    "mtime": 1795134278.147228,
-    "seen": 1795148063.9304838,
-    "ast_hash": "55dfe70d5e81e092eb63ca39d2239cfc",
+    "mtime": 1795816232.1008956,
+    "seen": 1795816285.785084,
+    "ast_hash": "9728b58f6f8bf007077660fa6ab4bc0b",
     "semantic_hash": ""
   },
   "assets/js/ficha-tecnica.js": {
-    "mtime": 1795121446.9034362,
-    "seen": 1795131030.5842633,
-    "ast_hash": "21a821f069d3440738c70fed66978b02",
+    "mtime": 1795807921.3766756,
+    "seen": 1795808357.8342855,
+    "ast_hash": "1bd14e7a830d92bb6f0b6ebf3bd97f4f",
     "semantic_hash": ""
   },
   "backend/api/eliminar-cuenta.php": {
@@ -486,15 +486,15 @@
     "semantic_hash": ""
   },
   "assets/js/theme.js": {
-    "mtime": 1795118974.4801192,
-    "seen": 1795131030.585265,
-    "ast_hash": "dd9d8d706b0a97950bd4b01c3d1c2f00",
+    "mtime": 1795814138.3118207,
+    "seen": 1795814166.4998815,
+    "ast_hash": "4e9a5a6a14483ab752ac90c6cc760915",
     "semantic_hash": ""
   },
   "assets/js/app-shell.js": {
-    "mtime": 1795471782.7944868,
-    "seen": 1795471819.3445187,
-    "ast_hash": "ae7f3d9e03c40b593835144c0891d9e0",
+    "mtime": 1795816226.3756745,
+    "seen": 1795816285.7364807,
+    "ast_hash": "a758f0399503477a1043c0a2e198b380",
     "semantic_hash": ""
   },
   "tests/responsive.spec.js": {
@@ -504,21 +504,21 @@
     "semantic_hash": ""
   },
   "assets/js/dashboard.js": {
-    "mtime": 1795469655.104093,
-    "seen": 1795469682.6253848,
-    "ast_hash": "ce3ce64ace081c1a88ab876864ade9d6",
+    "mtime": 1795809848.1795502,
+    "seen": 1795809911.5380242,
+    "ast_hash": "a38c7e44520194ddfd3f7250fd968602",
     "semantic_hash": ""
   },
   "tests/dashboard.spec.js": {
-    "mtime": 1795120240.6454394,
-    "seen": 1795131030.602136,
-    "ast_hash": "100abd57d54644035e582f29d54b5b80",
+    "mtime": 1795809883.2225926,
+    "seen": 1795809911.559975,
+    "ast_hash": "19c43f75334127bd61ebc8e665a899dd",
     "semantic_hash": ""
   },
   "paginas/dashboard.html": {
-    "mtime": 1795471098.4750824,
-    "seen": 1795471167.8752987,
-    "ast_hash": "92d91df75a0f75c2a96836120754ad49",
+    "mtime": 1795816912.1925697,
+    "seen": 1795816938.0375128,
+    "ast_hash": "33a5f503092b0b3a017f1dea3edfbc08",
     "semantic_hash": ""
   },
   "assets/js/asesor/asesor-comandos.js": {
@@ -540,9 +540,9 @@
     "semantic_hash": ""
   },
   "tests/gastos-trabajadores.spec.js": {
-    "mtime": 1794853216.4072404,
-    "seen": 1794853522.9126613,
-    "ast_hash": "9f1c7c4f979208f92b1a07ee59864e25",
+    "mtime": 1795808228.5269237,
+    "seen": 1795808357.8488753,
+    "ast_hash": "89a0f3b961408a69e5433efe743bfaa5",
     "semantic_hash": ""
   },
   "tests/visual-capture.spec.js": {
@@ -564,9 +564,9 @@
     "semantic_hash": ""
   },
   "paginas/configuracion.html": {
-    "mtime": 1795471126.2042964,
-    "seen": 1795471167.8742812,
-    "ast_hash": "819b9bb367e9d2bc3ec7009be90bc7d9",
+    "mtime": 1795816912.0644703,
+    "seen": 1795816938.0375128,
+    "ast_hash": "d68813b7894669dc99c03a9d983e720c",
     "semantic_hash": ""
   },
   "tests/audit-zones.spec.js": {
@@ -588,9 +588,9 @@
     "semantic_hash": ""
   },
   "tests/ux-transformation.spec.js": {
-    "mtime": 1795120244.5405085,
-    "seen": 1795131030.604843,
-    "ast_hash": "0ea37390620f97a993eca85ea0f104c5",
+    "mtime": 1795808229.8728702,
+    "seen": 1795808357.8508754,
+    "ast_hash": "440197e92ee7fc81a4a9d5027012b75f",
     "semantic_hash": ""
   },
   "backend/api/configuracion.php": {
@@ -606,9 +606,165 @@
     "semantic_hash": ""
   },
   "paginas/equilibrio.html": {
-    "mtime": 1795471100.9396744,
-    "seen": 1795471167.8752987,
-    "ast_hash": "848b2217abc030af4d5c9f241eb27c91",
+    "mtime": 1795816912.1959243,
+    "seen": 1795816938.0375128,
+    "ast_hash": "5ae5739ddbc549f0297140c738220a2b",
+    "semantic_hash": ""
+  },
+  "assets/js/ofertas-cierre.js": {
+    "mtime": 1795807924.1618154,
+    "seen": 1795808357.8352854,
+    "ast_hash": "dff683ae0a95d095f246bbf0b1ba2122",
+    "semantic_hash": ""
+  },
+  "assets/js/vitrina.js": {
+    "mtime": 1795489316.2835803,
+    "seen": 1795489394.3174326,
+    "ast_hash": "1ddad06879d77de3d1568f975a34740c",
+    "semantic_hash": ""
+  },
+  "backend/api/ofertas.php": {
+    "mtime": 1795474494.7979596,
+    "seen": 1795474626.2691257,
+    "ast_hash": "defcfe2cb68bac2b0a976ca21679bdc0",
+    "semantic_hash": ""
+  },
+  "backend/controllers/OfertaController.php": {
+    "mtime": 1795487006.5671787,
+    "seen": 1795487191.7183163,
+    "ast_hash": "1313ace2a15df092d87f6888d4fd0118",
+    "semantic_hash": ""
+  },
+  "tests/ofertas-cierre.spec.js": {
+    "mtime": 1795489339.8790958,
+    "seen": 1795489394.3320982,
+    "ast_hash": "8115776a5497dc9bf91409976701e815",
+    "semantic_hash": ""
+  },
+  "paginas/ofertas-cierre.html": {
+    "mtime": 1795816912.2088547,
+    "seen": 1795816938.0385127,
+    "ast_hash": "ec0e37ecb5b22067b6ab05efaa366773",
+    "semantic_hash": ""
+  },
+  "paginas/vitrina.html": {
+    "mtime": 1795816232.1101804,
+    "seen": 1795816285.785084,
+    "ast_hash": "1ed7609a97b65ec021b4ff3150eb3d96",
+    "semantic_hash": ""
+  },
+  "assets/img/ofertas/croissant.png": {
+    "mtime": 1795474878.4982762,
+    "seen": 1795475022.7816103,
+    "ast_hash": "94e3c281611bfc4a60d17d55ce11b61f",
+    "semantic_hash": ""
+  },
+  "assets/img/ofertas/galletas-avena.png": {
+    "mtime": 1795474879.0477748,
+    "seen": 1795475022.7816103,
+    "ast_hash": "f65528305998df08a0a503967b55221a",
+    "semantic_hash": ""
+  },
+  "assets/img/ofertas/pan-artesanal.png": {
+    "mtime": 1795474878.0490673,
+    "seen": 1795475022.7816103,
+    "ast_hash": "5eb30958eb73a38137508d364f6c5830",
+    "semantic_hash": ""
+  },
+  "assets/img/ofertas/torta-chocolate.png": {
+    "mtime": 1795474879.473527,
+    "seen": 1795475022.7816103,
+    "ast_hash": "b20d5bb94ce94eb698cd4fbd3ddd828e",
+    "semantic_hash": ""
+  },
+  "assets/js/catalogo-geo.js": {
+    "mtime": 1795489214.8922184,
+    "seen": 1795489394.3113315,
+    "ast_hash": "819c8965bd1c1b07f14c0a2ffb243a6d",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/avena.jpg": {
+    "mtime": 1795815357.0664709,
+    "seen": 1795815403.2959783,
+    "ast_hash": "3df494cfe905d7fc180d6e5e2a342e32",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/azucar.jpg": {
+    "mtime": 1795815357.0022638,
+    "seen": 1795815403.2959783,
+    "ast_hash": "120564e317cf94420f14a9b03c12d87c",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/cafe.jpg": {
+    "mtime": 1795815357.25677,
+    "seen": 1795815403.2959783,
+    "ast_hash": "5587c599683330a14565ffa75cecb517",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/chocolate.jpg": {
+    "mtime": 1795815357.1330492,
+    "seen": 1795815403.2959783,
+    "ast_hash": "047882b9f0b79f6dba56d495e64e7be7",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/harina.jpg": {
+    "mtime": 1795815356.7735934,
+    "seen": 1795815403.2959783,
+    "ast_hash": "de488d0c655943785e7e974717b2e8a3",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/huevo.jpg": {
+    "mtime": 1795815357.3255076,
+    "seen": 1795815403.2959783,
+    "ast_hash": "f7f86439dd39ed54387d074cbcb5e18c",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/leche.jpg": {
+    "mtime": 1795815357.1949103,
+    "seen": 1795815403.2959783,
+    "ast_hash": "05d1f543c1b2c5bd235f2e769a31bd47",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/levadura.jpg": {
+    "mtime": 1795815356.8677506,
+    "seen": 1795815403.2959783,
+    "ast_hash": "768ff7eaad0429851227196d12da53e8",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/mantequilla.jpg": {
+    "mtime": 1795815357.406945,
+    "seen": 1795815403.2959783,
+    "ast_hash": "1f8301cde07bae9e9e2410fbe142c07d",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/insumos/queso.jpg": {
+    "mtime": 1795815356.9422593,
+    "seen": 1795815403.2959783,
+    "ast_hash": "3db957b2cc363d0524df3407b07e5412",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/productos/brownie.jpg": {
+    "mtime": 1795815357.5932066,
+    "seen": 1795815403.2959783,
+    "ast_hash": "2227715f1abba09a0a69a946960d403a",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/productos/capuchino.jpg": {
+    "mtime": 1795815357.4806006,
+    "seen": 1795815403.2959783,
+    "ast_hash": "bb3f260cd7557782561bb3248331f5dc",
+    "semantic_hash": ""
+  },
+  "assets/img/demo/productos/pan-queso.jpg": {
+    "mtime": 1795815357.6630204,
+    "seen": 1795815403.2959783,
+    "ast_hash": "12a25ab9ac7774bcb0c66d5135b1e0cd",
+    "semantic_hash": ""
+  },
+  "docs/GUIA_ESTUDIO_Y_PITCH_COSTIA.md": {
+    "mtime": 1795821365.5566883,
+    "seen": 1795821388.5739784,
+    "ast_hash": "4c75c281f53eecc8174921bea1e4a428",
     "semantic_hash": ""
   },
   "package-lock.json": {

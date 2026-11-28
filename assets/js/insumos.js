@@ -9,8 +9,9 @@
 
 class InsumosController {
     constructor() {
-        this.filtroActual   = 'todos';
-        this.busquedaActual = '';
+        this.filtroActual      = 'todos';
+        this.busquedaActual    = '';
+        this.imagenModalActual = null;
     }
 
     iniciar() {
@@ -362,11 +363,15 @@ class InsumosController {
                     </div>`;
             }
 
+            const thumbHTML = ins.imagen
+                ? `<img src="${Store.escapeHtml(ins.imagen)}" alt="${Store.escapeHtml(ins.nombre)}" class="insumo-thumb" width="38" height="38" loading="lazy">`
+                : `<span class="insumo-status-dot" aria-hidden="true"></span>`;
+
             return `
             <tr class="tabla__fila fila-insumo" data-id="${ins.id}">
                 <td class="tabla__nombre" data-label="Insumo">
                     <div class="tabla__nombre-wrap">
-                        <span class="insumo-status-dot" aria-hidden="true"></span>
+                        ${thumbHTML}
                         <div class="tabla__nombre-info">
                             <span class="tabla__nombre-texto">${Store.escapeHtml(ins.nombre)}</span>
                             <div class="tabla__meta-uso">${usoBadge}</div>
@@ -424,6 +429,43 @@ class InsumosController {
             e.preventDefault();
             await this.guardarInsumo();
         });
+
+        const inputImg = document.getElementById('insumo-imagen-input');
+        const btnQuitarImg = document.getElementById('btn-quitar-insumo-imagen');
+
+        inputImg?.addEventListener('change', async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            try {
+                this.imagenModalActual = await ImageHelper.comprimirArchivo(file, { maxSize: 320, quality: 0.82 });
+                this.actualizarPreviewImagenModal();
+            } catch (err) {
+                Store.toast(err?.message || 'No se pudo procesar la imagen.', 'error');
+                inputImg.value = '';
+            }
+        });
+
+        btnQuitarImg?.addEventListener('click', () => {
+            this.imagenModalActual = null;
+            if (inputImg) inputImg.value = '';
+            this.actualizarPreviewImagenModal();
+        });
+    }
+
+    actualizarPreviewImagenModal() {
+        const preview = document.getElementById('insumo-imagen-preview');
+        const btnQuitar = document.getElementById('btn-quitar-insumo-imagen');
+        if (!preview) return;
+
+        if (this.imagenModalActual) {
+            preview.innerHTML = `<img src="${Store.escapeHtml(this.imagenModalActual)}" alt="Vista previa del insumo">`;
+            preview.classList.add('tiene-imagen');
+            if (btnQuitar) btnQuitar.hidden = false;
+        } else {
+            preview.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
+            preview.classList.remove('tiene-imagen');
+            if (btnQuitar) btnQuitar.hidden = true;
+        }
     }
 
     actualizarPreviewUnitario() {
@@ -446,6 +488,10 @@ class InsumosController {
         document.getElementById('insumo-edit-id')?.remove();
         const cantInput = document.getElementById('insumo-cantidad');
         if (cantInput) cantInput.value = '1';
+        this.imagenModalActual = null;
+        const inputImg = document.getElementById('insumo-imagen-input');
+        if (inputImg) inputImg.value = '';
+        this.actualizarPreviewImagenModal();
         this.actualizarPreviewUnitario();
     }
 
@@ -475,6 +521,10 @@ class InsumosController {
         }
         hidden.value = id;
 
+        this.imagenModalActual = insumo.imagen || null;
+        const inputImg = document.getElementById('insumo-imagen-input');
+        if (inputImg) inputImg.value = '';
+        this.actualizarPreviewImagenModal();
         this.actualizarPreviewUnitario();
         window.location.hash = 'modal-insumo';
     }
@@ -508,7 +558,8 @@ class InsumosController {
                 id: editId ? parseInt(editId, 10) : null,
                 nombre,
                 unidad,
-                precio: precioUnitario
+                precio: precioUnitario,
+                imagen: this.imagenModalActual
             });
 
             if (res.success) {

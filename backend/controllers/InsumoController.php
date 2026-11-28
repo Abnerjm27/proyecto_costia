@@ -12,6 +12,32 @@ class InsumoController {
 
     public function __construct() {
         $this->db = Database::getConnection();
+        $this->asegurarColumnaImagen();
+    }
+
+    private function asegurarColumnaImagen(): void {
+        try {
+            $stmt = $this->db->query("SHOW COLUMNS FROM insumos LIKE 'imagen'");
+            if ($stmt && !$stmt->fetch()) {
+                $this->db->exec("ALTER TABLE insumos ADD COLUMN imagen MEDIUMTEXT NULL DEFAULT NULL AFTER precio");
+            }
+        } catch (Throwable $e) {
+            // Ignorar si no hay permisos de DDL o ya existe
+        }
+    }
+
+    private function sanitizarImagen(?string $imagen): ?string {
+        if ($imagen === null) return null;
+        $imagen = trim($imagen);
+        if ($imagen === '') return null;
+        if (preg_match('/^(\.\.\/|\/)?assets\/img\/[A-Za-z0-9._\/-]+$/', $imagen) && strpos($imagen, '../', 3) === false) {
+            return $imagen;
+        }
+        if (strlen($imagen) > 350000) return null;
+        if (!preg_match('/^data:image\/(jpeg|jpg|png|webp);base64,[A-Za-z0-9+\/=]+$/', $imagen)) {
+            return null;
+        }
+        return $imagen;
     }
 
     /**
@@ -27,6 +53,7 @@ class InsumoController {
                     i.nombre,
                     i.unidad,
                     i.precio,
+                    MAX(i.imagen) AS imagen,
                     COUNT(DISTINCT r.producto_id) AS total_recetas,
                     GROUP_CONCAT(DISTINCT p.nombre ORDER BY p.nombre SEPARATOR ', ') AS productos_usados
                 FROM insumos i
@@ -48,6 +75,7 @@ class InsumoController {
                     'nombre'           => $row['nombre'],
                     'unidad'           => $row['unidad'],
                     'precio'           => (float)$row['precio'],
+                    'imagen'           => $row['imagen'] ?? null,
                     'total_recetas'    => (int)$row['total_recetas'],
                     'productos_usados' => $row['productos_usados'] ? explode(', ', $row['productos_usados']) : [],
                 ];
@@ -71,9 +99,10 @@ class InsumoController {
     /**
      * Crea un nuevo insumo para el usuario.
      */
-    public function crear(int $usuarioId, string $nombre, string $unidad, float $precio): array {
+    public function crear(int $usuarioId, string $nombre, string $unidad, float $precio, ?string $imagen = null): array {
         $nombre = trim($nombre);
         $unidad = trim($unidad);
+        $imagen = $this->sanitizarImagen($imagen);
 
         if (empty($nombre) || empty($unidad) || $precio < 0) {
             return [
@@ -85,10 +114,10 @@ class InsumoController {
 
         try {
             $stmt = $this->db->prepare("
-                INSERT INTO insumos (usuario_id, nombre, unidad, precio)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO insumos (usuario_id, nombre, unidad, precio, imagen)
+                VALUES (?, ?, ?, ?, ?)
             ");
-            $stmt->execute([$usuarioId, $nombre, $unidad, $precio]);
+            $stmt->execute([$usuarioId, $nombre, $unidad, $precio, $imagen]);
             $nuevoId = (int)$this->db->lastInsertId();
 
             return [
@@ -101,6 +130,7 @@ class InsumoController {
                     'nombre'           => $nombre,
                     'unidad'           => $unidad,
                     'precio'           => $precio,
+                    'imagen'           => $imagen,
                     'total_recetas'    => 0,
                     'productos_usados' => [],
                 ],
@@ -118,7 +148,7 @@ class InsumoController {
     /**
      * Actualiza un insumo existente validando que pertenezca al usuario.
      */
-    public function actualizar(int $id, int $usuarioId, string $nombre, string $unidad, float $precio): array {
+    public function actualizar(int $id, int $usuarioId, string $nombre, string $unidad, float $precio, ?string $imagen = null, bool $actualizarImagen = false): array {
         $nombre = trim($nombre);
         $unidad = trim($unidad);
 
@@ -132,9 +162,10 @@ class InsumoController {
 
         try {
             // Verificar existencia y propiedad
-            $stmtCheck = $this->db->prepare("SELECT id FROM insumos WHERE id = ? AND usuario_id = ?");
+            $stmtCheck = $this->db->prepare("SELECT id, imagen FROM insumos WHERE id = ? AND usuario_id = ?");
             $stmtCheck->execute([$id, $usuarioId]);
-            if (!$stmtCheck->fetch()) {
+            $actual = $stmtCheck->fetch();
+            if (!$actual) {
                 return [
                     'status'  => 'error',
                     'codigo'  => 404,
@@ -142,12 +173,14 @@ class InsumoController {
                 ];
             }
 
+            $imagenFinal = $actualizarImagen ? $this->sanitizarImagen($imagen) : ($actual['imagen'] ?? null);
+
             $stmt = $this->db->prepare("
                 UPDATE insumos
-                SET nombre = ?, unidad = ?, precio = ?
+                SET nombre = ?, unidad = ?, precio = ?, imagen = ?
                 WHERE id = ? AND usuario_id = ?
             ");
-            $stmt->execute([$nombre, $unidad, $precio, $id, $usuarioId]);
+            $stmt->execute([$nombre, $unidad, $precio, $imagenFinal, $id, $usuarioId]);
 
             return [
                 'status'  => 'success',
@@ -159,6 +192,7 @@ class InsumoController {
                     'nombre'     => $nombre,
                     'unidad'     => $unidad,
                     'precio'     => $precio,
+                    'imagen'     => $imagenFinal,
                 ],
             ];
 

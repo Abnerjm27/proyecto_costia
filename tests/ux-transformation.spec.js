@@ -26,8 +26,12 @@ test.describe('Costia — Validación integral de transformación UI/UX', () => 
         await page.goto('/paginas/crear-producto.html');
         await page.waitForLoadState('networkidle');
 
+        // Elegir primer ingrediente en despensa (Harina de trigo, en kg) y pasar a Paso 2
+        await page.locator('#buscar-despensa').fill('Harina');
+        await page.locator('#despensa-grid .despensa-card').first().click();
+        await page.locator('#btn-ir-paso-2').click();
+
         const fila = page.locator('#receta-cuerpo tr.receta-fila').first();
-        await fila.locator('.fila-insumo').selectOption({ index: 1 });
 
         // Al seleccionar un insumo en kg (ej. Harina $3.200/kg), debe sugerir 'g' por defecto
         await expect(fila.locator('.fila-unidad-receta')).toHaveValue('g');
@@ -42,10 +46,12 @@ test.describe('Costia — Validación integral de transformación UI/UX', () => 
         await expect(fila.locator('.fila-unidad-receta')).toHaveValue('g');
         await expect(fila.locator('.fila-sanity-warn')).toBeHidden();
 
-        // Avanzar a Paso 3 y verificar que res-impoconsumo-monto es ~8% y NO 108%
-        await page.locator('#producto-nombre').fill('Brioche Prueba UX');
-        await page.locator('#btn-ir-paso-2').click();
+        // Avanzar a Paso 4 y verificar que res-impoconsumo-monto es ~8% y NO 108%
         await page.locator('#btn-ir-paso-3').click();
+        await page.locator('#btn-ir-paso-4').click();
+        await page.locator('#tab-paso-1').click();
+        await page.locator('#producto-nombre').fill('Brioche Prueba UX');
+        await page.locator('#tab-paso-4').click();
 
         const precioTxt = await page.locator('#res-precio-venta').textContent();
         const impoTxt = await page.locator('#res-impoconsumo-monto').textContent();

@@ -37,17 +37,19 @@ switch ($metodo) {
 
     case 'POST':
         $accion = $data['accion'] ?? 'crear';
+        $tieneImagen = array_key_exists('imagen', $data);
+        $imagen = $tieneImagen && is_string($data['imagen']) ? $data['imagen'] : null;
         if ($accion === 'actualizar' || !empty($data['id'])) {
             $id     = (int)($data['id'] ?? 0);
             $nombre = (string)($data['nombre'] ?? '');
             $unidad = (string)($data['unidad'] ?? '');
             $precio = (float)($data['precio'] ?? 0);
-            $res    = $controller->actualizar($id, (int)$usuarioId, $nombre, $unidad, $precio);
+            $res    = $controller->actualizar($id, (int)$usuarioId, $nombre, $unidad, $precio, $imagen, $tieneImagen);
         } else {
             $nombre = (string)($data['nombre'] ?? '');
             $unidad = (string)($data['unidad'] ?? '');
             $precio = (float)($data['precio'] ?? 0);
-            $res    = $controller->crear((int)$usuarioId, $nombre, $unidad, $precio);
+            $res    = $controller->crear((int)$usuarioId, $nombre, $unidad, $precio, $imagen);
         }
         http_response_code($res['codigo'] ?? 200);
         unset($res['codigo']);

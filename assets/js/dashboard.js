@@ -16,6 +16,9 @@ class DashboardWorkstationController {
         this.inflacionSimuladaPct = 0; // 0..30 %
         this.precioManualSimulado = null;
         this.incluirImpoconsumo = false;
+        this.curvaChart = null;
+        this._animFrames = {};
+        this._ultimosValores = {};
     }
 
     iniciar() {
@@ -104,6 +107,7 @@ class DashboardWorkstationController {
                 btn.classList.add('activo');
                 btn.setAttribute('aria-checked', 'true');
                 this.canalActivo = btn.dataset.channel || 'mostrador';
+                this.sincronizarEscenarioActivo();
                 this.actualizarConsolaPricing();
                 this.renderizarCurva();
             });
@@ -129,9 +133,16 @@ class DashboardWorkstationController {
             this.inflacionSimuladaPct = Math.max(0, Math.min(30, Number(e.target.value) || 0));
             const label = document.getElementById('inflacion-simulada-val');
             if (label) label.textContent = this.inflacionSimuladaPct > 0 ? `+${this.inflacionSimuladaPct}%` : '0%';
+            this.sincronizarEscenarioActivo();
             this.actualizarOrderBook();
             this.renderizarCurva();
             this.actualizarConsolaPricing();
+        });
+
+        document.getElementById('sim-escenarios-bar')?.addEventListener('click', (e) => {
+            const btn = e.target.closest('.sim-escenario-pill[data-escenario]');
+            if (!btn) return;
+            this.aplicarEscenarioRapido(btn.dataset.escenario);
         });
 
         const inputPrecioManual = document.getElementById('input-precio-manual-sim');
@@ -170,6 +181,52 @@ class DashboardWorkstationController {
         document.getElementById('btn-ejecutar-orden')?.addEventListener('click', () => {
             this.aplicarPrecioReceta();
         });
+    }
+
+    sincronizarEscenarioActivo() {
+        let escenarioMatch = null;
+        if (this.inflacionSimuladaPct === 0 && this.canalActivo === 'mostrador') escenarioMatch = 'actual';
+        else if (this.inflacionSimuladaPct === 15 && this.canalActivo === 'mostrador') escenarioMatch = 'alza15';
+        else if (this.inflacionSimuladaPct === 25 && this.canalActivo === 'mostrador') escenarioMatch = 'alza25';
+        else if (this.inflacionSimuladaPct === 0 && this.canalActivo === 'delivery') escenarioMatch = 'delivery';
+
+        document.querySelectorAll('.sim-escenario-pill[data-escenario]').forEach((b) => {
+            b.classList.toggle('activo', b.dataset.escenario === escenarioMatch);
+        });
+    }
+
+    aplicarEscenarioRapido(escenario) {
+        if (escenario === 'actual') {
+            this.inflacionSimuladaPct = 0;
+            this.canalActivo = 'mostrador';
+        } else if (escenario === 'alza15') {
+            this.inflacionSimuladaPct = 15;
+            this.canalActivo = 'mostrador';
+        } else if (escenario === 'alza25') {
+            this.inflacionSimuladaPct = 25;
+            this.canalActivo = 'mostrador';
+        } else if (escenario === 'delivery') {
+            this.inflacionSimuladaPct = 0;
+            this.canalActivo = 'delivery';
+        } else {
+            return;
+        }
+
+        const slider = document.getElementById('slider-inflacion-insumos');
+        const label = document.getElementById('inflacion-simulada-val');
+        if (slider) slider.value = String(this.inflacionSimuladaPct);
+        if (label) label.textContent = this.inflacionSimuladaPct > 0 ? `+${this.inflacionSimuladaPct}%` : '0%';
+
+        document.querySelectorAll('.channel-btn').forEach((b) => {
+            const activo = (b.dataset.channel || 'mostrador') === this.canalActivo;
+            b.classList.toggle('activo', activo);
+            b.setAttribute('aria-checked', activo ? 'true' : 'false');
+        });
+
+        this.sincronizarEscenarioActivo();
+        this.actualizarOrderBook();
+        this.actualizarConsolaPricing();
+        this.renderizarCurva();
     }
 
     limpiarPrecioManual(recalcular = true) {
@@ -550,12 +607,279 @@ class DashboardWorkstationController {
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark-mode');
         const colGrid = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(7,31,23,0.08)';
         const colAxis = isDark ? 'rgba(255,255,255,0.28)' : 'rgba(7,31,23,0.18)';
-        const colLabelY = isDark ? '#CBD5E1' : '#7A8B83';
-        const colLabelX = isDark ? '#E2E8F0' : '#526059';
-        const colMostrador = isDark ? '#10B981' : '#0A6847';
+        const colLabelY = isDark ? '#CBD5E1' : '#555D57';
+        const colLabelX = isDark ? '#E2E8F0' : '#4E554F';
+        const colMostrador = isDark ? '#2BB67E' : '#0F6A4A';
         const colDelivery = isDark ? '#FBBF24' : '#D97706';
-        const colPointBg = isDark ? '#071F17' : '#FFFFFF';
+        const colPointBg = isDark ? '#0D241C' : '#FFFFFF';
 
+        const simulacion = this.calcularSimulacionConsola(producto, insumos);
+
+        if (typeof Chart !== 'undefined') {
+            this.renderizarCurvaChartJS({
+                canvas,
+                puntosMostrador,
+                puntosDelivery,
+                puntosBaseSinAlza,
+                deliveryPct,
+                tasaDelivery,
+                impoconsumo,
+                costoBaseTotal,
+                simulacion,
+                isDark,
+                colGrid,
+                colLabelY,
+                colLabelX,
+                colMostrador,
+                colDelivery,
+                colPointBg
+            });
+        } else {
+            this.renderizarCurvaSVGFallback({
+                canvas,
+                puntosMostrador,
+                puntosDelivery,
+                puntosBaseSinAlza,
+                pMin,
+                pMax,
+                pasos,
+                simulacion,
+                colGrid,
+                colAxis,
+                colLabelY,
+                colLabelX,
+                colMostrador,
+                colDelivery,
+                colPointBg
+            });
+        }
+
+        const insightEl = document.getElementById('chart-insight-bar');
+        if (insightEl) {
+            const margenDec = Math.min(0.89, Math.max(0.05, (this.precioManualSimulado ? simulacion.margenRealPct : this.margenObjetivo) / 100));
+            const baseMostrador = Math.round(costoBaseTotal / (1 - margenDec));
+            const precioMostradorEq = Math.round(baseMostrador * (1 + impoconsumo));
+            const divisorDelivery = Math.max(0.1, 1 - tasaDelivery);
+            const precioDeliveryEq = Math.round((baseMostrador / divisorDelivery) * (1 + impoconsumo));
+            const difPct = precioMostradorEq > 0 ? Math.round(((precioDeliveryEq - precioMostradorEq) / precioMostradorEq) * 100) : Math.round((1 / divisorDelivery - 1) * 100);
+            const notaInflacion = this.inflacionSimuladaPct > 0
+                ? `<span class="insight-chip insight-chip--alerta">Con +${this.inflacionSimuladaPct}% en insumos, tu costo/u sube a <strong>${Store.fmt(costoBaseTotal)}</strong></span>`
+                : '';
+
+            insightEl.innerHTML = `
+                <div class="insight-row">
+                    <span class="insight-text">
+                        Para ganar el mismo margen (<strong>${Math.round(margenDec * 100)}%</strong>) en <strong>Delivery (${deliveryPct}%)</strong> que a <strong>${Store.fmt(precioMostradorEq)}</strong> en Mostrador, debes venderlo a <strong>${Store.fmt(precioDeliveryEq)}</strong> (+${difPct}%).
+                    </span>
+                    ${notaInflacion}
+                </div>
+            `;
+        }
+    }
+
+    renderizarCurvaChartJS({
+        canvas,
+        puntosMostrador,
+        puntosDelivery,
+        puntosBaseSinAlza,
+        deliveryPct,
+        tasaDelivery,
+        impoconsumo,
+        costoBaseTotal,
+        simulacion,
+        isDark,
+        colGrid,
+        colLabelY,
+        colLabelX,
+        colMostrador,
+        colDelivery,
+        colPointBg
+    }) {
+        let chartCanvas = document.getElementById('curva-chart-canvas');
+        if (!chartCanvas || canvas.querySelector('#curva-chart-canvas') !== chartCanvas) {
+            if (this.curvaChart) {
+                this.curvaChart.destroy();
+                this.curvaChart = null;
+            }
+            canvas.innerHTML = '<canvas id="curva-chart-canvas" aria-label="Curva interactiva Mostrador vs Delivery"></canvas>';
+            chartCanvas = document.getElementById('curva-chart-canvas');
+        }
+        if (!chartCanvas) return;
+
+        const ctx = chartCanvas.getContext('2d');
+        const grad = ctx.createLinearGradient(0, 0, 0, 210);
+        grad.addColorStop(0, isDark ? 'rgba(43, 182, 126, 0.28)' : 'rgba(15, 106, 74, 0.22)');
+        grad.addColorStop(1, isDark ? 'rgba(43, 182, 126, 0.01)' : 'rgba(15, 106, 74, 0.01)');
+
+        const labels = puntosMostrador.map((pt) => Store.fmt(pt.precio));
+        const preciosRef = puntosMostrador.map((pt) => pt.precio);
+        const metaTarget = this.precioManualSimulado ? Math.max(0, simulacion.margenRealPct) : this.margenObjetivo;
+        const dataMeta = puntosMostrador.map(() => metaTarget);
+
+        const datasets = [
+            {
+                label: 'Mostrador (0%)',
+                data: puntosMostrador.map((pt) => pt.margen),
+                borderColor: colMostrador,
+                backgroundColor: grad,
+                fill: true,
+                tension: 0.34,
+                borderWidth: 2.6,
+                pointRadius: 4,
+                pointHoverRadius: 7,
+                pointBackgroundColor: colPointBg,
+                pointBorderColor: colMostrador,
+                pointBorderWidth: 2
+            },
+            {
+                label: `Delivery (${deliveryPct}%)`,
+                data: puntosDelivery.map((pt) => pt.margen),
+                borderColor: colDelivery,
+                backgroundColor: 'transparent',
+                borderDash: [6, 4],
+                fill: false,
+                tension: 0.34,
+                borderWidth: 2.3,
+                pointRadius: 3.5,
+                pointHoverRadius: 6.5,
+                pointBackgroundColor: colPointBg,
+                pointBorderColor: colDelivery,
+                pointBorderWidth: 2
+            },
+            {
+                label: `Meta (${metaTarget}%)`,
+                data: dataMeta,
+                borderColor: isDark ? 'rgba(43, 182, 126, 0.55)' : 'rgba(15, 106, 74, 0.45)',
+                borderDash: [4, 4],
+                borderWidth: 1.4,
+                pointRadius: 0,
+                pointHoverRadius: 0,
+                fill: false
+            }
+        ];
+
+        if (puntosBaseSinAlza.length > 0) {
+            datasets.push({
+                label: 'Mostrador (sin alza)',
+                data: puntosBaseSinAlza.map((pt) => pt.margen),
+                borderColor: '#94A3B8',
+                borderDash: [3, 3],
+                borderWidth: 1.6,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                tension: 0.34,
+                fill: false
+            });
+        }
+
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const calcGananciaEnPunto = (precio, comision) => {
+            const neto = (precio * (1 - comision)) / (1 + impoconsumo);
+            return Math.round(neto - costoBaseTotal);
+        };
+
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: reduceMotion ? 0 : 320,
+                easing: 'easeOutQuart'
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: isDark ? '#0B1914' : '#0D241C',
+                    titleColor: '#F4F0E6',
+                    bodyColor: '#EDE6D8',
+                    borderColor: isDark ? 'rgba(43, 182, 126, 0.45)' : 'rgba(15, 106, 74, 0.4)',
+                    borderWidth: 1,
+                    padding: 10,
+                    cornerRadius: 10,
+                    titleFont: { family: 'Azeret Mono, monospace', size: 12, weight: '700' },
+                    bodyFont: { family: 'Source Sans 3, sans-serif', size: 12.5 },
+                    callbacks: {
+                        title: (items) => (items && items[0] ? `Precio venta: ${items[0].label}` : ''),
+                        label: (ctxItem) => {
+                            const dsLabel = ctxItem.dataset.label || '';
+                            const margenVal = ctxItem.parsed.y;
+                            const precio = preciosRef[ctxItem.dataIndex] || 0;
+                            if (dsLabel.startsWith('Meta')) {
+                                return ` Meta objetivo: ${margenVal}%`;
+                            }
+                            if (dsLabel.startsWith('Delivery')) {
+                                const gan = calcGananciaEnPunto(precio, tasaDelivery);
+                                const signo = gan >= 0 ? '+' : '-';
+                                return ` ${dsLabel}: ${margenVal}% (${signo}${Store.fmt(Math.abs(gan))}/ud)`;
+                            }
+                            if (dsLabel.startsWith('Mostrador (0%)')) {
+                                const gan = calcGananciaEnPunto(precio, 0);
+                                const signo = gan >= 0 ? '+' : '-';
+                                return ` ${dsLabel}: ${margenVal}% (${signo}${Store.fmt(Math.abs(gan))}/ud)`;
+                            }
+                            return ` ${dsLabel}: ${margenVal}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    border: { color: colGrid },
+                    ticks: {
+                        color: colLabelX,
+                        font: { family: 'Azeret Mono, monospace', size: 10 }
+                    }
+                },
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 75,
+                    grid: { color: colGrid, tickLength: 4 },
+                    border: { display: false },
+                    ticks: {
+                        color: colLabelY,
+                        stepSize: 20,
+                        font: { family: 'Azeret Mono, monospace', size: 10 },
+                        callback: (val) => `${val}%`
+                    }
+                }
+            }
+        };
+
+        if (this.curvaChart) {
+            this.curvaChart.data.labels = labels;
+            this.curvaChart.data.datasets = datasets;
+            this.curvaChart.options = options;
+            this.curvaChart.update();
+        } else {
+            this.curvaChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets },
+                options
+            });
+        }
+    }
+
+    renderizarCurvaSVGFallback({
+        canvas,
+        puntosMostrador,
+        puntosDelivery,
+        puntosBaseSinAlza,
+        pMin,
+        pMax,
+        pasos,
+        simulacion,
+        colGrid,
+        colAxis,
+        colLabelY,
+        colLabelX,
+        colMostrador,
+        colDelivery,
+        colPointBg
+    }) {
         const width = 540;
         const height = 185;
         const padX = 46;
@@ -584,7 +908,6 @@ class DashboardWorkstationController {
             `;
         }).join('');
 
-        const simulacion = this.calcularSimulacionConsola(producto, insumos);
         const precioActivo = simulacion.precioFinal;
         const xActivoPct = pMax > pMin ? Math.max(0, Math.min(1, (precioActivo - pMin) / (pMax - pMin))) : 0.5;
         const xActivo = padX + xActivoPct * (width - padX * 2);
@@ -630,28 +953,6 @@ class DashboardWorkstationController {
                 ${svgContent}
             </svg>
         `;
-
-        const insightEl = document.getElementById('chart-insight-bar');
-        if (insightEl) {
-            const margenDec = Math.min(0.89, Math.max(0.05, (this.precioManualSimulado ? simulacion.margenRealPct : this.margenObjetivo) / 100));
-            const baseMostrador = Math.round(costoBaseTotal / (1 - margenDec));
-            const precioMostradorEq = Math.round(baseMostrador * (1 + impoconsumo));
-            const divisorDelivery = Math.max(0.1, 1 - tasaDelivery);
-            const precioDeliveryEq = Math.round((baseMostrador / divisorDelivery) * (1 + impoconsumo));
-            const difPct = precioMostradorEq > 0 ? Math.round(((precioDeliveryEq - precioMostradorEq) / precioMostradorEq) * 100) : Math.round((1 / divisorDelivery - 1) * 100);
-            const notaInflacion = this.inflacionSimuladaPct > 0
-                ? `<span class="insight-chip insight-chip--alerta">Con +${this.inflacionSimuladaPct}% en insumos, tu costo/u sube a <strong>${Store.fmt(costoBaseTotal)}</strong></span>`
-                : '';
-
-            insightEl.innerHTML = `
-                <div class="insight-row">
-                    <span class="insight-text">
-                        Para ganar el mismo margen (<strong>${Math.round(margenDec * 100)}%</strong>) en <strong>Delivery (${deliveryPct}%)</strong> que a <strong>${Store.fmt(precioMostradorEq)}</strong> en Mostrador, debes venderlo a <strong>${Store.fmt(precioDeliveryEq)}</strong> (+${difPct}%).
-                    </span>
-                    ${notaInflacion}
-                </div>
-            `;
-        }
     }
 
     obtenerCuotaGastosFijosUnidad(producto, costoDirecto) {
@@ -777,12 +1078,85 @@ class DashboardWorkstationController {
                 ? `${Store.fmt(sim.impoconsumoValor)} (${sim.impoconsumoPct}%)`
                 : '$0 (No aplica)';
         }
-        if (elPrecioSugerido) elPrecioSugerido.textContent = Store.fmt(sim.precioFinal);
-        if (elGananciaNeta) {
-            const signo = sim.gananciaNetaUnidad >= 0 ? '+' : '-';
-            elGananciaNeta.textContent = `${signo}${Store.fmt(Math.abs(sim.gananciaNetaUnidad))}`;
-            elGananciaNeta.style.color = sim.gananciaNetaUnidad < 0 ? '#B91C1C' : '';
+        if (elPrecioSugerido) {
+            this.animarValorNumerico(elPrecioSugerido, 'precioSugerido', sim.precioFinal, (v) => Store.fmt(v));
         }
+        if (elGananciaNeta) {
+            elGananciaNeta.style.color = sim.gananciaNetaUnidad < 0 ? '#B91C1C' : '';
+            this.animarValorNumerico(elGananciaNeta, 'gananciaNeta', sim.gananciaNetaUnidad, (v) => {
+                const signo = v >= 0 ? '+' : '-';
+                return `${signo}${Store.fmt(Math.abs(v))}`;
+            });
+        }
+
+        this.actualizarGaugeRentabilidad(sim.margenRealPct, sim.gananciaNetaUnidad);
+    }
+
+    animarValorNumerico(el, clave, valorFinal, formateador) {
+        if (!el) return;
+        const objetivo = Math.round(Number(valorFinal) || 0);
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const inicio = this._ultimosValores[clave];
+
+        if (this._animFrames[clave]) {
+            cancelAnimationFrame(this._animFrames[clave]);
+            this._animFrames[clave] = null;
+        }
+
+        if (reduceMotion || inicio === undefined || inicio === objetivo || typeof requestAnimationFrame !== 'function') {
+            this._ultimosValores[clave] = objetivo;
+            el.textContent = formateador(objetivo);
+            return;
+        }
+
+        const duracion = 160;
+        const t0 = performance.now();
+        const paso = (ahora) => {
+            const p = Math.min(1, (ahora - t0) / duracion);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const actual = Math.round(inicio + (objetivo - inicio) * eased);
+            el.textContent = formateador(actual);
+            if (p < 1) {
+                this._animFrames[clave] = requestAnimationFrame(paso);
+            } else {
+                this._ultimosValores[clave] = objetivo;
+                el.textContent = formateador(objetivo);
+                this._animFrames[clave] = null;
+            }
+        };
+        this._animFrames[clave] = requestAnimationFrame(paso);
+    }
+
+    actualizarGaugeRentabilidad(margenRealPct, gananciaNeta) {
+        const arc = document.getElementById('sim-gauge-arc');
+        const pctEl = document.getElementById('sim-gauge-pct');
+        const statusEl = document.getElementById('sim-gauge-status');
+        const card = document.getElementById('sim-profit-gauge');
+        if (!arc || !pctEl || !statusEl || !card) return;
+
+        const margenNum = Math.round(Number(margenRealPct) || 0);
+        const pctClamped = Math.max(0, Math.min(75, margenNum));
+        const longitud = 157;
+        const offset = longitud - (pctClamped / 75) * longitud;
+        arc.style.strokeDashoffset = String(Math.round(offset * 10) / 10);
+
+        pctEl.textContent = `${margenNum}%`;
+
+        let estadoClase = 'gauge--saludable';
+        let textoEstado = 'Saludable';
+        if (gananciaNeta <= 0 || margenNum < 10) {
+            estadoClase = 'gauge--peligro';
+            textoEstado = gananciaNeta <= 0 ? 'En pérdida' : 'Margen crítico';
+        } else if (margenNum < 30) {
+            estadoClase = 'gauge--ajustado';
+            textoEstado = 'Ajustado';
+        }
+
+        card.classList.remove('gauge--saludable', 'gauge--ajustado', 'gauge--peligro');
+        statusEl.classList.remove('gauge--saludable', 'gauge--ajustado', 'gauge--peligro');
+        card.classList.add(estadoClase);
+        statusEl.classList.add(estadoClase);
+        statusEl.textContent = textoEstado;
     }
 
     async aplicarPrecioReceta() {

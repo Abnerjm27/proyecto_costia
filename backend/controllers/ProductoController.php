@@ -13,6 +13,32 @@ class ProductoController {
 
     public function __construct() {
         $this->db = Database::getConnection();
+        $this->asegurarColumnaImagen();
+    }
+
+    private function asegurarColumnaImagen(): void {
+        try {
+            $stmt = $this->db->query("SHOW COLUMNS FROM productos LIKE 'imagen'");
+            if ($stmt && !$stmt->fetch()) {
+                $this->db->exec("ALTER TABLE productos ADD COLUMN imagen MEDIUMTEXT NULL DEFAULT NULL AFTER nombre");
+            }
+        } catch (Throwable $e) {
+            // Ignorar si no hay permisos DDL o ya existe
+        }
+    }
+
+    private function sanitizarImagen(?string $imagen): ?string {
+        if ($imagen === null) return null;
+        $imagen = trim($imagen);
+        if ($imagen === '') return null;
+        if (preg_match('/^(\.\.\/|\/)?assets\/img\/[A-Za-z0-9._\/-]+$/', $imagen) && strpos($imagen, '../', 3) === false) {
+            return $imagen;
+        }
+        if (strlen($imagen) > 350000) return null;
+        if (!preg_match('/^data:image\/(jpeg|jpg|png|webp);base64,[A-Za-z0-9+\/=]+$/', $imagen)) {
+            return null;
+        }
+        return $imagen;
     }
 
     /**
@@ -22,7 +48,7 @@ class ProductoController {
         try {
             // 1. Obtener todos los productos del usuario
             $stmtProd = $this->db->prepare("
-                SELECT id, usuario_id, nombre, modo, valor_modo, tipo_margen, unidades_producidas, 
+                SELECT id, usuario_id, nombre, imagen, modo, valor_modo, tipo_margen, unidades_producidas, 
                        costo_empaque, porcentaje_merma, costo_mano_obra,
                        precio_venta_anterior, costo_snapshot, created_at
                 FROM productos
@@ -89,6 +115,7 @@ class ProductoController {
                     'id'                  => $pid,
                     'usuario_id'          => (int)$prod['usuario_id'],
                     'nombre'              => $prod['nombre'],
+                    'imagen'              => $prod['imagen'] ?? null,
                     'modo'                => $prod['modo'],
                     'valorModo'           => (float)$prod['valor_modo'],
                     'tipoMargen'          => $prod['tipo_margen'] ?? 'costo',
@@ -123,6 +150,8 @@ class ProductoController {
     public function guardar(int $usuarioId, array $datos): array {
         $id                 = isset($datos['id']) ? (int)$datos['id'] : null;
         $nombre             = trim($datos['nombre'] ?? '');
+        $tieneImagen        = array_key_exists('imagen', $datos);
+        $imagen             = $tieneImagen && is_string($datos['imagen']) ? $this->sanitizarImagen($datos['imagen']) : null;
         $modo               = ($datos['modo'] ?? 'margen') === 'multiplicador' ? 'multiplicador' : 'margen';
         $valorModo          = (float)($datos['valorModo'] ?? ($modo === 'multiplicador' ? 2.0 : 30.0));
         $tipoMargen         = ($datos['tipoMargen'] ?? 'costo') === 'venta' ? 'venta' : 'costo';
@@ -156,9 +185,10 @@ class ProductoController {
 
             if ($id && $id > 0) {
                 // Verificar pertenencia del producto
-                $stmtCheck = $this->db->prepare("SELECT id FROM productos WHERE id = ? AND usuario_id = ?");
+                $stmtCheck = $this->db->prepare("SELECT id, imagen FROM productos WHERE id = ? AND usuario_id = ?");
                 $stmtCheck->execute([$id, $usuarioId]);
-                if (!$stmtCheck->fetch()) {
+                $actual = $stmtCheck->fetch();
+                if (!$actual) {
                     $this->db->rollBack();
                     return [
                         'status'  => 'error',
@@ -167,16 +197,18 @@ class ProductoController {
                     ];
                 }
 
+                $imagenFinal = $tieneImagen ? $imagen : ($actual['imagen'] ?? null);
+
                 // Actualizar cabecera del producto
                 $stmtUpd = $this->db->prepare("
                     UPDATE productos
-                    SET nombre = ?, modo = ?, valor_modo = ?, tipo_margen = ?, unidades_producidas = ?,
+                    SET nombre = ?, imagen = ?, modo = ?, valor_modo = ?, tipo_margen = ?, unidades_producidas = ?,
                         costo_empaque = ?, porcentaje_merma = ?, costo_mano_obra = ?,
                         precio_venta_anterior = COALESCE(?, precio_venta_anterior)
                     WHERE id = ? AND usuario_id = ?
                 ");
                 $stmtUpd->execute([
-                    $nombre, $modo, $valorModo, $tipoMargen, $unidadesProducidas,
+                    $nombre, $imagenFinal, $modo, $valorModo, $tipoMargen, $unidadesProducidas,
                     $costoEmpaque, $porcentajeMerma, $costoManoObra,
                     $precioVentaAnterior,
                     $id, $usuarioId
@@ -190,11 +222,11 @@ class ProductoController {
             } else {
                 // Crear nuevo producto
                 $stmtIns = $this->db->prepare("
-                    INSERT INTO productos (usuario_id, nombre, modo, valor_modo, tipo_margen, unidades_producidas, costo_empaque, porcentaje_merma, costo_mano_obra, precio_venta_anterior)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO productos (usuario_id, nombre, imagen, modo, valor_modo, tipo_margen, unidades_producidas, costo_empaque, porcentaje_merma, costo_mano_obra, precio_venta_anterior)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ");
                 $stmtIns->execute([
-                    $usuarioId, $nombre, $modo, $valorModo, $tipoMargen, $unidadesProducidas,
+                    $usuarioId, $nombre, $imagen, $modo, $valorModo, $tipoMargen, $unidadesProducidas,
                     $costoEmpaque, $porcentajeMerma, $costoManoObra, $precioVentaAnterior
                 ]);
                 $productoId = (int)$this->db->lastInsertId();

@@ -472,6 +472,32 @@ body.dark-mode .btn-mantenimiento--secundario,
     color: #F4F0E6 !important;
 }
 
+body.dark-mode .btn-mantenimiento--alerta,
+[data-theme="dark"] .btn-mantenimiento--alerta {
+    background: rgba(245, 158, 11, 0.14) !important;
+    border-color: rgba(245, 158, 11, 0.35) !important;
+    color: #FBBF24 !important;
+}
+
+body.dark-mode .btn-mantenimiento--alerta:hover,
+[data-theme="dark"] .btn-mantenimiento--alerta:hover {
+    background: rgba(245, 158, 11, 0.22) !important;
+    border-color: #F59E0B !important;
+}
+
+body.dark-mode .btn-mantenimiento--peligro,
+[data-theme="dark"] .btn-mantenimiento--peligro {
+    background: rgba(239, 68, 68, 0.14) !important;
+    border-color: rgba(239, 68, 68, 0.35) !important;
+    color: #F87171 !important;
+}
+
+body.dark-mode .btn-mantenimiento--peligro:hover,
+[data-theme="dark"] .btn-mantenimiento--peligro:hover {
+    background: rgba(239, 68, 68, 0.22) !important;
+    border-color: #EF4444 !important;
+}
+
 body.dark-mode .config-radio-card.active,
 [data-theme="dark"] .config-radio-card.active {
     background: #182B23 !important;

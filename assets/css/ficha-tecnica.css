@@ -154,6 +154,53 @@
     margin-bottom: 12px;
 }
 
+.ficha-card__head-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.ficha-card__head-row .ficha-card__titulo {
+    margin-bottom: 2px;
+}
+
+.ficha-card__head-row .ficha-card__subtitulo {
+    margin-bottom: 0;
+}
+
+.ficha-card__foto-wrap {
+    width: 54px;
+    height: 54px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(15, 106, 74, 0.25);
+    flex-shrink: 0;
+}
+
+.ficha-card__foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ficha-producto-thumb-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(15, 106, 74, 0.25);
+    flex-shrink: 0;
+}
+
+.ficha-producto-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .ficha-card__codigo {
     font-family: 'Azeret Mono', monospace;
     font-size: 11px;
